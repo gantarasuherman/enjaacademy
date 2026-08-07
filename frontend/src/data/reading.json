@@ -1,0 +1,81 @@
+[
+    {
+        "id": "read-001",
+        "title": "The Woman Who Missed Her Train",
+        "type": "story",
+        "cefr": "A2",
+        "wordCount": 186,
+        "readingMinutes": 2,
+        "coverImage": null,
+        "body": "Mira checked her watch for the third time. It was 6:52, and her train left at seven.\n\nShe had packed the night before, but the taxi arrived late. Now she was standing in a long queue at the ticket counter, tapping her foot.\n\n\"Next, please,\" the clerk said.\n\nMira handed over her booking code. The clerk typed slowly, then frowned. \"I'm sorry — this train departed from platform two. It left four minutes ago.\"\n\nMira stared at him. Four minutes. She thought about the meeting in Bandung, the client waiting, the presentation she had rehearsed all week.\n\n\"Is there another one?\" she asked.\n\n\"There is one at nine. It arrives at half past eleven.\"\n\nHer meeting was at eleven.\n\nShe stepped away from the counter and sat on a cold metal bench. Then she opened her laptop, connected to the station Wi-Fi, and sent a message: *Can we move the meeting to two o'clock? I'll explain when I arrive.*\n\nThe reply came in under a minute. *No problem. See you at two.*\n\nMira closed her laptop and, for the first time that morning, breathed out slowly.",
+        "glossary": [
+            { "word": "queue", "meaning": "antrean" },
+            { "word": "clerk", "meaning": "petugas loket" },
+            { "word": "frown", "meaning": "mengerutkan kening" },
+            { "word": "depart", "meaning": "berangkat" },
+            { "word": "rehearse", "meaning": "berlatih" },
+            { "word": "breathe out", "meaning": "menghela napas" }
+        ],
+        "quizId": "quiz-read-001"
+    },
+    {
+        "id": "read-002",
+        "title": "Remote Work Is Reshaping City Centres",
+        "type": "news",
+        "cefr": "B2",
+        "wordCount": 214,
+        "readingMinutes": 3,
+        "coverImage": null,
+        "body": "Five years after offices emptied, the effects on urban centres are becoming measurable.\n\nA study released this week found that foot traffic in central business districts across twelve major cities remains 28% below its pre-pandemic level on Mondays and Fridays, while Tuesday through Thursday has largely recovered.\n\nThe consequences are uneven. Coffee shops and lunch restaurants — businesses that depended on a predictable five-day rhythm — have closed at nearly twice the rate of retail stores. Meanwhile, suburban commercial areas report their strongest growth in a decade.\n\n\"We designed these districts around a commuting pattern that no longer exists,\" said Dr. Elena Marsh, an urban economist at the University of Leeds. \"The question is not whether they will change, but how quickly cities are willing to let them.\"\n\nSeveral municipalities have responded by converting office towers into residential units. The process is slower and more expensive than it sounds: floor plates designed for desks rarely accommodate the plumbing and natural light that flats require.\n\nCritics argue the conversions favour luxury housing over affordable stock. Supporters counter that any residential density downtown supports the businesses that remain.\n\nWhat is clear is that the office is no longer the sole organising principle of the city centre. What replaces it is still being decided.",
+        "glossary": [
+            { "word": "measurable", "meaning": "dapat diukur" },
+            { "word": "foot traffic", "meaning": "arus pejalan kaki / pengunjung" },
+            { "word": "uneven", "meaning": "tidak merata" },
+            { "word": "commuting", "meaning": "perjalanan pulang-pergi kerja" },
+            { "word": "municipality", "meaning": "pemerintah kota" },
+            { "word": "floor plate", "meaning": "denah lantai" },
+            { "word": "accommodate", "meaning": "menampung" },
+            { "word": "affordable stock", "meaning": "persediaan hunian terjangkau" }
+        ],
+        "quizId": "quiz-read-002"
+    },
+    {
+        "id": "read-003",
+        "title": "Reading API Documentation Without Panic",
+        "type": "documentation",
+        "cefr": "B1",
+        "wordCount": 198,
+        "readingMinutes": 3,
+        "coverImage": null,
+        "body": "Most API documentation follows the same shape, and recognising that shape makes it far less intimidating.\n\n**Authentication** comes first. It tells you how to prove who you are — usually a bearer token in the `Authorization` header. If you skip this section, every later example will return `401 Unauthorized`.\n\n**Endpoints** are listed next, grouped by resource. Each entry shows the HTTP method, the path, and the parameters. Pay attention to whether a parameter is *required* or *optional*, and whether it belongs in the query string or the request body.\n\n**Response format** shows what you get back. Look for the status codes: `200` means success, `422` usually means your input failed validation, and `429` means you are being rate limited.\n\n**Rate limits** deserve a careful read. A limit of \"60 requests per minute\" is not a suggestion; exceeding it will throttle your application, sometimes for an hour.\n\nFinally, check whether the endpoint is marked **deprecated**. Deprecated endpoints still work today but will be removed, and building on them creates work for your future self.\n\nRead these five sections in order and you can usually start integrating within an hour.",
+        "glossary": [
+            { "word": "intimidating", "meaning": "mengintimidasi, menakutkan" },
+            { "word": "bearer token", "meaning": "token pembawa untuk autentikasi" },
+            { "word": "endpoint", "meaning": "alamat tujuan permintaan API" },
+            { "word": "query string", "meaning": "parameter di URL setelah tanda tanya" },
+            { "word": "rate limit", "meaning": "batas jumlah permintaan" },
+            { "word": "throttle", "meaning": "membatasi laju" },
+            { "word": "deprecated", "meaning": "sudah tidak dianjurkan dipakai" }
+        ],
+        "quizId": null
+    },
+    {
+        "id": "read-004",
+        "title": "Why Small Habits Beat Big Resolutions",
+        "type": "article",
+        "cefr": "B1",
+        "wordCount": 176,
+        "readingMinutes": 2,
+        "coverImage": null,
+        "body": "Every January, gyms fill up. Every February, they empty.\n\nThe pattern is so reliable that it has become a joke, but the underlying reason is worth taking seriously. Big resolutions fail because they depend on motivation, and motivation is a poor building material — it fluctuates with sleep, stress, and weather.\n\nSmall habits work differently. A commitment to study English for ten minutes a day sounds unambitious. It is also almost impossible to fail on a bad day, and that is precisely the point. The habit survives the days when you feel like doing nothing, and those are the days that decide whether a habit lasts.\n\nThere is a second advantage. Ten minutes often becomes twenty once you have started, because the hard part was never the studying — it was beginning. Lower the barrier to beginning and the rest tends to follow.\n\nSo set a target you would be slightly embarrassed to call ambitious. Then protect it. In a year, the small habit will have outperformed the resolution that sounded impressive in January.",
+        "glossary": [
+            { "word": "reliable", "meaning": "dapat diandalkan, konsisten" },
+            { "word": "fluctuate", "meaning": "naik-turun, berubah-ubah" },
+            { "word": "unambitious", "meaning": "tidak ambisius" },
+            { "word": "precisely", "meaning": "tepatnya" },
+            { "word": "barrier", "meaning": "penghalang" },
+            { "word": "outperform", "meaning": "mengungguli" }
+        ],
+        "quizId": null
+    }
+]

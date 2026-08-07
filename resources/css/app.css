@@ -1,0 +1,132 @@
+@import 'tailwindcss';
+
+@source '../views/**/*.blade.php';
+@source '../js/**/*.js';
+
+@theme {
+    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    --font-jp: 'Noto Sans JP', 'Yu Gothic', 'Hiragino Sans', sans-serif;
+
+    --color-brand-50: oklch(0.97 0.014 285);
+    --color-brand-100: oklch(0.93 0.03 285);
+    --color-brand-200: oklch(0.87 0.06 285);
+    --color-brand-300: oklch(0.78 0.1 285);
+    --color-brand-400: oklch(0.68 0.15 285);
+    --color-brand-500: oklch(0.6 0.19 285);
+    --color-brand-600: oklch(0.52 0.21 285);
+    --color-brand-700: oklch(0.44 0.19 285);
+    --color-brand-800: oklch(0.37 0.15 285);
+    --color-brand-900: oklch(0.31 0.11 285);
+}
+
+/* Dark mode is driven by a class on <html>, toggled by Alpine + localStorage. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        @apply bg-slate-50 text-slate-800 antialiased dark:bg-slate-950 dark:text-slate-200;
+    }
+
+    /* Japanese text needs a font stack that actually has the glyphs. */
+    .font-jp,
+    [lang='ja'] {
+        font-family: var(--font-jp);
+    }
+
+    [x-cloak] {
+        display: none !important;
+    }
+}
+
+@layer components {
+    .card {
+        @apply rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900;
+    }
+
+    .card-header {
+        @apply flex items-center justify-between gap-3 border-b border-slate-200 px-5 py-4 dark:border-slate-800;
+    }
+
+    /*
+     * Tailwind v4 cannot @apply a custom class from the same layer, so the
+     * shared button chrome is declared once in plain CSS and each variant only
+     * adds its colours.
+     */
+    .btn,
+    .btn-primary,
+    .btn-secondary,
+    .btn-danger,
+    .btn-ghost {
+        @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition
+               focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60
+               dark:focus-visible:ring-offset-slate-900;
+    }
+
+    .btn-primary {
+        @apply bg-brand-600 text-white hover:bg-brand-700 focus-visible:ring-brand-500;
+    }
+
+    .btn-secondary {
+        @apply border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 focus-visible:ring-slate-400
+               dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700;
+    }
+
+    .btn-danger {
+        @apply bg-rose-600 text-white hover:bg-rose-700 focus-visible:ring-rose-500;
+    }
+
+    .btn-ghost {
+        @apply text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800;
+    }
+
+    .input {
+        @apply block w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm
+               focus:border-brand-500 focus:ring-2 focus:ring-brand-500/40
+               dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500;
+    }
+
+    .label {
+        @apply mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300;
+    }
+
+    .help {
+        @apply mt-1 text-xs text-slate-500 dark:text-slate-400;
+    }
+
+    .badge {
+        @apply inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium;
+    }
+
+    .table-wrap {
+        @apply overflow-x-auto;
+    }
+
+    .table {
+        @apply min-w-full divide-y divide-slate-200 text-sm dark:divide-slate-800;
+    }
+
+    .table thead th {
+        @apply whitespace-nowrap px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400;
+    }
+
+    .table tbody tr {
+        @apply border-b border-slate-100 transition hover:bg-slate-50 dark:border-slate-800/60 dark:hover:bg-slate-800/40;
+    }
+
+    .table tbody td {
+        @apply px-4 py-3 align-middle;
+    }
+
+    /* Menu tree drag & drop affordances */
+    .menu-node.sortable-ghost {
+        @apply opacity-40;
+    }
+
+    .menu-node.sortable-chosen > .menu-node-row {
+        @apply ring-2 ring-brand-500;
+    }
+}

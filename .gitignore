@@ -1,0 +1,36 @@
+/.phpunit.cache
+/node_modules
+/public/build
+/public/hot
+/public/storage
+/public/app
+/storage/*.key
+/storage/pail
+/storage/app/backups
+/vendor
+.env
+.env.backup
+.env.production
+.phpactor.json
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
+/auth.json
+/.fleet
+/.idea
+/.nova
+/.vscode
+/.zed
+
+# Laradock: the vendored stack is committed, but its local config and logs are not.
+/laradock/.env
+/laradock/logs
+/laradock/data
+
+# React SPA
+/frontend/node_modules
+/frontend/dist
+/frontend/dev-dist
+/frontend/.env

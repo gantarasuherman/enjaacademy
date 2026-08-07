@@ -1,0 +1,144 @@
+[
+    {
+        "id": "gr-nouns",
+        "title": "Nouns (Kata Benda)",
+        "kind": "parts-of-speech",
+        "cefr": "A1",
+        "explanation": "Noun adalah kata yang menamai orang, tempat, benda, atau gagasan. Noun bisa dihitung (countable) seperti *book/books*, atau tidak dihitung (uncountable) seperti *water*, *information*.",
+        "formula": null,
+        "timeline": null,
+        "examples": [
+            { "sentence": "The **teacher** explained the lesson.", "meaning": "Guru itu menjelaskan pelajaran.", "highlight": "teacher" },
+            { "sentence": "I need more **information** about the course.", "meaning": "Saya butuh lebih banyak informasi tentang kursus ini.", "highlight": "information" },
+            { "sentence": "There are three **chairs** in the room.", "meaning": "Ada tiga kursi di ruangan itu.", "highlight": "chairs" }
+        ],
+        "commonMistakes": [
+            { "wrong": "I need many informations.", "right": "I need much information.", "why": "\"Information\" adalah uncountable, jadi tidak berbentuk jamak dan memakai *much*." },
+            { "wrong": "She has a long hairs.", "right": "She has long hair.", "why": "\"Hair\" sebagai keseluruhan bersifat uncountable." }
+        ],
+        "exerciseIds": []
+    },
+    {
+        "id": "gr-verbs",
+        "title": "Verbs (Kata Kerja)",
+        "kind": "parts-of-speech",
+        "cefr": "A1",
+        "explanation": "Verb menyatakan aksi atau keadaan. Verb dibagi menjadi action verb (*run*, *write*), linking verb (*be*, *seem*), dan auxiliary verb (*do*, *have*, *will*).",
+        "formula": null,
+        "timeline": null,
+        "examples": [
+            { "sentence": "She **writes** every morning.", "meaning": "Dia menulis setiap pagi.", "highlight": "writes" },
+            { "sentence": "The soup **smells** delicious.", "meaning": "Sopnya berbau lezat.", "highlight": "smells" },
+            { "sentence": "They **have** finished the report.", "meaning": "Mereka sudah menyelesaikan laporannya.", "highlight": "have" }
+        ],
+        "commonMistakes": [
+            { "wrong": "He don't like coffee.", "right": "He doesn't like coffee.", "why": "Subjek orang ketiga tunggal memakai *does*." }
+        ],
+        "exerciseIds": []
+    },
+    {
+        "id": "gr-adjectives",
+        "title": "Adjectives (Kata Sifat)",
+        "kind": "parts-of-speech",
+        "cefr": "A1",
+        "explanation": "Adjective menerangkan noun. Urutan baku dalam bahasa Inggris: opinion → size → age → shape → colour → origin → material → purpose.",
+        "formula": "opinion + size + age + shape + colour + origin + material + noun",
+        "timeline": null,
+        "examples": [
+            { "sentence": "A **beautiful small old** round table.", "meaning": "Sebuah meja bundar tua yang kecil dan indah.", "highlight": "beautiful small old" },
+            { "sentence": "She bought a **red Italian leather** bag.", "meaning": "Dia membeli tas kulit Italia berwarna merah.", "highlight": "red Italian leather" }
+        ],
+        "commonMistakes": [
+            { "wrong": "A leather black big bag.", "right": "A big black leather bag.", "why": "Urutan adjective: size → colour → material." }
+        ],
+        "exerciseIds": []
+    },
+    {
+        "id": "gr-adverbs",
+        "title": "Adverbs (Kata Keterangan)",
+        "kind": "parts-of-speech",
+        "cefr": "A2",
+        "explanation": "Adverb menerangkan verb, adjective, atau adverb lain — menjawab *how*, *when*, *where*, *how often*. Banyak dibentuk dengan akhiran -ly.",
+        "formula": "adjective + -ly → adverb",
+        "timeline": null,
+        "examples": [
+            { "sentence": "He speaks English **fluently**.", "meaning": "Dia berbicara bahasa Inggris dengan lancar.", "highlight": "fluently" },
+            { "sentence": "She **always** arrives on time.", "meaning": "Dia selalu datang tepat waktu.", "highlight": "always" }
+        ],
+        "commonMistakes": [
+            { "wrong": "He drives very careful.", "right": "He drives very carefully.", "why": "Yang diterangkan adalah verb *drives*, jadi butuh adverb." }
+        ],
+        "exerciseIds": []
+    },
+    {
+        "id": "gr-prepositions",
+        "title": "Prepositions (Kata Depan)",
+        "kind": "parts-of-speech",
+        "cefr": "A2",
+        "explanation": "Preposition menghubungkan noun dengan bagian kalimat lain, menyatakan waktu (*at/on/in*), tempat, atau arah.",
+        "formula": "at → jam & titik | on → hari & tanggal | in → bulan, tahun, durasi",
+        "timeline": null,
+        "examples": [
+            { "sentence": "The meeting starts **at** 9 a.m.", "meaning": "Rapat dimulai pukul 9 pagi.", "highlight": "at" },
+            { "sentence": "I was born **in** 1998.", "meaning": "Saya lahir tahun 1998.", "highlight": "in" },
+            { "sentence": "We meet **on** Monday.", "meaning": "Kami bertemu hari Senin.", "highlight": "on" }
+        ],
+        "commonMistakes": [
+            { "wrong": "I will see you in Monday.", "right": "I will see you on Monday.", "why": "Nama hari selalu memakai *on*." }
+        ],
+        "exerciseIds": []
+    },
+    {
+        "id": "gr-conditionals",
+        "title": "Conditional Sentences",
+        "kind": "structure",
+        "cefr": "B1",
+        "explanation": "Conditional menyatakan sebab-akibat berdasarkan syarat. Ada empat tipe: zero (fakta umum), first (kemungkinan nyata), second (pengandaian sekarang), third (penyesalan masa lalu).",
+        "formula": "Type 1: If + S + V1, S + will + V1 · Type 2: If + S + V2, S + would + V1 · Type 3: If + S + had + V3, S + would have + V3",
+        "timeline": null,
+        "examples": [
+            { "sentence": "If you heat ice, it **melts**.", "meaning": "Jika kamu memanaskan es, es itu mencair.", "highlight": "melts" },
+            { "sentence": "If it rains, we **will stay** home.", "meaning": "Jika hujan, kami akan tinggal di rumah.", "highlight": "will stay" },
+            { "sentence": "If I **had** more time, I would travel.", "meaning": "Seandainya saya punya lebih banyak waktu, saya akan bepergian.", "highlight": "had" },
+            { "sentence": "If she **had studied**, she would have passed.", "meaning": "Seandainya dia belajar, dia pasti lulus.", "highlight": "had studied" }
+        ],
+        "commonMistakes": [
+            { "wrong": "If I will have time, I will call you.", "right": "If I have time, I will call you.", "why": "Klausa *if* pada type 1 memakai simple present, bukan *will*." }
+        ],
+        "exerciseIds": []
+    },
+    {
+        "id": "gr-passive",
+        "title": "Passive Voice",
+        "kind": "structure",
+        "cefr": "B1",
+        "explanation": "Passive voice dipakai ketika fokusnya pada objek atau pelakunya tidak penting/tidak diketahui.",
+        "formula": "S + be (sesuai tense) + V3 (+ by + pelaku)",
+        "timeline": null,
+        "examples": [
+            { "sentence": "The report **was written** by Sarah.", "meaning": "Laporan itu ditulis oleh Sarah.", "highlight": "was written" },
+            { "sentence": "English **is spoken** all over the world.", "meaning": "Bahasa Inggris dituturkan di seluruh dunia.", "highlight": "is spoken" }
+        ],
+        "commonMistakes": [
+            { "wrong": "The letter was wrote yesterday.", "right": "The letter was written yesterday.", "why": "Passive selalu memakai V3 (past participle), bukan V2." }
+        ],
+        "exerciseIds": []
+    },
+    {
+        "id": "gr-reported",
+        "title": "Reported Speech",
+        "kind": "structure",
+        "cefr": "B2",
+        "explanation": "Reported speech menyampaikan ulang ucapan orang lain. Tense biasanya mundur satu langkah (backshift), dan keterangan waktu/tempat menyesuaikan.",
+        "formula": "present → past · past → past perfect · will → would · can → could",
+        "timeline": null,
+        "examples": [
+            { "sentence": "She said she **was** tired.", "meaning": "Dia bilang dia lelah.", "highlight": "was" },
+            { "sentence": "He told me he **had finished** the work.", "meaning": "Dia bilang dia sudah menyelesaikan pekerjaannya.", "highlight": "had finished" }
+        ],
+        "commonMistakes": [
+            { "wrong": "He said me that he is busy.", "right": "He told me that he was busy.", "why": "*Say* tidak diikuti objek langsung; gunakan *tell someone*. Tense juga mundur." }
+        ],
+        "exerciseIds": []
+    }
+]

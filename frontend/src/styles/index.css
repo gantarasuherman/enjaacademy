@@ -1,0 +1,207 @@
+@import 'tailwindcss';
+
+@source '../**/*.{ts,tsx}';
+
+/* Dark mode is a class on <html>, set by the pre-paint script in index.html. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ---------------------------------------------------------------------------
+ | Design tokens
+ |--------------------------------------------------------------------------*/
+
+@theme {
+    /* Typography */
+    --font-display: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+    /* Type scale: xs 12 / sm 13 / base 15 / lg 18 / xl 22 / 2xl 28 / 3xl 34 */
+    --text-xs: 0.75rem;
+    --text-sm: 0.8125rem;
+    --text-base: 0.9375rem;
+    --text-lg: 1.125rem;
+    --text-xl: 1.375rem;
+    --text-2xl: 1.75rem;
+    --text-3xl: 2.125rem;
+    --text-4xl: 2.75rem;
+
+    /* Brand */
+    --color-primary: #02468b;
+    --color-primary-50: #f2f7fb;
+    --color-primary-100: #e6eef6;
+    --color-primary-200: #c2d8ea;
+    --color-primary-300: #8fb6d8;
+    --color-primary-400: #4d8ac0;
+    --color-primary-500: #02468b;
+    --color-primary-600: #023a73;
+    --color-primary-700: #022e5c;
+    --color-primary-800: #012344;
+    --color-primary-900: #01182e;
+
+    --color-secondary: #ef8519;
+    --color-secondary-50: #fef6ec;
+    --color-secondary-100: #fdead2;
+    --color-secondary-200: #fad19c;
+    --color-secondary-300: #f6b463;
+    --color-secondary-400: #f29c3c;
+    --color-secondary-500: #ef8519;
+    --color-secondary-600: #d16f0c;
+    --color-secondary-700: #a4560a;
+    --color-secondary-800: #7a4008;
+    --color-secondary-900: #522b05;
+
+    /* Semantic */
+    --color-success: #22c55e;
+    --color-success-soft: #dcfce7;
+    --color-danger: #ef4444;
+    --color-danger-soft: #fee2e2;
+    --color-warning: #f59e0b;
+    --color-warning-soft: #fef3c7;
+    --color-info: #0ea5e9;
+    --color-info-soft: #e0f2fe;
+
+    /* Neutrals */
+    --color-ink: #0f172a;
+    --color-muted: #64748b;
+
+    /* Radius: sm 8 / md 14 / lg 20 / pill */
+    --radius-sm: 0.5rem;
+    --radius-md: 0.875rem;
+    --radius-lg: 1.25rem;
+    --radius-xl: 1.5rem;
+
+    /* Elevation — thin, two-layer shadows */
+    --shadow-card: 0 1px 2px rgb(15 23 42 / 0.06), 0 8px 24px rgb(15 23 42 / 0.05);
+    --shadow-pop: 0 2px 4px rgb(15 23 42 / 0.08), 0 16px 40px rgb(15 23 42 / 0.1);
+
+    /* Motion — 150–250ms, easeOut */
+    --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ---------------------------------------------------------------------------
+ | Surface variables — the only values that differ between light and dark,
+ | so components can reference one name and stay theme-agnostic.
+ |--------------------------------------------------------------------------*/
+
+:root {
+    --surface-bg: #f8fafc;
+    --surface: #ffffff;
+    --surface-raised: #ffffff;
+    --surface-sunken: #f1f5f9;
+    --surface-border: #e2e8f0;
+    --surface-ink: #0f172a;
+    --surface-muted: #64748b;
+}
+
+.dark {
+    --surface-bg: #0b1220;
+    --surface: #111a2c;
+    --surface-raised: #16213a;
+    --surface-sunken: #0d1524;
+    --surface-border: #1e293b;
+    --surface-ink: #e2e8f0;
+    --surface-muted: #94a3b8;
+}
+
+@theme inline {
+    --color-bg: var(--surface-bg);
+    --color-surface: var(--surface);
+    --color-surface-raised: var(--surface-raised);
+    --color-surface-sunken: var(--surface-sunken);
+    --color-border-base: var(--surface-border);
+    --color-fg: var(--surface-ink);
+    --color-fg-muted: var(--surface-muted);
+}
+
+/* ---------------------------------------------------------------------------
+ | Base
+ |--------------------------------------------------------------------------*/
+
+@layer base {
+    * {
+        border-color: var(--surface-border);
+    }
+
+    html {
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+        @apply bg-bg font-sans text-base text-fg antialiased;
+        font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    }
+
+    h1, h2, h3, h4, h5 {
+        @apply font-display font-bold tracking-tight text-fg;
+    }
+
+    /* IPA, formulas and code all use the mono face. */
+    .ipa, code, kbd, pre {
+        @apply font-mono;
+    }
+
+    :focus-visible {
+        @apply outline-none ring-2 ring-primary/60 ring-offset-2 ring-offset-[var(--surface-bg)];
+    }
+
+    ::selection {
+        @apply bg-primary-100 text-primary-700;
+    }
+
+    /* Respect users who ask the OS to tone motion down. */
+    @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+            scroll-behavior: auto !important;
+        }
+    }
+}
+
+/* ---------------------------------------------------------------------------
+ | Utilities
+ |--------------------------------------------------------------------------*/
+
+@layer utilities {
+    .scrollbar-thin {
+        scrollbar-width: thin;
+        scrollbar-color: var(--surface-border) transparent;
+    }
+
+    .scrollbar-thin::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+
+    .scrollbar-thin::-webkit-scrollbar-thumb {
+        background-color: var(--surface-border);
+        border-radius: 999px;
+    }
+
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    /* Card-flip for the flashcard face */
+    .preserve-3d {
+        transform-style: preserve-3d;
+    }
+
+    .backface-hidden {
+        backface-visibility: hidden;
+    }
+
+    .rotate-y-180 {
+        transform: rotateY(180deg);
+    }
+
+    .perspective-1000 {
+        perspective: 1000px;
+    }
+}

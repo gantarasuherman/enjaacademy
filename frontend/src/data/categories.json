@@ -1,0 +1,50 @@
+[
+    {
+        "id": "cat-daily",
+        "name": "Daily Life",
+        "icon": "Coffee",
+        "color": "secondary",
+        "description": "Kata-kata yang dipakai setiap hari di rumah dan lingkungan sekitar.",
+        "wordCount": 6
+    },
+    {
+        "id": "cat-travel",
+        "name": "Travel",
+        "icon": "Plane",
+        "color": "info",
+        "description": "Bertahan hidup di bandara, hotel, dan transportasi umum.",
+        "wordCount": 6
+    },
+    {
+        "id": "cat-business",
+        "name": "Business",
+        "icon": "Briefcase",
+        "color": "primary",
+        "description": "Bahasa Inggris untuk rapat, email, dan negosiasi.",
+        "wordCount": 6
+    },
+    {
+        "id": "cat-programming",
+        "name": "Programming",
+        "icon": "Code",
+        "color": "success",
+        "description": "Istilah teknis untuk membaca dokumentasi dan code review.",
+        "wordCount": 6
+    },
+    {
+        "id": "cat-academic",
+        "name": "Academic",
+        "icon": "GraduationCap",
+        "color": "warning",
+        "description": "Kosakata akademik untuk TOEFL, IELTS, dan tulisan ilmiah.",
+        "wordCount": 4
+    },
+    {
+        "id": "cat-food",
+        "name": "Food & Drink",
+        "icon": "UtensilsCrossed",
+        "color": "danger",
+        "description": "Memesan makanan dan berbicara tentang selera.",
+        "wordCount": 4
+    }
+]

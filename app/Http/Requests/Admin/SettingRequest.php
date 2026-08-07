@@ -1,0 +1,38 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Http\Requests\Admin;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class SettingRequest extends FormRequest
+{
+    public function authorize(): bool
+    {
+        return $this->user()->can('management-admin.update');
+    }
+
+    public function rules(): array
+    {
+        return [
+            // General
+            'app_name' => ['nullable', 'string', 'max:120'],
+            'app_tagline' => ['nullable', 'string', 'max:200'],
+            'contact_email' => ['nullable', 'email', 'max:180'],
+            'contact_phone' => ['nullable', 'string', 'max:40'],
+            'address' => ['nullable', 'string', 'max:500'],
+            'logo' => ['nullable', 'image', 'max:2048'],
+            'favicon' => ['nullable', 'image', 'max:1024'],
+            'registration_open' => ['boolean'],
+            'maintenance_notice' => ['nullable', 'string', 'max:500'],
+
+            // Meta / SEO
+            'meta_title' => ['nullable', 'string', 'max:180'],
+            'meta_description' => ['nullable', 'string', 'max:300'],
+            'meta_keywords' => ['nullable', 'string', 'max:300'],
+            'og_image' => ['nullable', 'image', 'max:2048'],
+            'analytics_id' => ['nullable', 'string', 'max:60'],
+        ];
+    }
+}

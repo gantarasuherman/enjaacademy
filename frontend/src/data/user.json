@@ -1,0 +1,104 @@
+{
+    "user": {
+        "id": "u-001",
+        "name": "Tesar",
+        "email": "tesar@example.com",
+        "avatar": null,
+        "level": 15,
+        "xp": 6180,
+        "streak": 12,
+        "joinedAt": "2026-01-14T02:00:00Z",
+        "targetLevel": "B2",
+        "dailyGoalMinutes": 20
+    },
+
+    "settings": {
+        "theme": "system",
+        "locale": "id",
+        "dailyGoalMinutes": 20,
+        "soundEnabled": true,
+        "autoplayAudio": false,
+        "reminderEnabled": true,
+        "reminderTime": "19:30"
+    },
+
+    "progress": [
+        { "id": "p-01", "userId": "u-001", "moduleId": "mod-vocab-core", "lessonId": null, "status": "in-progress", "percent": 66, "score": null, "completedAt": null },
+        { "id": "p-02", "userId": "u-001", "moduleId": "mod-vocab-core", "lessonId": "les-voc-01", "status": "completed", "percent": 100, "score": 92, "completedAt": "2026-07-28T11:20:00Z" },
+        { "id": "p-03", "userId": "u-001", "moduleId": "mod-vocab-core", "lessonId": "les-voc-02", "status": "completed", "percent": 100, "score": 85, "completedAt": "2026-08-01T13:05:00Z" },
+        { "id": "p-04", "userId": "u-001", "moduleId": "mod-vocab-core", "lessonId": "les-voc-03", "status": "in-progress", "percent": 45, "score": null, "completedAt": null },
+        { "id": "p-05", "userId": "u-001", "moduleId": "mod-grammar-basic", "lessonId": null, "status": "completed", "percent": 100, "score": 88, "completedAt": "2026-06-18T09:00:00Z" },
+        { "id": "p-06", "userId": "u-001", "moduleId": "mod-grammar-basic", "lessonId": "les-gr-01", "status": "completed", "percent": 100, "score": 90, "completedAt": "2026-06-10T08:30:00Z" },
+        { "id": "p-07", "userId": "u-001", "moduleId": "mod-grammar-basic", "lessonId": "les-gr-02", "status": "completed", "percent": 100, "score": 86, "completedAt": "2026-06-14T10:00:00Z" },
+        { "id": "p-08", "userId": "u-001", "moduleId": "mod-grammar-basic", "lessonId": "les-gr-03", "status": "completed", "percent": 100, "score": 88, "completedAt": "2026-06-18T09:00:00Z" },
+        { "id": "p-09", "userId": "u-001", "moduleId": "mod-listening", "lessonId": "les-lis-01", "status": "completed", "percent": 100, "score": 80, "completedAt": "2026-08-02T20:15:00Z" },
+        { "id": "p-10", "userId": "u-001", "moduleId": "mod-listening", "lessonId": null, "status": "in-progress", "percent": 40, "score": null, "completedAt": null },
+        { "id": "p-11", "userId": "u-001", "moduleId": "mod-reading", "lessonId": "les-read-01", "status": "in-progress", "percent": 50, "score": null, "completedAt": null },
+        { "id": "p-12", "userId": "u-001", "moduleId": "mod-reading", "lessonId": null, "status": "in-progress", "percent": 25, "score": null, "completedAt": null },
+        { "id": "p-13", "userId": "u-001", "moduleId": "mod-speaking", "lessonId": null, "status": "not-started", "percent": 0, "score": null, "completedAt": null },
+        { "id": "p-14", "userId": "u-001", "moduleId": "mod-writing", "lessonId": null, "status": "not-started", "percent": 0, "score": null, "completedAt": null },
+        { "id": "p-15", "userId": "u-001", "moduleId": "mod-conversation", "lessonId": "les-conv-01", "status": "completed", "percent": 100, "score": 95, "completedAt": "2026-08-03T18:40:00Z" },
+        { "id": "p-16", "userId": "u-001", "moduleId": "mod-conversation", "lessonId": null, "status": "in-progress", "percent": 50, "score": null, "completedAt": null }
+    ],
+
+    "activity": [
+        { "date": "2026-07-07", "minutes": 18, "xp": 90, "lessonsCompleted": 1 },
+        { "date": "2026-07-08", "minutes": 25, "xp": 120, "lessonsCompleted": 1 },
+        { "date": "2026-07-09", "minutes": 0, "xp": 0, "lessonsCompleted": 0 },
+        { "date": "2026-07-10", "minutes": 32, "xp": 155, "lessonsCompleted": 2 },
+        { "date": "2026-07-11", "minutes": 15, "xp": 70, "lessonsCompleted": 0 },
+        { "date": "2026-07-12", "minutes": 22, "xp": 110, "lessonsCompleted": 1 },
+        { "date": "2026-07-13", "minutes": 40, "xp": 200, "lessonsCompleted": 2 },
+        { "date": "2026-07-14", "minutes": 12, "xp": 60, "lessonsCompleted": 0 },
+        { "date": "2026-07-15", "minutes": 28, "xp": 140, "lessonsCompleted": 1 },
+        { "date": "2026-07-16", "minutes": 20, "xp": 100, "lessonsCompleted": 1 },
+        { "date": "2026-07-17", "minutes": 0, "xp": 0, "lessonsCompleted": 0 },
+        { "date": "2026-07-18", "minutes": 35, "xp": 175, "lessonsCompleted": 2 },
+        { "date": "2026-07-19", "minutes": 24, "xp": 115, "lessonsCompleted": 1 },
+        { "date": "2026-07-20", "minutes": 18, "xp": 85, "lessonsCompleted": 0 },
+        { "date": "2026-07-21", "minutes": 30, "xp": 150, "lessonsCompleted": 1 },
+        { "date": "2026-07-22", "minutes": 26, "xp": 130, "lessonsCompleted": 1 },
+        { "date": "2026-07-23", "minutes": 0, "xp": 0, "lessonsCompleted": 0 },
+        { "date": "2026-07-24", "minutes": 45, "xp": 225, "lessonsCompleted": 3 },
+        { "date": "2026-07-25", "minutes": 20, "xp": 100, "lessonsCompleted": 1 },
+        { "date": "2026-07-26", "minutes": 16, "xp": 80, "lessonsCompleted": 0 },
+        { "date": "2026-07-27", "minutes": 22, "xp": 110, "lessonsCompleted": 1 },
+        { "date": "2026-07-28", "minutes": 38, "xp": 190, "lessonsCompleted": 2 },
+        { "date": "2026-07-29", "minutes": 21, "xp": 105, "lessonsCompleted": 1 },
+        { "date": "2026-07-30", "minutes": 27, "xp": 135, "lessonsCompleted": 1 },
+        { "date": "2026-07-31", "minutes": 19, "xp": 95, "lessonsCompleted": 0 },
+        { "date": "2026-08-01", "minutes": 33, "xp": 165, "lessonsCompleted": 2 },
+        { "date": "2026-08-02", "minutes": 24, "xp": 120, "lessonsCompleted": 1 },
+        { "date": "2026-08-03", "minutes": 29, "xp": 145, "lessonsCompleted": 1 },
+        { "date": "2026-08-04", "minutes": 17, "xp": 85, "lessonsCompleted": 0 },
+        { "date": "2026-08-05", "minutes": 12, "xp": 60, "lessonsCompleted": 0 }
+    ],
+
+    "unlockedAchievements": [
+        { "achievementId": "ach-first-step", "progress": 1, "unlockedAt": "2026-01-14T04:00:00Z" },
+        { "achievementId": "ach-ten-lessons", "progress": 10, "unlockedAt": "2026-03-02T10:00:00Z" },
+        { "achievementId": "ach-fifty-lessons", "progress": 34, "unlockedAt": null },
+        { "achievementId": "ach-first-quiz", "progress": 1, "unlockedAt": "2026-01-15T06:00:00Z" },
+        { "achievementId": "ach-25-quiz", "progress": 18, "unlockedAt": null },
+        { "achievementId": "ach-perfect-1", "progress": 1, "unlockedAt": "2026-02-20T12:00:00Z" },
+        { "achievementId": "ach-perfect-10", "progress": 4, "unlockedAt": null },
+        { "achievementId": "ach-streak-3", "progress": 3, "unlockedAt": "2026-01-17T08:00:00Z" },
+        { "achievementId": "ach-streak-7", "progress": 7, "unlockedAt": "2026-01-21T08:00:00Z" },
+        { "achievementId": "ach-streak-30", "progress": 12, "unlockedAt": null },
+        { "achievementId": "ach-words-100", "progress": 100, "unlockedAt": "2026-04-11T15:00:00Z" },
+        { "achievementId": "ach-words-500", "progress": 238, "unlockedAt": null },
+        { "achievementId": "ach-xp-1000", "progress": 1000, "unlockedAt": "2026-02-28T09:00:00Z" },
+        { "achievementId": "ach-xp-10000", "progress": 6180, "unlockedAt": null },
+        { "achievementId": "ach-level-5", "progress": 5, "unlockedAt": "2026-02-05T09:00:00Z" },
+        { "achievementId": "ach-level-10", "progress": 10, "unlockedAt": "2026-04-19T09:00:00Z" },
+        { "achievementId": "ach-level-25", "progress": 15, "unlockedAt": null }
+    ],
+
+    "bookmarks": [
+        { "id": "bm-01", "kind": "vocabulary", "refId": "voc-103", "title": "itinerary", "subtitle": "rencana perjalanan · B2", "createdAt": "2026-08-01T13:10:00Z" },
+        { "id": "bm-02", "kind": "vocabulary", "refId": "voc-303", "title": "idempotent", "subtitle": "menghasilkan efek sama walau dipanggil berulang · C2", "createdAt": "2026-07-30T09:22:00Z" },
+        { "id": "bm-03", "kind": "grammar", "refId": "gr-conditionals", "title": "Conditional Sentences", "subtitle": "Struktur · B1", "createdAt": "2026-07-25T20:00:00Z" },
+        { "id": "bm-04", "kind": "reading", "refId": "read-002", "title": "Remote Work Is Reshaping City Centres", "subtitle": "News · B2", "createdAt": "2026-08-02T07:45:00Z" },
+        { "id": "bm-05", "kind": "listening", "refId": "lis-002", "title": "Airport Announcement", "subtitle": "British accent · B1", "createdAt": "2026-08-03T19:30:00Z" }
+    ]
+}

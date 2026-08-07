@@ -1,0 +1,74 @@
+[
+    {
+        "id": "spk-001",
+        "targetSentence": "I would like to book a table for two, please.",
+        "ipa": "/aɪ wʊd laɪk tə bʊk ə ˈteɪbl fə tuː pliːz/",
+        "meaning": "Saya ingin memesan meja untuk dua orang.",
+        "audioSample": null,
+        "focusSounds": ["/w/", "/uː/"],
+        "cefr": "A2"
+    },
+    {
+        "id": "spk-002",
+        "targetSentence": "Could you speak more slowly, please?",
+        "ipa": "/kʊd juː spiːk mɔː ˈsləʊli pliːz/",
+        "meaning": "Bisakah Anda berbicara lebih pelan?",
+        "audioSample": null,
+        "focusSounds": ["/əʊ/", "/l/"],
+        "cefr": "A1"
+    },
+    {
+        "id": "spk-003",
+        "targetSentence": "The third thing I want to mention is the theme.",
+        "ipa": "/ðə θɜːd θɪŋ aɪ wɒnt tə ˈmenʃən ɪz ðə θiːm/",
+        "meaning": "Hal ketiga yang ingin saya sebutkan adalah temanya.",
+        "audioSample": null,
+        "focusSounds": ["/θ/", "/ð/"],
+        "cefr": "B1"
+    },
+    {
+        "id": "spk-004",
+        "targetSentence": "She sells seashells by the seashore.",
+        "ipa": "/ʃiː selz ˈsiːʃelz baɪ ðə ˈsiːʃɔː/",
+        "meaning": "Tongue twister untuk melatih /s/ dan /ʃ/.",
+        "audioSample": null,
+        "focusSounds": ["/s/", "/ʃ/"],
+        "cefr": "B1"
+    },
+    {
+        "id": "spk-005",
+        "targetSentence": "I have been working here for three years.",
+        "ipa": "/aɪ həv biːn ˈwɜːkɪŋ hɪə fə θriː jɪəz/",
+        "meaning": "Saya sudah bekerja di sini selama tiga tahun.",
+        "audioSample": null,
+        "focusSounds": ["/ɜː/", "/ɪə/"],
+        "cefr": "B1"
+    },
+    {
+        "id": "spk-006",
+        "targetSentence": "Let me walk you through the proposal quickly.",
+        "ipa": "/let miː wɔːk juː θruː ðə prəˈpəʊzl ˈkwɪkli/",
+        "meaning": "Izinkan saya menjelaskan proposalnya secara singkat.",
+        "audioSample": null,
+        "focusSounds": ["/ɔː/", "/kw/"],
+        "cefr": "B2"
+    },
+    {
+        "id": "spk-007",
+        "targetSentence": "Would you mind if I asked a follow-up question?",
+        "ipa": "/wʊd juː maɪnd ɪf aɪ ɑːskt ə ˈfɒləʊ ʌp ˈkwestʃən/",
+        "meaning": "Apakah Anda keberatan jika saya bertanya lanjutan?",
+        "audioSample": null,
+        "focusSounds": ["/aɪ/", "/tʃ/"],
+        "cefr": "B2"
+    },
+    {
+        "id": "spk-008",
+        "targetSentence": "We need to prioritise the most critical bugs first.",
+        "ipa": "/wiː niːd tə praɪˈɒrɪtaɪz ðə məʊst ˈkrɪtɪkl bʌɡz fɜːst/",
+        "meaning": "Kita perlu memprioritaskan bug paling kritis lebih dulu.",
+        "audioSample": null,
+        "focusSounds": ["/aɪ/", "/r/"],
+        "cefr": "C1"
+    }
+]

@@ -1,0 +1,48 @@
+{
+    "decks": [
+        { "id": "deck-travel", "title": "Travel Essentials", "description": "Kosakata wajib untuk bandara, hotel, dan transportasi.", "categoryId": "cat-travel", "color": "info", "icon": "Plane", "cardIds": ["fc-101", "fc-102", "fc-103", "fc-104", "fc-105", "fc-106"] },
+        { "id": "deck-business", "title": "Business English", "description": "Istilah rapat, email, dan laporan keuangan.", "categoryId": "cat-business", "color": "primary", "icon": "Briefcase", "cardIds": ["fc-201", "fc-202", "fc-203", "fc-204", "fc-205", "fc-206"] },
+        { "id": "deck-programming", "title": "Programming Terms", "description": "Kata yang sering muncul di dokumentasi dan code review.", "categoryId": "cat-programming", "color": "success", "icon": "Code", "cardIds": ["fc-301", "fc-302", "fc-303", "fc-304", "fc-305", "fc-306"] },
+        { "id": "deck-irregular", "title": "Irregular Verbs", "description": "V1 → V2 → V3 untuk kata kerja tak beraturan tersering.", "categoryId": null, "color": "secondary", "icon": "Repeat", "cardIds": ["fc-401", "fc-402", "fc-403", "fc-404", "fc-405", "fc-406", "fc-407", "fc-408"] },
+        { "id": "deck-phrasal", "title": "Phrasal Verbs", "description": "Kombinasi verb + partikel yang artinya tidak bisa ditebak.", "categoryId": null, "color": "danger", "icon": "Shuffle", "cardIds": ["fc-501", "fc-502", "fc-503", "fc-504", "fc-505", "fc-506"] }
+    ],
+
+    "cards": [
+        { "id": "fc-101", "deckId": "deck-travel", "front": "luggage", "back": "bagasi", "hint": "Kamu menyeretnya di bandara.", "ipa": "/ˈlʌɡɪdʒ/", "audioUrl": null, "vocabularyId": "voc-101" },
+        { "id": "fc-102", "deckId": "deck-travel", "front": "departure", "back": "keberangkatan", "hint": "Lawan dari arrival.", "ipa": "/dɪˈpɑːtʃə/", "audioUrl": null, "vocabularyId": "voc-102" },
+        { "id": "fc-103", "deckId": "deck-travel", "front": "itinerary", "back": "rencana perjalanan", "hint": "Daftar tempat dan waktu.", "ipa": "/aɪˈtɪnərəri/", "audioUrl": null, "vocabularyId": "voc-103" },
+        { "id": "fc-104", "deckId": "deck-travel", "front": "delay", "back": "penundaan", "hint": "Yang paling dibenci di bandara.", "ipa": "/dɪˈleɪ/", "audioUrl": null, "vocabularyId": "voc-104" },
+        { "id": "fc-105", "deckId": "deck-travel", "front": "boarding pass", "back": "pas naik pesawat", "hint": "Ditunjukkan di gate.", "ipa": "/ˈbɔːdɪŋ pɑːs/", "audioUrl": null, "vocabularyId": "voc-105" },
+        { "id": "fc-106", "deckId": "deck-travel", "front": "accommodation", "back": "penginapan", "hint": "Hotel, hostel, atau apartemen.", "ipa": "/əˌkɒməˈdeɪʃn/", "audioUrl": null, "vocabularyId": "voc-106" },
+
+        { "id": "fc-201", "deckId": "deck-business", "front": "deadline", "back": "tenggat waktu", "hint": "Tanggal terakhir.", "ipa": "/ˈdedlaɪn/", "audioUrl": null, "vocabularyId": "voc-201" },
+        { "id": "fc-202", "deckId": "deck-business", "front": "stakeholder", "back": "pemangku kepentingan", "hint": "Pihak yang terdampak keputusan.", "ipa": "/ˈsteɪkhəʊldə/", "audioUrl": null, "vocabularyId": "voc-202" },
+        { "id": "fc-203", "deckId": "deck-business", "front": "revenue", "back": "pendapatan", "hint": "Uang masuk sebelum dipotong biaya.", "ipa": "/ˈrevənjuː/", "audioUrl": null, "vocabularyId": "voc-203" },
+        { "id": "fc-204", "deckId": "deck-business", "front": "invoice", "back": "faktur", "hint": "Dikirim ke bagian keuangan.", "ipa": "/ˈɪnvɔɪs/", "audioUrl": null, "vocabularyId": "voc-204" },
+        { "id": "fc-205", "deckId": "deck-business", "front": "leverage", "back": "memanfaatkan", "hint": "Sering muncul di slide strategi.", "ipa": "/ˈliːvərɪdʒ/", "audioUrl": null, "vocabularyId": "voc-205" },
+        { "id": "fc-206", "deckId": "deck-business", "front": "onboarding", "back": "orientasi karyawan baru", "hint": "Minggu pertama di kantor.", "ipa": "/ˈɒnbɔːdɪŋ/", "audioUrl": null, "vocabularyId": "voc-206" },
+
+        { "id": "fc-301", "deckId": "deck-programming", "front": "deprecated", "back": "sudah tidak dianjurkan dipakai", "hint": "Masih jalan, tapi akan dihapus.", "ipa": "/ˈdeprəkeɪtɪd/", "audioUrl": null, "vocabularyId": "voc-301" },
+        { "id": "fc-302", "deckId": "deck-programming", "front": "throttle", "back": "membatasi laju", "hint": "60 requests per minute.", "ipa": "/ˈθrɒtl/", "audioUrl": null, "vocabularyId": "voc-302" },
+        { "id": "fc-303", "deckId": "deck-programming", "front": "idempotent", "back": "efek sama walau dipanggil berulang", "hint": "Sifat yang diharapkan dari PUT.", "ipa": "/aɪˈdempətənt/", "audioUrl": null, "vocabularyId": "voc-303" },
+        { "id": "fc-304", "deckId": "deck-programming", "front": "boilerplate", "back": "kode berulang standar", "hint": "Yang ingin dihilangkan framework.", "ipa": "/ˈbɔɪləpleɪt/", "audioUrl": null, "vocabularyId": "voc-304" },
+        { "id": "fc-305", "deckId": "deck-programming", "front": "rollback", "back": "kembali ke versi sebelumnya", "hint": "Dilakukan setelah deploy gagal.", "ipa": "/ˈrəʊlbæk/", "audioUrl": null, "vocabularyId": "voc-305" },
+        { "id": "fc-306", "deckId": "deck-programming", "front": "concurrency", "back": "banyak proses berjalan bersamaan", "hint": "Sumber bug yang sulit direproduksi.", "ipa": "/kənˈkʌrənsi/", "audioUrl": null, "vocabularyId": "voc-306" },
+
+        { "id": "fc-401", "deckId": "deck-irregular", "front": "go", "back": "went — gone", "hint": "Pergi.", "ipa": "/ɡəʊ/", "audioUrl": null, "vocabularyId": null },
+        { "id": "fc-402", "deckId": "deck-irregular", "front": "write", "back": "wrote — written", "hint": "Menulis.", "ipa": "/raɪt/", "audioUrl": null, "vocabularyId": null },
+        { "id": "fc-403", "deckId": "deck-irregular", "front": "take", "back": "took — taken", "hint": "Mengambil.", "ipa": "/teɪk/", "audioUrl": null, "vocabularyId": null },
+        { "id": "fc-404", "deckId": "deck-irregular", "front": "begin", "back": "began — begun", "hint": "Memulai.", "ipa": "/bɪˈɡɪn/", "audioUrl": null, "vocabularyId": null },
+        { "id": "fc-405", "deckId": "deck-irregular", "front": "choose", "back": "chose — chosen", "hint": "Memilih.", "ipa": "/tʃuːz/", "audioUrl": null, "vocabularyId": null },
+        { "id": "fc-406", "deckId": "deck-irregular", "front": "bring", "back": "brought — brought", "hint": "Membawa.", "ipa": "/brɪŋ/", "audioUrl": null, "vocabularyId": null },
+        { "id": "fc-407", "deckId": "deck-irregular", "front": "teach", "back": "taught — taught", "hint": "Mengajar.", "ipa": "/tiːtʃ/", "audioUrl": null, "vocabularyId": null },
+        { "id": "fc-408", "deckId": "deck-irregular", "front": "rise", "back": "rose — risen", "hint": "Naik (tanpa objek).", "ipa": "/raɪz/", "audioUrl": null, "vocabularyId": null },
+
+        { "id": "fc-501", "deckId": "deck-phrasal", "front": "look into", "back": "menyelidiki", "hint": "I'll look into the issue.", "ipa": null, "audioUrl": null, "vocabularyId": null },
+        { "id": "fc-502", "deckId": "deck-phrasal", "front": "put off", "back": "menunda", "hint": "Don't put off the deadline.", "ipa": null, "audioUrl": null, "vocabularyId": null },
+        { "id": "fc-503", "deckId": "deck-phrasal", "front": "run out of", "back": "kehabisan", "hint": "We ran out of time.", "ipa": null, "audioUrl": null, "vocabularyId": null },
+        { "id": "fc-504", "deckId": "deck-phrasal", "front": "bring up", "back": "mengangkat topik", "hint": "She brought up a good point.", "ipa": null, "audioUrl": null, "vocabularyId": null },
+        { "id": "fc-505", "deckId": "deck-phrasal", "front": "figure out", "back": "memecahkan / memahami", "hint": "I figured out the bug.", "ipa": null, "audioUrl": null, "vocabularyId": null },
+        { "id": "fc-506", "deckId": "deck-phrasal", "front": "follow up", "back": "menindaklanjuti", "hint": "I'll follow up by email.", "ipa": null, "audioUrl": null, "vocabularyId": null }
+    ]
+}

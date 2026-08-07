@@ -1,0 +1,423 @@
+{
+    "quizzes": [
+        {
+            "id": "quiz-tense-01",
+            "lessonId": "les-gr-01",
+            "moduleId": "mod-grammar-basic",
+            "title": "Simple Present vs Simple Past",
+            "description": "Uji pemahamanmu membedakan dua tense paling dasar.",
+            "cefr": "A2",
+            "timeLimitSeconds": 300,
+            "passScore": 70,
+            "xpReward": 50,
+            "questionIds": ["q-t01", "q-t02", "q-t03", "q-t04", "q-t05", "q-t06"]
+        },
+        {
+            "id": "quiz-voc-travel",
+            "lessonId": "les-voc-02",
+            "moduleId": "mod-vocab-core",
+            "title": "Travel Vocabulary",
+            "description": "Kosakata penting untuk bepergian.",
+            "cefr": "A2",
+            "timeLimitSeconds": 240,
+            "passScore": 70,
+            "xpReward": 40,
+            "questionIds": ["q-v01", "q-v02", "q-v03", "q-v04", "q-v05"]
+        },
+        {
+            "id": "quiz-lis-001",
+            "lessonId": "les-lis-01",
+            "moduleId": "mod-listening",
+            "title": "Listening: Ordering Coffee",
+            "description": "Dengarkan lalu jawab pertanyaannya.",
+            "cefr": "A2",
+            "timeLimitSeconds": 180,
+            "passScore": 60,
+            "xpReward": 40,
+            "questionIds": ["q-l01", "q-l02", "q-l03"]
+        },
+        {
+            "id": "quiz-read-001",
+            "lessonId": null,
+            "moduleId": "mod-reading",
+            "title": "Reading: The Woman Who Missed Her Train",
+            "description": "Pemahaman bacaan cerita pendek.",
+            "cefr": "A2",
+            "timeLimitSeconds": 300,
+            "passScore": 70,
+            "xpReward": 45,
+            "questionIds": ["q-r01", "q-r02", "q-r03"]
+        },
+        {
+            "id": "quiz-read-002",
+            "lessonId": null,
+            "moduleId": "mod-reading",
+            "title": "Reading: Remote Work Is Reshaping City Centres",
+            "description": "Pemahaman bacaan berita tingkat B2.",
+            "cefr": "B2",
+            "timeLimitSeconds": 420,
+            "passScore": 70,
+            "xpReward": 60,
+            "questionIds": ["q-r04", "q-r05", "q-r06"]
+        },
+        {
+            "id": "quiz-lis-002",
+            "lessonId": null,
+            "moduleId": "mod-listening",
+            "title": "Listening: Airport Announcement",
+            "description": "Tangkap nomor gate dan perubahan informasi.",
+            "cefr": "B1",
+            "timeLimitSeconds": 180,
+            "passScore": 60,
+            "xpReward": 45,
+            "questionIds": ["q-l04", "q-l05"]
+        },
+        {
+            "id": "quiz-mixed-01",
+            "lessonId": null,
+            "moduleId": null,
+            "title": "Mixed Challenge",
+            "description": "Semua tipe soal dalam satu kuis: pilihan ganda, ketik, cocokkan, isian, dan susun kata.",
+            "cefr": "B1",
+            "timeLimitSeconds": 480,
+            "passScore": 70,
+            "xpReward": 80,
+            "questionIds": ["q-m01", "q-m02", "q-m03", "q-m04", "q-m05", "q-m06"]
+        }
+    ],
+
+    "questions": [
+        {
+            "id": "q-t01",
+            "type": "multiple-choice",
+            "prompt": "What is the past tense of \"go\"?",
+            "options": [
+                { "id": "a", "label": "goed" },
+                { "id": "b", "label": "went" },
+                { "id": "c", "label": "gone" },
+                { "id": "d", "label": "going" }
+            ],
+            "correctAnswer": "b",
+            "explanation": "\"Go\" adalah irregular verb: go / went / gone. \"Gone\" adalah V3 yang dipakai pada perfect tense.",
+            "points": 1
+        },
+        {
+            "id": "q-t02",
+            "type": "multiple-choice",
+            "prompt": "She ___ to work every day.",
+            "options": [
+                { "id": "a", "label": "go" },
+                { "id": "b", "label": "goes" },
+                { "id": "c", "label": "going" },
+                { "id": "d", "label": "went" }
+            ],
+            "correctAnswer": "b",
+            "explanation": "Subjek orang ketiga tunggal (she) pada simple present mendapat akhiran -es.",
+            "points": 1
+        },
+        {
+            "id": "q-t03",
+            "type": "true-false",
+            "prompt": "Kalimat \"They didn't went home\" sudah benar secara tata bahasa.",
+            "options": [
+                { "id": "true", "label": "Benar" },
+                { "id": "false", "label": "Salah" }
+            ],
+            "correctAnswer": "false",
+            "explanation": "Setelah \"did not\", kata kerja kembali ke bentuk dasar: \"They didn't go home.\"",
+            "points": 1
+        },
+        {
+            "id": "q-t04",
+            "type": "fill-blank",
+            "prompt": "Lengkapi dengan bentuk simple past dari kata dalam kurung.",
+            "template": "Last night we ___ (watch) a documentary.",
+            "correctAnswer": "watched",
+            "explanation": "\"Watch\" adalah regular verb, jadi bentuk lampaunya menambahkan -ed.",
+            "points": 1
+        },
+        {
+            "id": "q-t05",
+            "type": "typing",
+            "prompt": "Terjemahkan ke bahasa Inggris: \"Saya tidak melihatnya kemarin.\"",
+            "correctAnswer": "I did not see him yesterday",
+            "explanation": "Simple past negatif: S + did not + V1. \"I didn't see him yesterday\" juga diterima.",
+            "points": 2
+        },
+        {
+            "id": "q-t06",
+            "type": "drag-drop",
+            "prompt": "Susun menjadi kalimat yang benar.",
+            "tokens": ["does", "not", "He", "coffee", "like"],
+            "correctAnswer": ["He", "does", "not", "like", "coffee"],
+            "explanation": "Pola negatif simple present: S + does not + V1 + O.",
+            "points": 2
+        },
+
+        {
+            "id": "q-v01",
+            "type": "multiple-choice",
+            "prompt": "What does \"luggage\" mean?",
+            "options": [
+                { "id": "a", "label": "bandara" },
+                { "id": "b", "label": "bagasi" },
+                { "id": "c", "label": "tiket" },
+                { "id": "d", "label": "penundaan" }
+            ],
+            "correctAnswer": "b",
+            "explanation": "\"Luggage\" adalah tas dan koper yang kamu bawa saat bepergian.",
+            "points": 1
+        },
+        {
+            "id": "q-v02",
+            "type": "fill-blank",
+            "prompt": "Lengkapi kalimat berikut.",
+            "template": "The flight has a two-hour ___ because of the storm.",
+            "correctAnswer": "delay",
+            "explanation": "\"Delay\" berarti penundaan.",
+            "points": 1
+        },
+        {
+            "id": "q-v03",
+            "type": "matching",
+            "prompt": "Pasangkan kata dengan artinya.",
+            "pairs": [
+                { "left": "departure", "right": "keberangkatan" },
+                { "left": "accommodation", "right": "penginapan" },
+                { "left": "itinerary", "right": "rencana perjalanan" },
+                { "left": "boarding pass", "right": "pas naik pesawat" }
+            ],
+            "correctAnswer": ["keberangkatan", "penginapan", "rencana perjalanan", "pas naik pesawat"],
+            "explanation": "Keempat kata ini adalah inti kosakata perjalanan.",
+            "points": 2
+        },
+        {
+            "id": "q-v04",
+            "type": "typing",
+            "prompt": "Kata apa yang berarti \"rencana perjalanan\"?",
+            "correctAnswer": "itinerary",
+            "explanation": "\"Itinerary\" /aɪˈtɪnərəri/ adalah daftar rencana perjalanan.",
+            "points": 1
+        },
+        {
+            "id": "q-v05",
+            "type": "multiple-choice",
+            "prompt": "Which word is the opposite of \"departure\"?",
+            "options": [
+                { "id": "a", "label": "arrival" },
+                { "id": "b", "label": "delay" },
+                { "id": "c", "label": "terminal" },
+                { "id": "d", "label": "gate" }
+            ],
+            "correctAnswer": "a",
+            "explanation": "Departure (keberangkatan) berlawanan dengan arrival (kedatangan).",
+            "points": 1
+        },
+
+        {
+            "id": "q-l01",
+            "type": "listening",
+            "prompt": "What size drink does the customer order?",
+            "audioUrl": "/audio/ordering-coffee.mp3",
+            "options": [
+                { "id": "a", "label": "Small" },
+                { "id": "b", "label": "Medium" },
+                { "id": "c", "label": "Large" },
+                { "id": "d", "label": "Extra large" }
+            ],
+            "correctAnswer": "c",
+            "explanation": "Pelanggan berkata \"Could I have a large latte, please?\"",
+            "points": 1
+        },
+        {
+            "id": "q-l02",
+            "type": "listening",
+            "prompt": "How much does the drink cost?",
+            "audioUrl": "/audio/ordering-coffee.mp3",
+            "options": [
+                { "id": "a", "label": "$4.50" },
+                { "id": "b", "label": "$5.14" },
+                { "id": "c", "label": "$5.40" },
+                { "id": "d", "label": "$5.44" }
+            ],
+            "correctAnswer": "c",
+            "explanation": "\"That comes to five dollars forty\" = $5.40.",
+            "points": 1
+        },
+        {
+            "id": "q-l03",
+            "type": "fill-blank",
+            "prompt": "Lengkapi transkrip.",
+            "template": "Could you make it with ___ milk?",
+            "audioUrl": "/audio/ordering-coffee.mp3",
+            "correctAnswer": "oat",
+            "explanation": "Pelanggan meminta oat milk (susu oat).",
+            "points": 1
+        },
+        {
+            "id": "q-l04",
+            "type": "listening",
+            "prompt": "Which gate should passengers go to?",
+            "audioUrl": "/audio/airport-announcement.mp3",
+            "options": [
+                { "id": "a", "label": "Gate 9" },
+                { "id": "b", "label": "Gate 13" },
+                { "id": "c", "label": "Gate 23" },
+                { "id": "d", "label": "Gate 32" }
+            ],
+            "correctAnswer": "c",
+            "explanation": "Gate berubah dari 9 ke 23 — jawaban yang benar adalah gate terbaru.",
+            "points": 1
+        },
+        {
+            "id": "q-l05",
+            "type": "true-false",
+            "prompt": "Penumpang dengan anak kecil naik pesawat paling akhir.",
+            "audioUrl": "/audio/airport-announcement.mp3",
+            "options": [
+                { "id": "true", "label": "Benar" },
+                { "id": "false", "label": "Salah" }
+            ],
+            "correctAnswer": "false",
+            "explanation": "Pengumuman menyebut mereka \"invited to board first\" — naik lebih dulu.",
+            "points": 1
+        },
+
+        {
+            "id": "q-r01",
+            "type": "multiple-choice",
+            "prompt": "Why did Mira miss her train?",
+            "options": [
+                { "id": "a", "label": "She forgot to pack." },
+                { "id": "b", "label": "The taxi arrived late and the queue was long." },
+                { "id": "c", "label": "The train was cancelled." },
+                { "id": "d", "label": "She went to the wrong station." }
+            ],
+            "correctAnswer": "b",
+            "explanation": "Teks menyebut taksi datang terlambat dan dia mengantre panjang di loket.",
+            "points": 1
+        },
+        {
+            "id": "q-r02",
+            "type": "multiple-choice",
+            "prompt": "How did Mira solve her problem?",
+            "options": [
+                { "id": "a", "label": "She took a taxi to Bandung." },
+                { "id": "b", "label": "She cancelled the meeting." },
+                { "id": "c", "label": "She asked to move the meeting to two o'clock." },
+                { "id": "d", "label": "She sent a colleague instead." }
+            ],
+            "correctAnswer": "c",
+            "explanation": "Dia mengirim pesan meminta rapat dipindah ke pukul dua.",
+            "points": 1
+        },
+        {
+            "id": "q-r03",
+            "type": "typing",
+            "prompt": "Kata dalam teks yang berarti \"antrean\" adalah ___",
+            "correctAnswer": "queue",
+            "explanation": "\"Queue\" /kjuː/ berarti antrean.",
+            "points": 1
+        },
+        {
+            "id": "q-r04",
+            "type": "multiple-choice",
+            "prompt": "According to the article, foot traffic has recovered most on which days?",
+            "options": [
+                { "id": "a", "label": "Monday and Friday" },
+                { "id": "b", "label": "Tuesday to Thursday" },
+                { "id": "c", "label": "Weekends" },
+                { "id": "d", "label": "Every day equally" }
+            ],
+            "correctAnswer": "b",
+            "explanation": "Teks menyebut Selasa–Kamis sudah sebagian besar pulih, sedangkan Senin dan Jumat masih 28% di bawah.",
+            "points": 1
+        },
+        {
+            "id": "q-r05",
+            "type": "multiple-choice",
+            "prompt": "Why are office-to-residential conversions difficult?",
+            "options": [
+                { "id": "a", "label": "They are illegal in most cities." },
+                { "id": "b", "label": "Office floor plates lack the plumbing and natural light flats need." },
+                { "id": "c", "label": "There is no demand for city-centre housing." },
+                { "id": "d", "label": "Offices are always fully occupied." }
+            ],
+            "correctAnswer": "b",
+            "explanation": "Artikel menyebut denah lantai kantor jarang mengakomodasi pipa dan cahaya alami yang dibutuhkan apartemen.",
+            "points": 2
+        },
+        {
+            "id": "q-r06",
+            "type": "typing",
+            "prompt": "Kata dalam artikel yang berarti \"tidak merata\" adalah ___",
+            "correctAnswer": "uneven",
+            "explanation": "\"The consequences are uneven\" — konsekuensinya tidak merata.",
+            "points": 1
+        },
+
+        {
+            "id": "q-m01",
+            "type": "multiple-choice",
+            "prompt": "If it ___ tomorrow, we will cancel the picnic.",
+            "options": [
+                { "id": "a", "label": "will rain" },
+                { "id": "b", "label": "rains" },
+                { "id": "c", "label": "rained" },
+                { "id": "d", "label": "raining" }
+            ],
+            "correctAnswer": "b",
+            "explanation": "Conditional type 1: klausa if memakai simple present, bukan will.",
+            "points": 1
+        },
+        {
+            "id": "q-m02",
+            "type": "drag-drop",
+            "prompt": "Susun menjadi kalimat passive voice yang benar.",
+            "tokens": ["was", "The", "by", "written", "report", "Sarah"],
+            "correctAnswer": ["The", "report", "was", "written", "by", "Sarah"],
+            "explanation": "Passive: S + be + V3 + by + pelaku.",
+            "points": 2
+        },
+        {
+            "id": "q-m03",
+            "type": "matching",
+            "prompt": "Pasangkan tense dengan rumusnya.",
+            "pairs": [
+                { "left": "Simple Present", "right": "S + V1 (+s/es)" },
+                { "left": "Present Perfect", "right": "S + have/has + V3" },
+                { "left": "Past Continuous", "right": "S + was/were + V-ing" },
+                { "left": "Future Perfect", "right": "S + will have + V3" }
+            ],
+            "correctAnswer": ["S + V1 (+s/es)", "S + have/has + V3", "S + was/were + V-ing", "S + will have + V3"],
+            "explanation": "Menghafal rumus membuat pemilihan tense jauh lebih cepat.",
+            "points": 2
+        },
+        {
+            "id": "q-m04",
+            "type": "fill-blank",
+            "prompt": "Lengkapi dengan present perfect.",
+            "template": "She ___ (live) here since 2019.",
+            "correctAnswer": "has lived",
+            "explanation": "\"Since\" menandai present perfect: has/have + V3.",
+            "points": 2
+        },
+        {
+            "id": "q-m05",
+            "type": "speaking",
+            "prompt": "Ucapkan kalimat berikut dengan jelas.",
+            "template": "I have been working here for three years.",
+            "correctAnswer": "I have been working here for three years",
+            "explanation": "Perhatikan bunyi /ɜː/ pada \"working\" dan /ɪə/ pada \"years\".",
+            "points": 2
+        },
+        {
+            "id": "q-m06",
+            "type": "typing",
+            "prompt": "Terjemahkan: \"Saya sudah dua kali mengunjungi Jepang.\"",
+            "correctAnswer": "I have visited Japan twice",
+            "explanation": "Pengalaman hidup tanpa waktu spesifik memakai present perfect.",
+            "points": 2
+        }
+    ]
+}

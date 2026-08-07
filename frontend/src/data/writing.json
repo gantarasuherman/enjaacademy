@@ -1,0 +1,85 @@
+[
+    {
+        "id": "wr-001",
+        "prompt": "Write a paragraph (80–120 words) describing your ideal weekend. Use at least three time expressions and one conditional sentence.",
+        "type": "paragraph",
+        "cefr": "B1",
+        "minWords": 80,
+        "maxWords": 120,
+        "hints": [
+            "Mulai dengan topic sentence yang menyatakan gagasan utama.",
+            "Time expressions: in the morning, after lunch, before sunset, usually, on Saturdays.",
+            "Conditional type 1: If the weather is good, I will...",
+            "Tutup dengan satu kalimat kesimpulan."
+        ],
+        "rubric": [
+            { "criterion": "Task Response", "description": "Menjawab semua bagian instruksi dan sesuai panjang kata.", "weight": 30 },
+            { "criterion": "Coherence", "description": "Alur logis, ada topic sentence dan penutup.", "weight": 25 },
+            { "criterion": "Grammar", "description": "Tense konsisten, conditional dipakai dengan benar.", "weight": 25 },
+            { "criterion": "Vocabulary", "description": "Variasi kata, tidak berulang-ulang.", "weight": 20 }
+        ],
+        "sampleAnswer": "My ideal weekend is slow and unhurried. On Saturdays I usually wake up late, make coffee, and read for an hour before anyone else is awake. After lunch, I like to walk to the park near my flat; if the weather is good, I will stay there until sunset with a book. In the evening I cook something simple and call my family. Sunday is for catching up — laundry, planning the week, and a long video call with friends. Nothing about it is exciting, and that is exactly why it works."
+    },
+    {
+        "id": "wr-002",
+        "prompt": "Write a professional email (100–150 words) to a client explaining that a project deliverable will be delayed by one week. Apologise, give a reason, and propose a new date.",
+        "type": "paragraph",
+        "cefr": "B2",
+        "minWords": 100,
+        "maxWords": 150,
+        "hints": [
+            "Subject line yang jelas dan spesifik.",
+            "Salam pembuka formal: Dear Ms. / Mr. + surname.",
+            "Nyatakan poin utama di paragraf pertama — jangan bertele-tele.",
+            "Frasa berguna: I'm writing to let you know..., Unfortunately..., We propose..., Please let me know if...",
+            "Tutup dengan Kind regards / Best regards."
+        ],
+        "rubric": [
+            { "criterion": "Tone", "description": "Formal, sopan, dan bertanggung jawab tanpa berlebihan.", "weight": 30 },
+            { "criterion": "Structure", "description": "Subject, salam, isi, penutup lengkap dan rapi.", "weight": 25 },
+            { "criterion": "Clarity", "description": "Alasan dan tanggal baru disampaikan jelas.", "weight": 25 },
+            { "criterion": "Grammar", "description": "Tidak ada kesalahan yang mengganggu pemahaman.", "weight": 20 }
+        ],
+        "sampleAnswer": "Subject: Updated delivery date for the reporting dashboard\n\nDear Ms. Hartono,\n\nI'm writing to let you know that the reporting dashboard will not be ready on 14 March as originally planned.\n\nDuring final testing we found that the export function returned incorrect totals for multi-currency accounts. Rather than ship a version we are not confident in, we would prefer to correct it properly.\n\nWe propose a new delivery date of 21 March. Everything else in the scope remains unchanged, and there will be no additional cost to you.\n\nI apologise for the inconvenience this causes to your planning. Please let me know if the new date presents a problem and we will find a way to work around it.\n\nKind regards,\nAdi Nugroho"
+    },
+    {
+        "id": "wr-003",
+        "prompt": "Write five sentences about your daily routine using the simple present tense. Include at least two adverbs of frequency.",
+        "type": "sentence",
+        "cefr": "A2",
+        "minWords": 40,
+        "maxWords": 80,
+        "hints": [
+            "Adverbs of frequency: always, usually, often, sometimes, never.",
+            "Letakkan adverb sebelum kata kerja utama: I usually wake up at six.",
+            "Ingat akhiran -s untuk he / she / it."
+        ],
+        "rubric": [
+            { "criterion": "Tense Accuracy", "description": "Simple present dipakai konsisten dan benar.", "weight": 40 },
+            { "criterion": "Adverb Usage", "description": "Minimal dua adverb of frequency, posisinya tepat.", "weight": 30 },
+            { "criterion": "Variety", "description": "Kalimat tidak berulang polanya.", "weight": 30 }
+        ],
+        "sampleAnswer": "I usually wake up at half past five. I always drink a glass of water before breakfast. My brother often takes the bus to work, but I prefer to walk. We sometimes eat dinner together on Fridays. I never go to bed after eleven on a weeknight."
+    },
+    {
+        "id": "wr-004",
+        "prompt": "Write a short essay (200–250 words) arguing for or against the statement: \"Remote work is better than working in an office.\" Give two supporting reasons and acknowledge one counter-argument.",
+        "type": "essay",
+        "cefr": "C1",
+        "minWords": 200,
+        "maxWords": 250,
+        "hints": [
+            "Struktur: pendahuluan (posisi), 2 paragraf argumen, 1 paragraf counter-argument, kesimpulan.",
+            "Linking words: Firstly, Furthermore, However, Admittedly, On balance.",
+            "Nyatakan posisimu dengan jelas di kalimat terakhir pendahuluan.",
+            "Akui counter-argument lalu bantah — ini menaikkan skor di TOEFL/IELTS."
+        ],
+        "rubric": [
+            { "criterion": "Position", "description": "Sikap jelas dan konsisten dari awal sampai akhir.", "weight": 25 },
+            { "criterion": "Argumentation", "description": "Dua alasan yang dikembangkan, bukan sekadar disebut.", "weight": 30 },
+            { "criterion": "Counter-argument", "description": "Sudut pandang lawan diakui lalu ditanggapi.", "weight": 20 },
+            { "criterion": "Language", "description": "Kosakata akademik, linking words, dan variasi struktur kalimat.", "weight": 25 }
+        ],
+        "sampleAnswer": "The debate over remote work has moved past novelty and into practicality. Having worked in both arrangements, I believe remote work is the better default for most knowledge roles, provided teams invest in communication.\n\nFirstly, remote work returns time that commuting simply destroys. An hour each way is ten hours a month — time that can go to rest, family, or focused work. That recovered time compounds into better output, not less.\n\nFurthermore, remote work widens the talent pool. A company no longer hires from one city; it hires from a country or a continent. For employees, this means opportunities that were previously closed by geography, and for employers it means competing on the quality of the role rather than the location of the desk.\n\nAdmittedly, remote work makes informal learning harder. Junior staff in particular lose the overheard conversations and quick corrections that an office provides naturally. This is a real cost, and pretending otherwise weakens the argument.\n\nHowever, this problem is one of design rather than of remote work itself. Deliberate mentoring, recorded decisions, and regular in-person gatherings replace what proximity used to supply by accident.\n\nOn balance, the flexibility and reach of remote work outweigh its drawbacks, as long as organisations treat communication as something to be built rather than something that simply happens."
+    }
+]

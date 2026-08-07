@@ -1,0 +1,95 @@
+[
+    {
+        "id": "conv-001",
+        "title": "At the Restaurant",
+        "context": "Kamu memesan makan malam di restoran untuk dua orang.",
+        "situation": "restaurant",
+        "cefr": "A2",
+        "icon": "UtensilsCrossed",
+        "keyPhrases": [
+            { "phrase": "Do you have a reservation?", "meaning": "Apakah Anda punya reservasi?" },
+            { "phrase": "Could we see the menu?", "meaning": "Boleh kami lihat menunya?" },
+            { "phrase": "I'll have the...", "meaning": "Saya pesan..." },
+            { "phrase": "Could I get the bill, please?", "meaning": "Boleh minta bonnya?" }
+        ],
+        "lines": [
+            { "id": "l1", "speaker": "Waiter", "role": "a", "text": "Good evening. Do you have a reservation?", "translation": "Selamat malam. Apakah Anda punya reservasi?", "audioUrl": null },
+            { "id": "l2", "speaker": "You", "role": "b", "text": "Yes, under the name Rahman, for two.", "translation": "Ya, atas nama Rahman, untuk dua orang.", "audioUrl": null, "userTurn": true },
+            { "id": "l3", "speaker": "Waiter", "role": "a", "text": "Perfect. Right this way. Here are your menus.", "translation": "Baik. Silakan lewat sini. Ini menunya.", "audioUrl": null },
+            { "id": "l4", "speaker": "You", "role": "b", "text": "Thank you. Could you recommend something?", "translation": "Terima kasih. Bisa rekomendasikan sesuatu?", "audioUrl": null, "userTurn": true },
+            { "id": "l5", "speaker": "Waiter", "role": "a", "text": "The grilled salmon is very popular tonight.", "translation": "Salmon panggang sangat populer malam ini.", "audioUrl": null },
+            { "id": "l6", "speaker": "You", "role": "b", "text": "That sounds great. I'll have the salmon, please.", "translation": "Kedengarannya enak. Saya pesan salmonnya.", "audioUrl": null, "userTurn": true },
+            { "id": "l7", "speaker": "Waiter", "role": "a", "text": "Excellent choice. Anything to drink?", "translation": "Pilihan bagus. Ada minuman?", "audioUrl": null },
+            { "id": "l8", "speaker": "You", "role": "b", "text": "Just sparkling water, thanks.", "translation": "Air soda saja, terima kasih.", "audioUrl": null, "userTurn": true }
+        ]
+    },
+    {
+        "id": "conv-002",
+        "title": "Job Interview",
+        "context": "Wawancara kerja untuk posisi frontend developer.",
+        "situation": "interview",
+        "cefr": "B2",
+        "icon": "Briefcase",
+        "keyPhrases": [
+            { "phrase": "Tell me about yourself.", "meaning": "Ceritakan tentang diri Anda." },
+            { "phrase": "What are your strengths?", "meaning": "Apa kelebihan Anda?" },
+            { "phrase": "I'm particularly interested in...", "meaning": "Saya sangat tertarik pada..." },
+            { "phrase": "Do you have any questions for us?", "meaning": "Ada pertanyaan untuk kami?" }
+        ],
+        "lines": [
+            { "id": "l1", "speaker": "Interviewer", "role": "a", "text": "Thanks for coming in. Could you tell me a bit about yourself?", "translation": "Terima kasih sudah datang. Bisa ceritakan sedikit tentang diri Anda?", "audioUrl": null },
+            { "id": "l2", "speaker": "You", "role": "b", "text": "Of course. I've been building web interfaces for four years, mostly with React and TypeScript.", "translation": "Tentu. Saya sudah membangun antarmuka web selama empat tahun, kebanyakan dengan React dan TypeScript.", "audioUrl": null, "userTurn": true },
+            { "id": "l3", "speaker": "Interviewer", "role": "a", "text": "What drew you to this role in particular?", "translation": "Apa yang membuat Anda tertarik pada posisi ini?", "audioUrl": null },
+            { "id": "l4", "speaker": "You", "role": "b", "text": "I'm particularly interested in your focus on accessibility. That's something I've pushed for in my current team.", "translation": "Saya sangat tertarik pada fokus Anda terhadap aksesibilitas. Itu hal yang saya perjuangkan di tim saya sekarang.", "audioUrl": null, "userTurn": true },
+            { "id": "l5", "speaker": "Interviewer", "role": "a", "text": "Can you give me an example of a difficult technical decision you made?", "translation": "Bisa beri contoh keputusan teknis sulit yang pernah Anda ambil?", "audioUrl": null },
+            { "id": "l6", "speaker": "You", "role": "b", "text": "We had to choose between rewriting our state layer or patching it. I argued for the rewrite and we shipped it in six weeks.", "translation": "Kami harus memilih antara menulis ulang lapisan state atau menambalnya. Saya mengusulkan penulisan ulang dan kami merilisnya dalam enam minggu.", "audioUrl": null, "userTurn": true },
+            { "id": "l7", "speaker": "Interviewer", "role": "a", "text": "Great. Do you have any questions for us?", "translation": "Bagus. Ada pertanyaan untuk kami?", "audioUrl": null },
+            { "id": "l8", "speaker": "You", "role": "b", "text": "Yes — how does the team decide what goes into a release?", "translation": "Ya — bagaimana tim menentukan isi sebuah rilis?", "audioUrl": null, "userTurn": true }
+        ]
+    },
+    {
+        "id": "conv-003",
+        "title": "Hotel Check-in",
+        "context": "Kamu tiba di hotel dan melakukan check-in.",
+        "situation": "hotel",
+        "cefr": "A2",
+        "icon": "BedDouble",
+        "keyPhrases": [
+            { "phrase": "I have a reservation under...", "meaning": "Saya punya reservasi atas nama..." },
+            { "phrase": "What time is check-out?", "meaning": "Jam berapa check-out?" },
+            { "phrase": "Is breakfast included?", "meaning": "Apakah sarapan termasuk?" }
+        ],
+        "lines": [
+            { "id": "l1", "speaker": "Receptionist", "role": "a", "text": "Good afternoon, welcome. How can I help you?", "translation": "Selamat siang, selamat datang. Ada yang bisa saya bantu?", "audioUrl": null },
+            { "id": "l2", "speaker": "You", "role": "b", "text": "Hi, I have a reservation under Putri, for three nights.", "translation": "Halo, saya punya reservasi atas nama Putri, untuk tiga malam.", "audioUrl": null, "userTurn": true },
+            { "id": "l3", "speaker": "Receptionist", "role": "a", "text": "Let me check. Yes, a deluxe room on the fifth floor. May I see your passport?", "translation": "Saya cek dulu. Ya, kamar deluxe di lantai lima. Boleh lihat paspor Anda?", "audioUrl": null },
+            { "id": "l4", "speaker": "You", "role": "b", "text": "Here you are. Is breakfast included?", "translation": "Ini paspornya. Apakah sarapan termasuk?", "audioUrl": null, "userTurn": true },
+            { "id": "l5", "speaker": "Receptionist", "role": "a", "text": "It is, from six thirty to ten in the ground floor restaurant.", "translation": "Termasuk, dari pukul 06.30 sampai 10.00 di restoran lantai dasar.", "audioUrl": null },
+            { "id": "l6", "speaker": "You", "role": "b", "text": "Great. And what time is check-out?", "translation": "Bagus. Jam berapa check-out?", "audioUrl": null, "userTurn": true },
+            { "id": "l7", "speaker": "Receptionist", "role": "a", "text": "Twelve noon. Here's your key card — enjoy your stay.", "translation": "Pukul 12 siang. Ini kartu kunci Anda — selamat menikmati.", "audioUrl": null }
+        ]
+    },
+    {
+        "id": "conv-004",
+        "title": "Daily Stand-up",
+        "context": "Melaporkan progres di rapat harian tim.",
+        "situation": "workplace",
+        "cefr": "B1",
+        "icon": "Users",
+        "keyPhrases": [
+            { "phrase": "Yesterday I worked on...", "meaning": "Kemarin saya mengerjakan..." },
+            { "phrase": "Today I'm picking up...", "meaning": "Hari ini saya mengambil..." },
+            { "phrase": "I'm blocked on...", "meaning": "Saya terhambat pada..." },
+            { "phrase": "Could you pair with me?", "meaning": "Bisakah kita kerjakan bersama?" }
+        ],
+        "lines": [
+            { "id": "l1", "speaker": "Lead", "role": "a", "text": "Morning everyone. Let's go around. What did you do yesterday?", "translation": "Selamat pagi semua. Kita giliran. Kemarin mengerjakan apa?", "audioUrl": null },
+            { "id": "l2", "speaker": "You", "role": "b", "text": "Yesterday I finished the search filter and opened a pull request.", "translation": "Kemarin saya menyelesaikan filter pencarian dan membuka pull request.", "audioUrl": null, "userTurn": true },
+            { "id": "l3", "speaker": "Lead", "role": "a", "text": "Nice. And today?", "translation": "Bagus. Hari ini?", "audioUrl": null },
+            { "id": "l4", "speaker": "You", "role": "b", "text": "Today I'm picking up the export feature. I should finish it by Thursday.", "translation": "Hari ini saya mengambil fitur ekspor. Harusnya selesai Kamis.", "audioUrl": null, "userTurn": true },
+            { "id": "l5", "speaker": "Lead", "role": "a", "text": "Any blockers?", "translation": "Ada hambatan?", "audioUrl": null },
+            { "id": "l6", "speaker": "You", "role": "b", "text": "One — I'm blocked on the API spec for the export format. Could you pair with me later?", "translation": "Satu — saya terhambat spesifikasi API untuk format ekspor. Bisa kita kerjakan bersama nanti?", "audioUrl": null, "userTurn": true },
+            { "id": "l7", "speaker": "Lead", "role": "a", "text": "Sure, let's do it after lunch.", "translation": "Tentu, kita lakukan setelah makan siang.", "audioUrl": null }
+        ]
+    }
+]

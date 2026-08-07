@@ -1,0 +1,127 @@
+{
+    "modules": [
+        {
+            "id": "mod-vocab-core",
+            "title": "Core Vocabulary",
+            "description": "Bangun fondasi 1.000 kata paling sering dipakai, dikelompokkan per tema.",
+            "level": "beginner",
+            "cefr": "A2",
+            "category": "vocabulary",
+            "thumbnail": "",
+            "icon": "BookMarked",
+            "color": "secondary",
+            "durationMinutes": 240,
+            "lessonIds": ["les-voc-01", "les-voc-02", "les-voc-03"],
+            "order": 1
+        },
+        {
+            "id": "mod-grammar-basic",
+            "title": "Grammar Foundations",
+            "description": "Parts of speech dan 8 tense inti — cukup untuk menyusun kalimat apa pun.",
+            "level": "beginner",
+            "cefr": "A2",
+            "category": "grammar",
+            "thumbnail": "",
+            "icon": "Sigma",
+            "color": "primary",
+            "durationMinutes": 300,
+            "lessonIds": ["les-gr-01", "les-gr-02", "les-gr-03"],
+            "order": 2
+        },
+        {
+            "id": "mod-listening",
+            "title": "Listening Lab",
+            "description": "Latih telinga dengan aksen Amerika, Britania, dan Australia.",
+            "level": "intermediate",
+            "cefr": "B1",
+            "category": "listening",
+            "thumbnail": "",
+            "icon": "Headphones",
+            "color": "info",
+            "durationMinutes": 180,
+            "lessonIds": ["les-lis-01", "les-lis-02"],
+            "order": 3
+        },
+        {
+            "id": "mod-speaking",
+            "title": "Speaking & Pronunciation",
+            "description": "Rekam suaramu, dapatkan skor pelafalan, dan perbaiki bunyi yang sulit.",
+            "level": "intermediate",
+            "cefr": "B1",
+            "category": "speaking",
+            "thumbnail": "",
+            "icon": "Mic",
+            "color": "success",
+            "durationMinutes": 150,
+            "lessonIds": ["les-spk-01", "les-spk-02"],
+            "order": 4
+        },
+        {
+            "id": "mod-reading",
+            "title": "Reading Room",
+            "description": "Cerita, berita, artikel, dan dokumentasi teknis dengan glosarium.",
+            "level": "intermediate",
+            "cefr": "B2",
+            "category": "reading",
+            "thumbnail": "",
+            "icon": "BookOpen",
+            "color": "primary",
+            "durationMinutes": 200,
+            "lessonIds": ["les-read-01", "les-read-02"],
+            "order": 5
+        },
+        {
+            "id": "mod-writing",
+            "title": "Writing Studio",
+            "description": "Dari kalimat tunggal sampai esai, lengkap dengan rubrik penilaian.",
+            "level": "advanced",
+            "cefr": "B2",
+            "category": "writing",
+            "thumbnail": "",
+            "icon": "PenLine",
+            "color": "secondary",
+            "durationMinutes": 220,
+            "lessonIds": ["les-wr-01", "les-wr-02"],
+            "order": 6
+        },
+        {
+            "id": "mod-conversation",
+            "title": "Real-life Conversation",
+            "description": "Skenario restoran, hotel, wawancara kerja, dan rapat tim.",
+            "level": "intermediate",
+            "cefr": "B1",
+            "category": "conversation",
+            "thumbnail": "",
+            "icon": "MessagesSquare",
+            "color": "info",
+            "durationMinutes": 160,
+            "lessonIds": ["les-conv-01", "les-conv-02"],
+            "order": 7
+        }
+    ],
+
+    "lessons": [
+        { "id": "les-voc-01", "moduleId": "mod-vocab-core", "title": "Daily Life Words", "description": "Kata-kata yang kamu pakai setiap hari.", "type": "vocabulary", "order": 1, "durationMinutes": 15, "xpReward": 20, "vocabularyIds": ["voc-001", "voc-002", "voc-003", "voc-004", "voc-005", "voc-006"], "quizId": null },
+        { "id": "les-voc-02", "moduleId": "mod-vocab-core", "title": "Travel Essentials", "description": "Bertahan hidup di bandara dan hotel.", "type": "vocabulary", "order": 2, "durationMinutes": 15, "xpReward": 20, "vocabularyIds": ["voc-101", "voc-102", "voc-103", "voc-104", "voc-105", "voc-106"], "quizId": "quiz-voc-travel" },
+        { "id": "les-voc-03", "moduleId": "mod-vocab-core", "title": "Business & Work", "description": "Bahasa Inggris untuk rapat dan email.", "type": "vocabulary", "order": 3, "durationMinutes": 18, "xpReward": 25, "vocabularyIds": ["voc-201", "voc-202", "voc-203", "voc-204", "voc-205", "voc-206"], "quizId": null },
+
+        { "id": "les-gr-01", "moduleId": "mod-grammar-basic", "title": "Simple Present & Simple Past", "description": "Dua tense pertama yang harus dikuasai.", "type": "grammar", "order": 1, "durationMinutes": 25, "xpReward": 30, "grammarTopicId": "gr-verbs", "quizId": "quiz-tense-01" },
+        { "id": "les-gr-02", "moduleId": "mod-grammar-basic", "title": "Parts of Speech", "description": "Noun, verb, adjective, adverb, preposition.", "type": "grammar", "order": 2, "durationMinutes": 30, "xpReward": 30, "grammarTopicId": "gr-nouns", "quizId": null },
+        { "id": "les-gr-03", "moduleId": "mod-grammar-basic", "title": "Conditionals & Passive", "description": "Struktur kalimat tingkat menengah.", "type": "grammar", "order": 3, "durationMinutes": 30, "xpReward": 35, "grammarTopicId": "gr-conditionals", "quizId": null },
+
+        { "id": "les-lis-01", "moduleId": "mod-listening", "title": "Ordering Coffee", "description": "Percakapan kedai kopi dengan aksen Amerika.", "type": "listening", "order": 1, "durationMinutes": 12, "xpReward": 20, "listeningTrackId": "lis-001", "quizId": "quiz-lis-001" },
+        { "id": "les-lis-02", "moduleId": "mod-listening", "title": "Airport Announcement", "description": "Pengumuman bandara aksen British.", "type": "listening", "order": 2, "durationMinutes": 12, "xpReward": 25, "listeningTrackId": "lis-002", "quizId": "quiz-lis-002" },
+
+        { "id": "les-spk-01", "moduleId": "mod-speaking", "title": "Polite Requests", "description": "Meminta sesuatu dengan sopan.", "type": "speaking", "order": 1, "durationMinutes": 15, "xpReward": 25, "speakingIds": ["spk-001", "spk-002"], "quizId": null },
+        { "id": "les-spk-02", "moduleId": "mod-speaking", "title": "Tricky Sounds: /θ/ and /ð/", "description": "Bunyi 'th' yang paling sering salah.", "type": "speaking", "order": 2, "durationMinutes": 18, "xpReward": 30, "speakingIds": ["spk-003", "spk-004"], "quizId": null },
+
+        { "id": "les-read-01", "moduleId": "mod-reading", "title": "Short Story: Missing the Train", "description": "Cerita pendek tingkat A2.", "type": "reading", "order": 1, "durationMinutes": 15, "xpReward": 25, "readingTextId": "read-001", "quizId": "quiz-read-001" },
+        { "id": "les-read-02", "moduleId": "mod-reading", "title": "News: Remote Work", "description": "Artikel berita tingkat B2.", "type": "reading", "order": 2, "durationMinutes": 20, "xpReward": 35, "readingTextId": "read-002", "quizId": "quiz-read-002" },
+
+        { "id": "les-wr-01", "moduleId": "mod-writing", "title": "Writing a Paragraph", "description": "Topic sentence, supporting detail, kesimpulan.", "type": "writing", "order": 1, "durationMinutes": 25, "xpReward": 30, "writingTaskId": "wr-001", "quizId": null },
+        { "id": "les-wr-02", "moduleId": "mod-writing", "title": "Professional Email", "description": "Menulis email kerja yang jelas dan sopan.", "type": "writing", "order": 2, "durationMinutes": 25, "xpReward": 35, "writingTaskId": "wr-002", "quizId": null },
+
+        { "id": "les-conv-01", "moduleId": "mod-conversation", "title": "At the Restaurant", "description": "Memesan makanan dan meminta bon.", "type": "conversation", "order": 1, "durationMinutes": 15, "xpReward": 25, "conversationId": "conv-001", "quizId": null },
+        { "id": "les-conv-02", "moduleId": "mod-conversation", "title": "Job Interview", "description": "Menjawab pertanyaan wawancara umum.", "type": "conversation", "order": 2, "durationMinutes": 20, "xpReward": 35, "conversationId": "conv-002", "quizId": null }
+    ]
+}

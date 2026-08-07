@@ -1,0 +1,164 @@
+[
+    {
+        "id": "simple-present",
+        "name": "Simple Present",
+        "group": "present",
+        "formula": {
+            "positive": "S + V1 (+s/es) + O",
+            "negative": "S + do/does + not + V1 + O",
+            "question": "Do/Does + S + V1 + O ?"
+        },
+        "usage": [
+            "Kebiasaan dan rutinitas",
+            "Fakta umum dan kebenaran ilmiah",
+            "Jadwal tetap (kereta, jam kerja)",
+            "Instruksi dan petunjuk"
+        ],
+        "examples": [
+            { "sentence": "She **works** in Jakarta.", "meaning": "Dia bekerja di Jakarta.", "highlight": "works" },
+            { "sentence": "Water **boils** at 100°C.", "meaning": "Air mendidih pada 100°C.", "highlight": "boils" },
+            { "sentence": "The train **leaves** at 7 a.m.", "meaning": "Keretanya berangkat pukul 7 pagi.", "highlight": "leaves" }
+        ],
+        "signalWords": ["always", "usually", "often", "every day", "never", "sometimes"]
+    },
+    {
+        "id": "present-continuous",
+        "name": "Present Continuous",
+        "group": "present",
+        "formula": {
+            "positive": "S + am/is/are + V-ing + O",
+            "negative": "S + am/is/are + not + V-ing + O",
+            "question": "Am/Is/Are + S + V-ing + O ?"
+        },
+        "usage": [
+            "Aksi yang sedang berlangsung sekarang",
+            "Rencana yang sudah pasti di masa dekat",
+            "Situasi sementara",
+            "Kebiasaan yang mengganggu (dengan *always*)"
+        ],
+        "examples": [
+            { "sentence": "I **am studying** English right now.", "meaning": "Saya sedang belajar bahasa Inggris sekarang.", "highlight": "am studying" },
+            { "sentence": "We **are meeting** the client tomorrow.", "meaning": "Kami akan bertemu klien besok.", "highlight": "are meeting" }
+        ],
+        "signalWords": ["now", "at the moment", "currently", "right now", "these days"]
+    },
+    {
+        "id": "present-perfect",
+        "name": "Present Perfect",
+        "group": "perfect",
+        "formula": {
+            "positive": "S + have/has + V3 + O",
+            "negative": "S + have/has + not + V3 + O",
+            "question": "Have/Has + S + V3 + O ?"
+        },
+        "usage": [
+            "Aksi selesai dengan waktu tidak spesifik",
+            "Pengalaman hidup",
+            "Aksi dimulai di masa lalu dan masih berlanjut",
+            "Hasil yang terasa sekarang"
+        ],
+        "examples": [
+            { "sentence": "I **have visited** Japan twice.", "meaning": "Saya sudah dua kali mengunjungi Jepang.", "highlight": "have visited" },
+            { "sentence": "She **has lived** here since 2019.", "meaning": "Dia sudah tinggal di sini sejak 2019.", "highlight": "has lived" }
+        ],
+        "signalWords": ["already", "just", "yet", "ever", "never", "since", "for"]
+    },
+    {
+        "id": "simple-past",
+        "name": "Simple Past",
+        "group": "past",
+        "formula": {
+            "positive": "S + V2 + O",
+            "negative": "S + did + not + V1 + O",
+            "question": "Did + S + V1 + O ?"
+        },
+        "usage": [
+            "Aksi selesai di waktu lampau yang jelas",
+            "Rangkaian peristiwa masa lalu",
+            "Kebiasaan lampau yang sudah berhenti"
+        ],
+        "examples": [
+            { "sentence": "They **went** to Bali last year.", "meaning": "Mereka pergi ke Bali tahun lalu.", "highlight": "went" },
+            { "sentence": "I **did** not **see** him yesterday.", "meaning": "Saya tidak melihatnya kemarin.", "highlight": "did not see" }
+        ],
+        "signalWords": ["yesterday", "last week", "ago", "in 2020", "when I was young"]
+    },
+    {
+        "id": "past-continuous",
+        "name": "Past Continuous",
+        "group": "past",
+        "formula": {
+            "positive": "S + was/were + V-ing + O",
+            "negative": "S + was/were + not + V-ing + O",
+            "question": "Was/Were + S + V-ing + O ?"
+        },
+        "usage": [
+            "Aksi yang sedang berlangsung di masa lalu",
+            "Latar belakang saat aksi lain menyela",
+            "Dua aksi berlangsung bersamaan"
+        ],
+        "examples": [
+            { "sentence": "I **was cooking** when she called.", "meaning": "Saya sedang memasak ketika dia menelepon.", "highlight": "was cooking" },
+            { "sentence": "They **were waiting** at the station.", "meaning": "Mereka sedang menunggu di stasiun.", "highlight": "were waiting" }
+        ],
+        "signalWords": ["while", "when", "at that moment", "all day yesterday"]
+    },
+    {
+        "id": "past-perfect",
+        "name": "Past Perfect",
+        "group": "perfect",
+        "formula": {
+            "positive": "S + had + V3 + O",
+            "negative": "S + had + not + V3 + O",
+            "question": "Had + S + V3 + O ?"
+        },
+        "usage": [
+            "Aksi yang selesai sebelum aksi lampau lainnya",
+            "Menegaskan urutan kejadian",
+            "Bagian dari conditional type 3"
+        ],
+        "examples": [
+            { "sentence": "The train **had left** before we arrived.", "meaning": "Keretanya sudah berangkat sebelum kami tiba.", "highlight": "had left" },
+            { "sentence": "She **had finished** her work by 5 p.m.", "meaning": "Dia sudah menyelesaikan pekerjaannya pukul 5 sore.", "highlight": "had finished" }
+        ],
+        "signalWords": ["before", "after", "by the time", "already", "until then"]
+    },
+    {
+        "id": "simple-future",
+        "name": "Simple Future",
+        "group": "future",
+        "formula": {
+            "positive": "S + will + V1 + O",
+            "negative": "S + will + not + V1 + O",
+            "question": "Will + S + V1 + O ?"
+        },
+        "usage": [
+            "Keputusan spontan",
+            "Prediksi tanpa bukti kuat",
+            "Janji dan tawaran"
+        ],
+        "examples": [
+            { "sentence": "I **will call** you tonight.", "meaning": "Saya akan meneleponmu malam ini.", "highlight": "will call" },
+            { "sentence": "It **will rain** tomorrow.", "meaning": "Besok akan hujan.", "highlight": "will rain" }
+        ],
+        "signalWords": ["tomorrow", "next week", "soon", "in the future", "I think"]
+    },
+    {
+        "id": "future-perfect",
+        "name": "Future Perfect",
+        "group": "future",
+        "formula": {
+            "positive": "S + will have + V3 + O",
+            "negative": "S + will not have + V3 + O",
+            "question": "Will + S + have + V3 + O ?"
+        },
+        "usage": [
+            "Aksi yang akan selesai sebelum titik waktu tertentu di masa depan",
+            "Menekankan tenggat waktu"
+        ],
+        "examples": [
+            { "sentence": "By June I **will have finished** the course.", "meaning": "Pada bulan Juni saya sudah menyelesaikan kursusnya.", "highlight": "will have finished" }
+        ],
+        "signalWords": ["by then", "by 2030", "before next month"]
+    }
+]

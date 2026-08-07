@@ -1,0 +1,46 @@
+{
+    "achievements": [
+        { "id": "ach-first-step", "title": "First Step", "description": "Selesaikan pelajaran pertamamu.", "icon": "Footprints", "color": "info", "criteria": "lessons-completed", "threshold": 1, "xpReward": 10, "tier": "bronze" },
+        { "id": "ach-ten-lessons", "title": "Getting Serious", "description": "Selesaikan 10 pelajaran.", "icon": "BookOpen", "color": "info", "criteria": "lessons-completed", "threshold": 10, "xpReward": 50, "tier": "silver" },
+        { "id": "ach-fifty-lessons", "title": "Bookworm", "description": "Selesaikan 50 pelajaran.", "icon": "Library", "color": "primary", "criteria": "lessons-completed", "threshold": 50, "xpReward": 200, "tier": "gold" },
+
+        { "id": "ach-first-quiz", "title": "Quiz Rookie", "description": "Kerjakan kuis pertamamu.", "icon": "ClipboardCheck", "color": "success", "criteria": "quizzes-completed", "threshold": 1, "xpReward": 10, "tier": "bronze" },
+        { "id": "ach-25-quiz", "title": "Quiz Conqueror", "description": "Kerjakan 25 kuis.", "icon": "Target", "color": "success", "criteria": "quizzes-completed", "threshold": 25, "xpReward": 150, "tier": "gold" },
+        { "id": "ach-perfect-1", "title": "Flawless", "description": "Raih skor 100 pada sebuah kuis.", "icon": "Star", "color": "secondary", "criteria": "perfect-quizzes", "threshold": 1, "xpReward": 40, "tier": "silver" },
+        { "id": "ach-perfect-10", "title": "Untouchable", "description": "Raih 10 nilai sempurna.", "icon": "Crown", "color": "secondary", "criteria": "perfect-quizzes", "threshold": 10, "xpReward": 250, "tier": "platinum" },
+
+        { "id": "ach-streak-3", "title": "Warming Up", "description": "Belajar 3 hari berturut-turut.", "icon": "Flame", "color": "secondary", "criteria": "streak-days", "threshold": 3, "xpReward": 20, "tier": "bronze" },
+        { "id": "ach-streak-7", "title": "One Week Strong", "description": "Belajar 7 hari berturut-turut.", "icon": "Flame", "color": "danger", "criteria": "streak-days", "threshold": 7, "xpReward": 70, "tier": "silver" },
+        { "id": "ach-streak-30", "title": "Unstoppable", "description": "Belajar 30 hari berturut-turut.", "icon": "Flame", "color": "danger", "criteria": "streak-days", "threshold": 30, "xpReward": 400, "tier": "platinum" },
+
+        { "id": "ach-words-100", "title": "Word Collector", "description": "Pelajari 100 kata baru.", "icon": "BookMarked", "color": "info", "criteria": "words-learned", "threshold": 100, "xpReward": 80, "tier": "silver" },
+        { "id": "ach-words-500", "title": "Walking Dictionary", "description": "Pelajari 500 kata baru.", "icon": "Book", "color": "primary", "criteria": "words-learned", "threshold": 500, "xpReward": 300, "tier": "gold" },
+
+        { "id": "ach-xp-1000", "title": "Thousand Club", "description": "Kumpulkan 1.000 XP.", "icon": "Zap", "color": "success", "criteria": "xp-total", "threshold": 1000, "xpReward": 0, "tier": "silver" },
+        { "id": "ach-xp-10000", "title": "Ten Thousand", "description": "Kumpulkan 10.000 XP.", "icon": "Zap", "color": "success", "criteria": "xp-total", "threshold": 10000, "xpReward": 0, "tier": "platinum" },
+
+        { "id": "ach-level-5", "title": "Level 5", "description": "Capai level 5.", "icon": "ChevronUp", "color": "primary", "criteria": "level", "threshold": 5, "xpReward": 0, "tier": "bronze" },
+        { "id": "ach-level-10", "title": "Level 10", "description": "Capai level 10.", "icon": "ChevronsUp", "color": "primary", "criteria": "level", "threshold": 10, "xpReward": 0, "tier": "silver" },
+        { "id": "ach-level-25", "title": "Level 25", "description": "Capai level 25.", "icon": "Rocket", "color": "secondary", "criteria": "level", "threshold": 25, "xpReward": 0, "tier": "gold" }
+    ],
+
+    "leaderboard": [
+        { "rank": 1, "userId": "u-201", "name": "Nadia Kusuma", "avatar": null, "xp": 12480, "level": 21, "streak": 64, "isCurrentUser": false },
+        { "rank": 2, "userId": "u-202", "name": "Reza Pratama", "avatar": null, "xp": 11220, "level": 20, "streak": 41, "isCurrentUser": false },
+        { "rank": 3, "userId": "u-203", "name": "Siti Rahayu", "avatar": null, "xp": 9860, "level": 18, "streak": 30, "isCurrentUser": false },
+        { "rank": 4, "userId": "u-204", "name": "Bagus Wicaksono", "avatar": null, "xp": 8410, "level": 17, "streak": 22, "isCurrentUser": false },
+        { "rank": 5, "userId": "u-205", "name": "Clara Wijaya", "avatar": null, "xp": 7240, "level": 16, "streak": 19, "isCurrentUser": false },
+        { "rank": 6, "userId": "u-001", "name": "Tesar", "avatar": null, "xp": 6180, "level": 15, "streak": 12, "isCurrentUser": true },
+        { "rank": 7, "userId": "u-206", "name": "Dimas Aryo", "avatar": null, "xp": 5940, "level": 14, "streak": 8, "isCurrentUser": false },
+        { "rank": 8, "userId": "u-207", "name": "Fitri Amelia", "avatar": null, "xp": 4720, "level": 13, "streak": 15, "isCurrentUser": false },
+        { "rank": 9, "userId": "u-208", "name": "Yoga Saputra", "avatar": null, "xp": 3980, "level": 11, "streak": 5, "isCurrentUser": false },
+        { "rank": 10, "userId": "u-209", "name": "Intan Permata", "avatar": null, "xp": 3310, "level": 10, "streak": 9, "isCurrentUser": false }
+    ],
+
+    "certificates": [
+        { "id": "cert-vocab", "title": "Core Vocabulary Mastery", "moduleId": "mod-vocab-core", "cefr": "A2", "issuedAt": null, "requirement": "Selesaikan semua pelajaran dan lulus kuis dengan skor ≥ 80.", "progressPercent": 66 },
+        { "id": "cert-grammar", "title": "Grammar Foundations", "moduleId": "mod-grammar-basic", "cefr": "A2", "issuedAt": "2026-06-18T09:00:00Z", "requirement": "Selesaikan semua pelajaran dan lulus kuis dengan skor ≥ 80.", "progressPercent": 100 },
+        { "id": "cert-listening", "title": "Listening Lab", "moduleId": "mod-listening", "cefr": "B1", "issuedAt": null, "requirement": "Selesaikan semua track dan lulus kuis dengan skor ≥ 75.", "progressPercent": 40 },
+        { "id": "cert-reading", "title": "Reading Room", "moduleId": "mod-reading", "cefr": "B2", "issuedAt": null, "requirement": "Selesaikan 2 bacaan B2 dan lulus kuis dengan skor ≥ 75.", "progressPercent": 25 }
+    ]
+}
