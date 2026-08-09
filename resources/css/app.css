@@ -129,4 +129,30 @@
     .menu-node.sortable-chosen > .menu-node-row {
         @apply ring-2 ring-brand-500;
     }
+
+    /* Lesson item builder drag & drop affordances */
+    .lesson-item-card.sortable-ghost {
+        @apply opacity-40;
+    }
+
+    .lesson-item-card.sortable-chosen {
+        @apply ring-2 ring-brand-500;
+    }
+
+    /* Lesson builder: type picker pills, drawers */
+    .type-pill {
+        @apply inline-flex items-center gap-1.5 rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-600 transition hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800;
+    }
+
+    .type-pill.is-active {
+        @apply border-brand-500 bg-brand-50 text-brand-700 dark:bg-brand-500/15 dark:text-brand-300;
+    }
+
+    .drawer-panel {
+        @apply fixed inset-y-0 right-0 z-40 flex w-full max-w-md flex-col overflow-y-auto border-l border-slate-200 bg-white p-5 shadow-2xl dark:border-slate-800 dark:bg-slate-900;
+    }
+
+    .drawer-backdrop {
+        @apply fixed inset-0 z-30 bg-slate-900/40;
+    }
 }

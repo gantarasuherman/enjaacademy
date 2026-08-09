@@ -66,20 +66,46 @@ docker compose exec workspace npm install && docker compose exec workspace npm r
 > `php-fpm` dari sumber (PHP 8.4 + ekstensi + Node 22). Sekali jadi, `make up`
 > berikutnya hanya butuh beberapa detik.
 
+> **Vhost nginx (`laradock/nginx/sites/nihongo.conf`) sudah tersedia di repo
+> ini dan aktif otomatis** — begitu `make up`/`make install` selesai, tidak
+> ada langkah tambahan untuk mengakses FE, langsung buka **http://localhost**
+> (port `80`, sesuai `NGINX_HOST_HTTP_PORT` default Laradock — bukan port
+> `8000` yang mungkin disebut di dokumentasi lama). Kalau vhost-nya sempat
+> tidak ter-load setelah restart nginx, jalankan:
+> ```bash
+> docker compose exec -T nginx nginx -t && docker compose exec -T nginx nginx -s reload
+> ```
+> Alternatif sementara (server dev bawaan Laravel, bukan lewat nginx):
+> ```bash
+> docker compose exec -d workspace php artisan serve --host=0.0.0.0 --port=8000
+> ```
+> lalu buka **http://localhost:8001** (port `8000` di container workspace
+> di-mapping ke `8001` di host — lihat `laradock/docker-compose.yml`).
+> Detail lengkap ada di [`laradock/PANDUAN.md`](laradock/PANDUAN.md).
+>
+> Kalau `migrate --seed` di atas gagal dengan `Access denied for user
+> 'laravel'@...`, itu karena default kredensial MySQL Laradock belum cocok
+> dengan `.env` proyek ini — solusinya juga ada di `laradock/PANDUAN.md`
+> (bagian "Kredensial database").
+
 ### Alamat
+
+Nilai di bawah adalah **port default Laradock** (belum di-custom di
+`laradock/.env` proyek ini — kolom kanan menunjukkan variabel yang bisa
+dipakai untuk mengubahnya). Sudah diverifikasi lewat `curl` sungguhan.
 
 | Layanan | URL | Diatur di |
 |---|---|---|
-| Landing & panel admin | http://localhost:8000 | `NGINX_HOST_HTTP_PORT` |
-| Panel admin langsung | http://localhost:8000/admin | — |
-| SPA peserta (dev) | http://localhost:5174 | `WORKSPACE_VITE_PORT` |
-| phpMyAdmin | http://localhost:8080 | `PMA_PORT` |
-| Mailpit | http://localhost:8025 | `MAILPIT_HTTP_PORT` |
-| MySQL (dari host) | 127.0.0.1:33061 | `MYSQL_PORT` |
-| Redis (dari host) | 127.0.0.1:63791 | `REDIS_PORT` |
+| Landing & panel admin | http://localhost | `NGINX_HOST_HTTP_PORT` |
+| Panel admin langsung | http://localhost/admin | — |
+| SPA peserta (dev) | http://localhost:5173/app/ | `WORKSPACE_VITE_PORT` |
+| phpMyAdmin | http://localhost:8081 | `PMA_PORT` |
+| Mailpit | http://localhost:8125 | `MAILPIT_HTTP_PORT` |
+| MySQL (dari host) | 127.0.0.1:3306 | `MYSQL_PORT` |
+| Redis (dari host) | 127.0.0.1:6379 | `REDIS_PORT` |
 
-Semua nilai di kolom kanan ada di `laradock/.env` — satu tempat, tidak
-terduplikasi di `.env` aplikasi.
+Untuk mengubah port apa pun di atas, override variabel di kolom kanan di
+`laradock/.env` — satu tempat, tidak terduplikasi di `.env` aplikasi.
 
 ### Catatan konfigurasi Laradock
 
@@ -89,8 +115,10 @@ terduplikasi di `.env` aplikasi.
   cache untuk aset SPA.
 - Redis Laradock **berpassword** (`secret_redis`); `.env` aplikasi sudah
   disetel sesuai, jangan dikosongkan.
-- MySQL dipatok ke `8.0` (default Laradock `8.4`) karena itu versi yang dipakai
-  saat verifikasi.
+- MySQL tidak di-pin ke versi tertentu di `laradock/.env` proyek ini — jalan
+  dengan versi image yang ter-build (`8.3.0` per pengecekan `SELECT VERSION()`
+  terakhir), bukan `8.0`/`8.4`. Pin manual lewat `MYSQL_VERSION` di
+  `laradock/.env` kalau butuh versi spesifik.
 - File instruksi agen bawaan Laradock (`CLAUDE.md`, `AGENTS.md`, `.cursorrules`,
   dst.) sudah dihapus dari salinan ini supaya tidak tertukar dengan instruksi
   proyekmu.
@@ -113,7 +141,7 @@ Kata sandi semuanya: `password`
 SPA berdiri sendiri dan **bisa jalan tanpa backend** — defaultnya membaca JSON di `frontend/src/data/`.
 
 ```bash
-make spa-dev                # http://localhost:5174
+make spa-dev                # http://localhost:5173/app/
 # atau
 cd frontend && npm install && npm run dev
 ```
@@ -288,7 +316,7 @@ sama persis.
 | `fresh` | `migrate:fresh --seed` (destruktif) |
 | `assets` | build asset panel admin |
 | `spa-build` | build SPA React |
-| `spa-dev` | dev server SPA (http://localhost:5174) |
+| `spa-dev` | dev server SPA (http://localhost:5173/app/) |
 | `deploy-spa` | build SPA → `public/app` |
 | `cache-clear` | bersihkan config/route/view + cache menu |
 | `backup` | backup database manual |

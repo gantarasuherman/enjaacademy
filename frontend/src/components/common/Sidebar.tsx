@@ -128,7 +128,7 @@ export function Sidebar() {
                         <GraduationCap className="size-5" />
                     </span>
                     {!sidebarCollapsed && (
-                        <span className="truncate font-display text-base font-extrabold">English Academy</span>
+                        <span className="truncate font-display text-base font-extrabold">Enja Academy</span>
                     )}
                     {!sidebarCollapsed && (
                         <IconButton
@@ -181,7 +181,7 @@ export function Sidebar() {
                                 <span className="grid size-9 place-items-center rounded-sm bg-primary text-white">
                                     <GraduationCap className="size-5" />
                                 </span>
-                                <span className="font-display text-base font-extrabold">English Academy</span>
+                                <span className="font-display text-base font-extrabold">Enja Academy</span>
                                 <IconButton
                                     label="Tutup menu"
                                     variant="ghost"

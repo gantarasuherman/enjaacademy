@@ -8,6 +8,7 @@ use Database\Seeders\Japanese\ConversationSeeder;
 use Database\Seeders\Japanese\GrammarSeeder;
 use Database\Seeders\Japanese\KanaSeeder;
 use Database\Seeders\Japanese\KanjiSeeder;
+use Database\Seeders\Japanese\ReadingSeeder;
 use Database\Seeders\Japanese\VocabularySeeder;
 use Database\Seeders\Japanese\WritingSeeder;
 use Illuminate\Database\Seeder;
@@ -33,6 +34,7 @@ class JapaneseContentSeeder extends Seeder
             GrammarSeeder::class,
             ConversationSeeder::class,
             WritingSeeder::class,
+            ReadingSeeder::class,
         ], silent: true);
     }
 }

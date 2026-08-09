@@ -25,7 +25,7 @@ class Lesson extends Model
 
     protected $fillable = [
         'learning_module_id', 'title', 'slug', 'level', 'summary', 'content',
-        'cover_image', 'audio_path', 'video_url', 'estimated_minutes',
+        'translated_content', 'cover_image', 'audio_path', 'video_url', 'estimated_minutes',
         'xp_reward', 'sort_order', 'is_published', 'published_at', 'created_by',
     ];
 

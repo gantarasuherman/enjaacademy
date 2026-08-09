@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('title', __('Alur Aplikasi'))
+@use('App\Support\Roadmap\FeatureRoadmap')
 
 @php
     /*
@@ -204,17 +205,222 @@
         'form' => ['label' => __('Isi'), 'ring' => 'border-slate-300', 'chip' => 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300'],
         'done' => ['label' => __('Hasil'), 'ring' => 'border-emerald-300', 'chip' => 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-300'],
     ];
+
+    /*
+     * "Peta Fitur" tab data. Resolves each feature's route (and any extra
+     * routes) to a real URL up front — via a closure rather than route()
+     * directly, because peserta.learning.module needs a `module` parameter
+     * this page doesn't have, and would otherwise throw.
+     */
+    $resolveUrl = function (?string $routeName) {
+        if (! $routeName || ! Route::has($routeName)) {
+            return null;
+        }
+
+        try {
+            return route($routeName);
+        } catch (\Throwable $e) {
+            return null;
+        }
+    };
+
+    $roadmapGroups = FeatureRoadmap::groups();
+    $roadmapStats = FeatureRoadmap::stats();
+
+    $jsFeatures = collect(FeatureRoadmap::all())->map(function (array $feature) use ($resolveUrl) {
+        $feature['url'] = $resolveUrl($feature['route']);
+        $feature['extra_routes'] = collect($feature['extra_routes'])
+            ->map(fn (array $extra) => $extra + ['url' => $resolveUrl($extra['route'])])
+            ->all();
+        $feature['hasAccess'] = $feature['permission'] ? (bool) auth()->user()?->can($feature['permission']) : null;
+
+        return $feature;
+    })->values();
+
+    $jsFeaturesById = $jsFeatures->keyBy('id');
+    $availableCount = $jsFeatures->where('hasAccess', true)->count();
+    $lockedCount = $jsFeatures->where('hasAccess', false)->count();
+    $learnerCount = $jsFeatures->whereNull('hasAccess')->count();
+    $jsFeatures = $jsFeatures->values()->all();
 @endphp
 
 @section('content')
+<div x-data="{ tab: 'peta' }">
     <x-page-header
         :title="__('Alur Aplikasi')"
-        :description="__('Urutan langkah untuk pekerjaan yang paling sering dilakukan — menu mana dulu, lalu ke mana. Setiap langkah bertuliskan nama menu dan tombol yang sebenarnya.')"
+        :description="__('Peta seluruh fitur aplikasi — role mana punya apa, fitur apa butuh apa — dan urutan langkah untuk pekerjaan yang paling sering dilakukan.')"
     >
         <x-slot:actions>
             <a href="{{ route('admin.panduan') }}" class="btn-secondary">{{ __('Panduan konsep') }}</a>
         </x-slot:actions>
     </x-page-header>
+
+    {{-- Tab bar --}}
+    <div class="mb-6 inline-flex gap-1 rounded-lg bg-slate-100 p-1 dark:bg-slate-800">
+        <button type="button" @click="tab = 'peta'"
+                :class="tab === 'peta' ? 'bg-white text-brand-700 shadow-sm dark:bg-slate-700 dark:text-brand-300' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'"
+                class="rounded-md px-4 py-1.5 text-sm font-semibold transition">
+            {{ __('Peta Fitur') }}
+        </button>
+        <button type="button" @click="tab = 'langkah'"
+                :class="tab === 'langkah' ? 'bg-white text-brand-700 shadow-sm dark:bg-slate-700 dark:text-brand-300' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'"
+                class="rounded-md px-4 py-1.5 text-sm font-semibold transition">
+            {{ __('Alur Langkah') }}
+        </button>
+    </div>
+
+    {{-- ============================= TAB: PETA FITUR ============================= --}}
+    <div x-show="tab === 'peta'" x-cloak x-data="featureRoadmap({ features: @js($jsFeatures) })">
+
+        {{-- Stats --}}
+        <div class="mb-6 grid grid-cols-2 gap-4 md:grid-cols-4">
+            <x-stat :label="__('Total Fitur')" :value="$roadmapStats['total']" icon="grid" tone="brand" />
+            <x-stat :label="__('Tersedia untuk Anda')" :value="$availableCount" icon="shield" tone="emerald" />
+            <x-stat :label="__('Tidak Punya Akses')" :value="$lockedCount" icon="key" tone="rose" />
+            <x-stat :label="__('Fitur Peserta')" :value="$learnerCount" icon="home" tone="sky" :hint="__('Cukup login, tidak digerbang satu permission')" />
+        </div>
+
+        {{-- Toolbar --}}
+        <div class="card mb-6 flex flex-wrap items-center gap-3 p-4">
+            <input type="search" x-model="search" placeholder="{{ __('Cari fitur…') }}" class="input w-56 text-sm">
+
+            <div class="flex flex-wrap gap-1.5">
+                <button type="button" @click="roleFilter = 'all'"
+                        :class="roleFilter === 'all' ? 'bg-brand-100 text-brand-700 dark:bg-brand-500/20 dark:text-brand-300' : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800'"
+                        class="rounded-full px-3 py-1 text-xs font-medium transition">{{ __('Semua role') }}</button>
+                @foreach (['Super Admin', 'Admin', 'Teacher', 'Student'] as $role)
+                    <button type="button" @click="roleFilter = '{{ $role }}'"
+                            :class="roleFilter === '{{ $role }}' ? 'bg-brand-100 text-brand-700 dark:bg-brand-500/20 dark:text-brand-300' : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800'"
+                            class="rounded-full px-3 py-1 text-xs font-medium transition">{{ $role }}</button>
+                @endforeach
+            </div>
+
+            <div class="flex flex-wrap gap-1.5">
+                <button type="button" @click="statusFilter = 'all'"
+                        :class="statusFilter === 'all' ? 'bg-slate-800 text-white dark:bg-slate-200 dark:text-slate-900' : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800'"
+                        class="rounded-full px-3 py-1 text-xs font-medium transition">{{ __('Semua status') }}</button>
+                <button type="button" @click="statusFilter = 'available'"
+                        :class="statusFilter === 'available' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-300' : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800'"
+                        class="rounded-full px-3 py-1 text-xs font-medium transition">✓ {{ __('Tersedia') }}</button>
+                <button type="button" @click="statusFilter = 'locked'"
+                        :class="statusFilter === 'locked' ? 'bg-rose-100 text-rose-700 dark:bg-rose-500/20 dark:text-rose-300' : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800'"
+                        class="rounded-full px-3 py-1 text-xs font-medium transition">🔒 {{ __('Terkunci') }}</button>
+            </div>
+
+            <span class="ml-auto text-xs text-slate-400">{{ __('Klik kartu untuk detail.') }}</span>
+        </div>
+
+        {{-- Groups --}}
+        <div class="space-y-6">
+            @foreach ($roadmapGroups as $group)
+                <section class="card p-5">
+                    <div class="mb-4 flex items-center gap-2.5">
+                        <x-icon :name="$group['icon']" class="size-5 text-brand-600" />
+                        <h2 class="text-base font-bold">{{ $group['label'] }}</h2>
+                        <span class="text-xs text-slate-400">({{ count($group['features']) }})</span>
+                    </div>
+
+                    <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                        @foreach ($group['features'] as $feature)
+                            @php $access = $jsFeaturesById[$feature['id']]['hasAccess'] ?? null; @endphp
+                            <button type="button"
+                                    @click="open('{{ $feature['id'] }}')"
+                                    x-show="matches(byId('{{ $feature['id'] }}'))"
+                                    class="flex flex-col items-start gap-2 rounded-lg border border-slate-200 bg-white p-3 text-left transition hover:border-brand-400 hover:shadow-sm dark:border-slate-800 dark:bg-slate-900">
+                                <div class="flex w-full items-center gap-2">
+                                    <x-icon :name="$feature['icon']" class="size-4 shrink-0 text-slate-400" />
+                                    <span class="flex-1 truncate text-sm font-semibold">{{ $feature['name'] }}</span>
+                                    @if ($access === true)
+                                        <span class="text-emerald-500" title="{{ __('Tersedia untuk Anda') }}">✓</span>
+                                    @elseif ($access === false)
+                                        <span class="text-rose-400" title="{{ __('Anda tidak punya akses') }}">🔒</span>
+                                    @endif
+                                </div>
+                                <p class="line-clamp-2 text-xs text-slate-500">{{ $feature['description'] }}</p>
+                                <div class="flex flex-wrap gap-1">
+                                    @foreach ($feature['roles'] as $role)
+                                        <span class="badge bg-slate-100 text-[10px] text-slate-600 dark:bg-slate-800 dark:text-slate-300">{{ $role }}</span>
+                                    @endforeach
+                                </div>
+                            </button>
+                        @endforeach
+                    </div>
+                </section>
+            @endforeach
+        </div>
+
+        {{-- Detail panel --}}
+        <div x-show="selected" x-cloak x-transition.opacity
+             class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4"
+             @click.self="close()" @keydown.escape.window="close()">
+            <template x-if="selected">
+                <div class="max-h-[85vh] w-full max-w-lg overflow-y-auto rounded-xl bg-white p-6 shadow-xl dark:bg-slate-900">
+                    <div class="mb-4 flex items-start justify-between gap-3">
+                        <div>
+                            <h3 class="text-lg font-bold" x-text="selected.name"></h3>
+                            <p class="mt-1 text-sm text-slate-500" x-text="selected.description"></p>
+                        </div>
+                        <button type="button" @click="close()" class="shrink-0 text-slate-400 hover:text-slate-600">✕</button>
+                    </div>
+
+                    <div class="mb-4 grid grid-cols-2 gap-3 text-xs">
+                        <div>
+                            <p class="font-bold uppercase tracking-wide text-slate-400">{{ __('Permission') }}</p>
+                            <code x-show="selected.permission" x-text="selected.permission" class="text-amber-600 dark:text-amber-400"></code>
+                            <span x-show="!selected.permission" class="text-slate-400">{{ __('Cukup login') }}</span>
+                        </div>
+                        <div>
+                            <p class="font-bold uppercase tracking-wide text-slate-400">{{ __('Role pemilik') }}</p>
+                            <p x-text="selected.roles.join(', ')"></p>
+                        </div>
+                    </div>
+
+                    <div class="mb-4 flex flex-wrap gap-1.5">
+                        <template x-for="action in selected.actions" :key="action">
+                            <span class="badge bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300" x-text="action"></span>
+                        </template>
+                    </div>
+
+                    <div x-show="selected.prerequisites.length" class="mb-4">
+                        <p class="mb-1.5 text-xs font-bold uppercase tracking-wide text-slate-400">{{ __('Prasyarat') }}</p>
+                        <div class="flex flex-wrap gap-1.5">
+                            <template x-for="id in selected.prerequisites" :key="id">
+                                <button type="button" @click="open(id)" class="badge bg-amber-50 text-amber-700 hover:bg-amber-100 dark:bg-amber-500/10 dark:text-amber-300" x-text="byId(id)?.name ?? id"></button>
+                            </template>
+                        </div>
+                    </div>
+
+                    <div x-show="selected.related.length" class="mb-4">
+                        <p class="mb-1.5 text-xs font-bold uppercase tracking-wide text-slate-400">{{ __('Fitur terkait') }}</p>
+                        <div class="flex flex-wrap gap-1.5">
+                            <template x-for="id in selected.related" :key="id">
+                                <button type="button" @click="open(id)" class="badge bg-brand-50 text-brand-700 hover:bg-brand-100 dark:bg-brand-500/10 dark:text-brand-300" x-text="byId(id)?.name ?? id"></button>
+                            </template>
+                        </div>
+                    </div>
+
+                    <div x-show="selected.extra_routes.length" class="mb-4">
+                        <p class="mb-1.5 text-xs font-bold uppercase tracking-wide text-slate-400">{{ __('Halaman terkait') }}</p>
+                        <div class="flex flex-col items-start gap-1">
+                            <template x-for="extra in selected.extra_routes" :key="extra.route">
+                                <a :href="extra.url" x-show="extra.url" class="text-sm text-brand-600 underline decoration-dotted underline-offset-4 hover:text-brand-700" x-text="extra.label"></a>
+                            </template>
+                        </div>
+                    </div>
+
+                    <div class="mt-5 flex flex-wrap gap-2 border-t border-slate-200 pt-4 dark:border-slate-800">
+                        <a :href="selected.url" x-show="selected.url" class="btn-primary text-sm">{{ __('Buka fitur') }}</a>
+                        <button type="button" x-show="selected.flow_id"
+                                @click="tab = 'langkah'; $nextTick(() => document.getElementById(selected.flow_id)?.scrollIntoView({ behavior: 'smooth', block: 'start' }))"
+                                class="btn-secondary text-sm">{{ __('Lihat langkah') }}</button>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </div>
+
+    {{-- ============================= TAB: ALUR LANGKAH ============================= --}}
+    <div x-show="tab === 'langkah'" x-cloak>
 
     {{-- Legend --}}
     <div class="card mb-6 flex flex-wrap items-center gap-x-6 gap-y-2 p-4 text-xs">
@@ -346,4 +552,6 @@
         </div>
         <a href="{{ route('admin.panduan') }}" class="btn-primary">{{ __('Buka Panduan') }}</a>
     </div>
+    </div>
+</div>
 @endsection

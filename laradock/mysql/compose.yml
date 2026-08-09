@@ -15,6 +15,11 @@ services:
       volumes:
         - ${DATA_PATH_HOST}/mysql:/var/lib/mysql
         - ${MYSQL_ENTRYPOINT_INITDB}:/docker-entrypoint-initdb.d
+      # Existing accounts in this project's data directory were created under
+      # mysql_native_password (MySQL 8.0's default). MySQL 8.4 ships the
+      # plugin but disables it by default, which otherwise locks out root and
+      # every app user with "Plugin 'mysql_native_password' is not loaded".
+      command: --mysql-native-password=ON
       ports:
         - "${MYSQL_PORT}:3306"
       networks:

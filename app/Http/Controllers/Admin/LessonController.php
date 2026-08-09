@@ -11,6 +11,7 @@ use App\Models\Lesson;
 use App\Models\LessonItem;
 use App\Repositories\Contracts\LearningModuleRepositoryInterface;
 use App\Repositories\Contracts\LessonRepositoryInterface;
+use App\Services\AI\LessonAiService;
 use App\Services\Learning\LearningService;
 use App\Services\System\ImportExportService;
 use Illuminate\Http\JsonResponse;
@@ -18,6 +19,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Throwable;
 
 class LessonController extends Controller
 {
@@ -26,6 +28,7 @@ class LessonController extends Controller
         private readonly LessonRepositoryInterface $lessons,
         private readonly LearningModuleRepositoryInterface $modules,
         private readonly ImportExportService $io,
+        private readonly LessonAiService $ai,
     ) {}
 
     public function index(Request $request): View
@@ -145,5 +148,76 @@ class LessonController extends Controller
         $this->authorize('import', Lesson::class);
 
         return $this->io->lessonItemTemplate();
+    }
+
+    /* ------------------------------------------------------------------
+     | AI content generation (Gemini — degrades gracefully if no API key
+     | is configured, see config/services.php:gemini and GEMINI_API_KEY)
+     | ------------------------------------------------------------------
+     */
+
+    public function generateItems(Request $request): JsonResponse
+    {
+        $this->authorize('create', Lesson::class);
+
+        if (! $this->ai->available()) {
+            return response()->json([
+                'available' => false,
+                'message' => __('Fitur AI belum diaktifkan. Hubungi admin untuk mengatur API key.'),
+            ]);
+        }
+
+        $validated = $request->validate([
+            'topic' => ['required', 'string', 'max:200'],
+            'level' => ['nullable', 'string', 'max:20'],
+            'count' => ['nullable', 'integer', 'min:1', 'max:30'],
+            'types' => ['nullable', 'array'],
+            'language' => ['nullable', 'string', 'max:50'],
+        ]);
+
+        try {
+            $items = $this->ai->generateItems($validated);
+
+            return response()->json(['available' => true, 'items' => $items]);
+        } catch (Throwable $e) {
+            report($e);
+
+            return response()->json([
+                'available' => true,
+                'error' => true,
+                'message' => __('Gagal menghubungi layanan AI. Coba lagi sebentar lagi.'),
+            ]);
+        }
+    }
+
+    public function generateTranslation(Request $request): JsonResponse
+    {
+        $this->authorize('create', Lesson::class);
+
+        if (! $this->ai->available()) {
+            return response()->json([
+                'available' => false,
+                'message' => __('Fitur AI belum diaktifkan. Hubungi admin untuk mengatur API key.'),
+            ]);
+        }
+
+        $validated = $request->validate([
+            'content' => ['required', 'string'],
+            'level' => ['nullable', 'string', 'max:20'],
+        ]);
+
+        try {
+            $translation = $this->ai->generateTranslation($validated['content'], $validated['level'] ?? null);
+
+            return response()->json(['available' => true, 'translation' => $translation]);
+        } catch (Throwable $e) {
+            report($e);
+
+            return response()->json([
+                'available' => true,
+                'error' => true,
+                'message' => __('Gagal menghubungi layanan AI. Coba lagi sebentar lagi.'),
+            ]);
+        }
     }
 }

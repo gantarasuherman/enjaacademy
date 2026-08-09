@@ -29,8 +29,10 @@ class RolePermissionSeeder extends Seeder
         'modules' => ['view', 'create', 'update', 'delete'],
         'lessons' => ['view', 'create', 'update', 'delete', 'import', 'export'],
         'quizzes' => ['view', 'create', 'update', 'delete'],
+        'grammar' => ['view', 'create', 'update', 'delete'],
         'flashcards' => ['view', 'create', 'update', 'delete'],
         'achievements' => ['view', 'create', 'update', 'delete'],
+        'enrollments' => ['view', 'delete'],
         'reports' => ['view'],
         'audit-logs' => ['view', 'delete'],
         'backups' => ['view', 'create', 'delete'],
@@ -44,13 +46,14 @@ class RolePermissionSeeder extends Seeder
     private array $rolePermissions = [
         'Admin' => [
             'management-admin.*', 'menus.*', 'roles.view', 'permissions.view',
-            'users.*', 'languages.*', 'modules.*', 'lessons.*', 'quizzes.*',
-            'flashcards.*', 'achievements.*', 'reports.*', 'audit-logs.view', 'backups.*',
+            'users.*', 'languages.*', 'modules.*', 'lessons.*', 'quizzes.*', 'grammar.*',
+            'flashcards.*', 'achievements.*', 'enrollments.*', 'reports.*', 'audit-logs.view', 'backups.*',
         ],
         'Teacher' => [
             'modules.view', 'languages.view',
             'lessons.view', 'lessons.create', 'lessons.update', 'lessons.import', 'lessons.export',
             'quizzes.view', 'quizzes.create', 'quizzes.update',
+            'grammar.view', 'grammar.create', 'grammar.update',
             'flashcards.view', 'flashcards.create', 'flashcards.update',
             'users.view', 'reports.view',
         ],

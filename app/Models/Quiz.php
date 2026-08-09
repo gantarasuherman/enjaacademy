@@ -87,6 +87,28 @@ class Quiz extends Model
         return (int) $this->questions()->sum('score');
     }
 
+    /**
+     * The API resource exposes the numeric id (not the slug) as `id`, since
+     * that also has to match `QuizResult.quizId`. Accept either here so
+     * route-model binding works for both the admin (slug) and API (id) callers.
+     * The OR is nested so it stays scoped correctly under the SoftDeletes
+     * global scope's `whereNull(deleted_at)` instead of escaping it.
+     */
+    public function resolveRouteBinding($value, $field = null): ?self
+    {
+        $key = $field ?? $this->getRouteKeyName();
+
+        return $this->newQuery()
+            ->where(function (Builder $q) use ($key, $value) {
+                $q->where($key, $value);
+
+                if (is_numeric($value)) {
+                    $q->orWhere($this->getKeyName(), $value);
+                }
+            })
+            ->first();
+    }
+
     public function attemptsLeftFor(User $user): ?int
     {
         if (! $this->max_attempts) {

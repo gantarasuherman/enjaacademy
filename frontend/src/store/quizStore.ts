@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { AnswerRecord, Question, Quiz, QuizResult } from '@/types';
+import type { AnswerRecord, Question, Quiz, QuizAttemptsOverview, QuizResult } from '@/types';
 import { gradeAnswer, quizService } from '@/services/api';
 
 type Phase = 'idle' | 'loading' | 'active' | 'submitting' | 'finished';
@@ -16,7 +16,11 @@ interface QuizState {
     startedAt: number | null;
     questionStartedAt: number | null;
     error: string | null;
+    /** Attempt history/stats/limit for the quiz currently being viewed — read by the pre-quiz info screen and the result screen. */
+    overview: QuizAttemptsOverview | null;
+    overviewLoading: boolean;
 
+    loadOverview: (quizId: string) => Promise<void>;
     start: (quizId: string) => Promise<void>;
     setAnswer: (questionId: string, value: string | string[]) => void;
     next: () => void;
@@ -43,6 +47,19 @@ export const useQuizStore = create<QuizState>((set, get) => ({
     startedAt: null,
     questionStartedAt: null,
     error: null,
+    overview: null,
+    overviewLoading: false,
+
+    loadOverview: async (quizId) => {
+        set({ overviewLoading: true });
+
+        try {
+            const overview = await quizService.getAttempts(quizId);
+            set({ overview, overviewLoading: false });
+        } catch {
+            set({ overviewLoading: false });
+        }
+    },
 
     start: async (quizId) => {
         set({ phase: 'loading', error: null, result: null, answers: {}, records: [], index: 0 });
@@ -153,6 +170,7 @@ export const useQuizStore = create<QuizState>((set, get) => ({
         try {
             const result = await quizService.submit(quiz.id, records, duration);
             set({ result, records, phase: 'finished' });
+            void get().loadOverview(quiz.id);
             return result;
         } catch (error) {
             set({
@@ -177,6 +195,8 @@ export const useQuizStore = create<QuizState>((set, get) => ({
             questionStartedAt: null,
             error: null,
         }),
+    // `overview` deliberately survives reset() — QuizResultPage reads it right
+    // after QuizPlayPage unmounts and calls reset() on its way to /result.
 
     current: () => get().questions[get().index] ?? null,
 

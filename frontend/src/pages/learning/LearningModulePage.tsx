@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { BookOpen, CheckCircle2, Circle, Clock, Lock, PlayCircle, Zap } from 'lucide-react';
 import { useAsync } from '@/hooks/useAsync';
@@ -7,20 +8,12 @@ import { cn } from '@/utils/cn';
 import type { Lesson } from '@/types';
 import { Card, CardHeader } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
-import { CefrBadge, DifficultyBadge } from '@/components/ui/Badge';
 import { ProgressBar } from '@/components/ui/Progress';
+import { Pagination } from '@/components/ui/Pagination';
 import { EmptyState, PageLoader } from '@/components/ui/Feedback';
 import { PageHeader } from '@/components/feature/shared/PageHeader';
 
-const TYPE_LABEL: Record<string, string> = {
-    vocabulary: 'Kosakata',
-    grammar: 'Tata bahasa',
-    listening: 'Menyimak',
-    speaking: 'Berbicara',
-    reading: 'Membaca',
-    writing: 'Menulis',
-    conversation: 'Percakapan',
-};
+const LESSONS_PER_PAGE = 10;
 
 function LessonRow({
     lesson,
@@ -56,22 +49,17 @@ function LessonRow({
             </span>
 
             <div className="min-w-0 flex-1">
-                <div className="flex flex-wrap items-center gap-2">
-                    <p className="truncate font-semibold">{lesson.title}</p>
-                    <span className="rounded-full bg-surface-sunken px-2 py-0.5 text-[11px] font-medium text-fg-muted">
-                        {TYPE_LABEL[lesson.type] ?? lesson.type}
-                    </span>
-                </div>
-                <p className="mt-0.5 truncate text-sm text-fg-muted">{lesson.description}</p>
+                <p className="truncate font-semibold">{lesson.title}</p>
+                {lesson.summary && <p className="mt-0.5 truncate text-sm text-fg-muted">{lesson.summary}</p>}
             </div>
 
             <div className="hidden shrink-0 items-center gap-4 text-xs text-fg-muted sm:flex">
                 <span className="flex items-center gap-1">
                     <Clock className="size-3.5" />
-                    {lesson.durationMinutes}m
+                    {lesson.estimated_minutes}m
                 </span>
                 <span className="flex items-center gap-1">
-                    <Zap className="size-3.5" />+{lesson.xpReward}
+                    <Zap className="size-3.5" />+{lesson.xp_reward}
                 </span>
             </div>
         </div>
@@ -80,17 +68,22 @@ function LessonRow({
     return locked ? (
         <div title="Selesaikan materi sebelumnya untuk membukanya">{body}</div>
     ) : (
-        <Link to={`/app/learning/lesson/${lesson.id}`}>{body}</Link>
+        <Link to={`/app/learning/lesson/${lesson.slug}`}>{body}</Link>
     );
 }
 
 export default function LearningModulePage() {
-    const { moduleId = '' } = useParams();
+    const { moduleId: moduleSlug = '' } = useParams();
 
-    const { data: module, loading } = useAsync(() => learningService.getModule(moduleId), [moduleId]);
-    const { data: lessons } = useAsync(() => learningService.listLessons(moduleId), [moduleId]);
+    const { data: module, loading } = useAsync(() => learningService.getModule(moduleSlug), [moduleSlug]);
+    const { data: lessons } = useAsync(() => learningService.listLessons(moduleSlug), [moduleSlug]);
 
     const { lessonStatus, modulePercent } = useProgressStore();
+
+    const [page, setPage] = useState(1);
+
+    // A different module means a different (shorter or longer) lesson list — start over at page 1.
+    useEffect(() => setPage(1), [moduleSlug]);
 
     if (loading) return <PageLoader />;
 
@@ -106,29 +99,33 @@ export default function LearningModulePage() {
     }
 
     const rows = lessons ?? [];
-    const percent = modulePercent(module.id);
-    const completedCount = rows.filter((lesson) => lessonStatus(lesson.id) === 'completed').length;
+    const percent = modulePercent(String(module.id));
+    const completedCount = rows.filter((lesson) => lessonStatus(lesson.slug) === 'completed').length;
 
     // The next unfinished lesson is the one the big CTA jumps to.
-    const nextLesson = rows.find((lesson) => lessonStatus(lesson.id) !== 'completed') ?? rows[0];
+    const nextLesson = rows.find((lesson) => lessonStatus(lesson.slug) !== 'completed') ?? rows[0];
+
+    const totalPages = Math.max(1, Math.ceil(rows.length / LESSONS_PER_PAGE));
+    const pageStart = (page - 1) * LESSONS_PER_PAGE;
+    // Keep each row's index relative to the full list (not the page) — the
+    // sequential unlock check below compares a lesson against the one right
+    // before it in `rows`, which breaks if `index` resets every page.
+    const pageRows = rows.slice(pageStart, pageStart + LESSONS_PER_PAGE).map((lesson, i) => ({
+        lesson,
+        index: pageStart + i,
+    }));
 
     return (
         <>
             <PageHeader
                 backTo="/app/learning"
                 backLabel="Semua modul"
-                title={module.title}
-                description={module.description}
-                badge={
-                    <span className="flex gap-1.5">
-                        <CefrBadge level={module.cefr} />
-                        <DifficultyBadge level={module.level} />
-                    </span>
-                }
+                title={module.name}
+                description={module.description ?? undefined}
                 action={
                     nextLesson && (
                         <Button
-                            to={`/app/learning/lesson/${nextLesson.id}`}
+                            to={`/app/learning/lesson/${nextLesson.slug}`}
                             icon={<PlayCircle className="size-4" />}
                         >
                             {percent === 0 ? 'Mulai belajar' : percent === 100 ? 'Ulangi materi' : 'Lanjutkan'}
@@ -148,26 +145,38 @@ export default function LearningModulePage() {
                         {rows.length === 0 ? (
                             <EmptyState title="Belum ada materi" description="Materi untuk modul ini sedang disiapkan." />
                         ) : (
-                            <div className="space-y-2.5">
-                                {rows.map((lesson, index) => {
-                                    const status = lessonStatus(lesson.id);
+                            <>
+                                <div className="space-y-2.5">
+                                    {pageRows.map(({ lesson, index }) => {
+                                        const status = lessonStatus(lesson.slug);
 
-                                    // A lesson unlocks once the one before it is
-                                    // done — the first is always open.
-                                    const previousDone =
-                                        index === 0 || lessonStatus(rows[index - 1].id) === 'completed';
+                                        // A lesson unlocks once the one before it is
+                                        // done — the first is always open.
+                                        const previousDone =
+                                            index === 0 || lessonStatus(rows[index - 1].slug) === 'completed';
 
-                                    return (
-                                        <LessonRow
-                                            key={lesson.id}
-                                            lesson={lesson}
-                                            index={index}
-                                            status={status}
-                                            locked={!previousDone && status === 'not-started'}
-                                        />
-                                    );
-                                })}
-                            </div>
+                                        return (
+                                            <LessonRow
+                                                key={lesson.id}
+                                                lesson={lesson}
+                                                index={index}
+                                                status={status}
+                                                locked={!previousDone && status === 'not-started'}
+                                            />
+                                        );
+                                    })}
+                                </div>
+
+                                {totalPages > 1 && (
+                                    <div className="mt-5 flex flex-col items-center gap-2 border-t border-[var(--surface-border)] pt-4">
+                                        <p className="text-xs text-fg-muted">
+                                            {pageStart + 1}–{Math.min(pageStart + LESSONS_PER_PAGE, rows.length)} dari{' '}
+                                            {rows.length} materi
+                                        </p>
+                                        <Pagination page={page} totalPages={totalPages} onChange={setPage} />
+                                    </div>
+                                )}
+                            </>
                         )}
                     </Card>
                 </div>
@@ -185,19 +194,9 @@ export default function LearningModulePage() {
                                 </dd>
                             </div>
                             <div className="flex justify-between">
-                                <dt className="text-fg-muted">Estimasi waktu</dt>
-                                <dd className="font-semibold">{Math.round(module.durationMinutes / 60)} jam</dd>
-                            </div>
-                            <div className="flex justify-between">
                                 <dt className="text-fg-muted">Total XP</dt>
                                 <dd className="font-semibold">
-                                    {rows.reduce((total, lesson) => total + lesson.xpReward, 0)} XP
-                                </dd>
-                            </div>
-                            <div className="flex justify-between">
-                                <dt className="text-fg-muted">Level</dt>
-                                <dd>
-                                    <CefrBadge level={module.cefr} />
+                                    {rows.reduce((total, lesson) => total + lesson.xp_reward, 0)} XP
                                 </dd>
                             </div>
                         </dl>

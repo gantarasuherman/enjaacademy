@@ -43,6 +43,7 @@
                         <th>{{ __('Tingkat') }}</th>
                         <th class="text-right">{{ __('Soal') }}</th>
                         <th class="text-right">{{ __('Lulus') }}</th>
+                        <th>{{ __('Percobaan') }}</th>
                         <th>{{ __('Status') }}</th>
                         <th class="text-right">{{ __('Aksi') }}</th>
                     </tr>
@@ -62,6 +63,13 @@
                             </td>
                             <td class="text-right font-mono">{{ $quiz->questions_count }}</td>
                             <td class="text-right font-mono">{{ $quiz->pass_score }}%</td>
+                            <td>
+                                @if ($quiz->max_attempts)
+                                    <span class="badge bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300">{{ __('Maks. :n', ['n' => $quiz->max_attempts]) }}</span>
+                                @else
+                                    <span class="badge bg-sky-100 text-sky-700 dark:bg-sky-500/15 dark:text-sky-300">∞ {{ __('Tidak Terbatas') }}</span>
+                                @endif
+                            </td>
                             <td>
                                 @if ($quiz->is_published)
                                     <span class="badge bg-emerald-100 text-emerald-700 dark:bg-emerald-500/15">{{ __('Terbit') }}</span>
@@ -88,7 +96,7 @@
                             </td>
                         </tr>
                     @empty
-                        <tr><td colspan="7" class="py-10 text-center text-sm text-slate-500">{{ __('Tidak ada kuis yang cocok.') }}</td></tr>
+                        <tr><td colspan="8" class="py-10 text-center text-sm text-slate-500">{{ __('Tidak ada kuis yang cocok.') }}</td></tr>
                     @endforelse
                 </tbody>
             </table>

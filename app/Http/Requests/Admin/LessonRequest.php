@@ -30,6 +30,7 @@ class LessonRequest extends FormRequest
             'level' => ['nullable', 'string', 'max:20'],
             'summary' => ['nullable', 'string', 'max:1000'],
             'content' => ['nullable', 'string'],
+            'translated_content' => ['nullable', 'string'],
             'video_url' => ['nullable', 'url', 'max:500'],
             'cover_image' => ['nullable', 'image', 'max:4096'],
             'audio' => ['nullable', 'file', 'mimes:mp3,wav,ogg,m4a', 'max:20480'],

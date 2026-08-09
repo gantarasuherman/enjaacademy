@@ -28,7 +28,7 @@ export function AuthLayout() {
                     <span className="grid size-10 place-items-center rounded-sm bg-white/15">
                         <GraduationCap className="size-5" />
                     </span>
-                    <span className="font-display text-lg font-extrabold">English Academy</span>
+                    <span className="font-display text-lg font-extrabold">Enja Academy</span>
                 </Link>
 
                 <div className="relative mt-auto">
@@ -59,7 +59,7 @@ export function AuthLayout() {
                         <span className="grid size-9 place-items-center rounded-sm bg-primary text-white">
                             <GraduationCap className="size-5" />
                         </span>
-                        <span className="font-display text-base font-extrabold">English Academy</span>
+                        <span className="font-display text-base font-extrabold">Enja Academy</span>
                     </Link>
 
                     <Suspense fallback={<PageLoader />}>

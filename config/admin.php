@@ -33,7 +33,7 @@ return [
     | public/app; in development it runs on its own Vite server and Laravel
     | redirects learner routes there.
     */
-    'spa_dev_url' => env('SPA_DEV_URL', 'http://localhost:5174'),
+    'spa_dev_url' => env('SPA_DEV_URL', 'http://localhost:5173'),
 
     /*
     |--------------------------------------------------------------------------

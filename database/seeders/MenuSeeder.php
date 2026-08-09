@@ -161,6 +161,9 @@ class MenuSeeder extends Seeder
                 'children' => [
                     ['title' => 'Materi', 'icon' => 'file-text', 'route_name' => 'admin.lessons.index', 'permission_name' => 'lessons.view'],
                     ['title' => 'Kuis', 'icon' => 'clipboard', 'route_name' => 'admin.quizzes.index', 'permission_name' => 'quizzes.view'],
+                    ['title' => 'Level Grammar', 'icon' => 'sitemap', 'route_name' => 'admin.grammar.levels.index', 'permission_name' => 'grammar.view'],
+                    ['title' => 'Kategori Grammar', 'icon' => 'layers', 'route_name' => 'admin.grammar.categories.index', 'permission_name' => 'grammar.view'],
+                    ['title' => 'Pola Grammar', 'icon' => 'book-open', 'route_name' => 'admin.grammar.patterns.index', 'permission_name' => 'grammar.view'],
                 ],
             ],
             [
@@ -193,6 +196,7 @@ class MenuSeeder extends Seeder
                     ['title' => 'Performa Kuis', 'icon' => 'target', 'route_name' => 'admin.reports.quiz', 'permission_name' => 'reports.view'],
                     ['title' => 'Papan Peringkat', 'icon' => 'trophy', 'route_name' => 'admin.reports.leaderboard', 'permission_name' => 'reports.view'],
                     ['title' => 'Aktivitas', 'icon' => 'activity', 'route_name' => 'admin.reports.activity', 'permission_name' => 'reports.view'],
+                    ['title' => 'Kelas Diambil', 'icon' => 'user-check', 'route_name' => 'admin.enrollments.index', 'permission_name' => 'enrollments.view'],
                 ],
             ],
             [

@@ -5,8 +5,12 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Models\Achievement;
+use App\Models\Enrollment;
 use App\Models\Flashcard;
 use App\Models\FlashcardDeck;
+use App\Models\GrammarCategory;
+use App\Models\GrammarLevel;
+use App\Models\GrammarPattern;
 use App\Models\Language;
 use App\Models\LearningModule;
 use App\Models\Lesson;
@@ -15,8 +19,12 @@ use App\Models\Menu;
 use App\Models\Quiz;
 use App\Models\User;
 use App\Policies\AchievementPolicy;
+use App\Policies\EnrollmentPolicy;
 use App\Policies\FlashcardDeckPolicy;
 use App\Policies\FlashcardPolicy;
+use App\Policies\GrammarCategoryPolicy;
+use App\Policies\GrammarLevelPolicy;
+use App\Policies\GrammarPatternPolicy;
 use App\Policies\LanguagePolicy;
 use App\Policies\LearningModulePolicy;
 use App\Policies\LessonItemPolicy;
@@ -46,6 +54,10 @@ class AuthServiceProvider extends ServiceProvider
         FlashcardDeck::class => FlashcardDeckPolicy::class,
         Flashcard::class => FlashcardPolicy::class,
         Achievement::class => AchievementPolicy::class,
+        Enrollment::class => EnrollmentPolicy::class,
+        GrammarLevel::class => GrammarLevelPolicy::class,
+        GrammarCategory::class => GrammarCategoryPolicy::class,
+        GrammarPattern::class => GrammarPatternPolicy::class,
     ];
 
     public function boot(): void

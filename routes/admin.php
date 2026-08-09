@@ -39,6 +39,10 @@ Route::controller(ManagementAdminController::class)
         Route::post('/update-meta', 'updateMeta')
             ->name('update-meta')
             ->middleware("permission:$prefix.update");
+
+        Route::post('/update-integrations', 'updateIntegrations')
+            ->name('update-integrations')
+            ->middleware("permission:$prefix.update");
     });
 
 // ====================== MENU MANAGEMENT ======================

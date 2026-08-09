@@ -36,6 +36,7 @@ const FlashcardPage = lazy(() => import('@/pages/flashcard/FlashcardPage'));
 const FlashcardStudyPage = lazy(() => import('@/pages/flashcard/FlashcardStudyPage'));
 
 const QuizListPage = lazy(() => import('@/pages/quiz/QuizListPage'));
+const QuizStartPage = lazy(() => import('@/pages/quiz/QuizStartPage'));
 const QuizPlayPage = lazy(() => import('@/pages/quiz/QuizPlayPage'));
 const QuizResultPage = lazy(() => import('@/pages/quiz/QuizResultPage'));
 
@@ -103,7 +104,8 @@ const routes: RouteObject[] = [
             { path: 'flashcard/:deckId', element: <FlashcardStudyPage /> },
 
             { path: 'quiz', element: <QuizListPage /> },
-            { path: 'quiz/:quizId', element: <QuizPlayPage /> },
+            { path: 'quiz/:quizId', element: <QuizStartPage /> },
+            { path: 'quiz/:quizId/play', element: <QuizPlayPage /> },
             { path: 'quiz/:quizId/result', element: <QuizResultPage /> },
 
             { path: 'progress', element: <ProgressPage /> },

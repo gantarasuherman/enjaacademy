@@ -33,6 +33,11 @@ class SettingRequest extends FormRequest
             'meta_keywords' => ['nullable', 'string', 'max:300'],
             'og_image' => ['nullable', 'image', 'max:2048'],
             'analytics_id' => ['nullable', 'string', 'max:60'],
+
+            // Integrations
+            'gemini_api_key' => ['nullable', 'string', 'max:200'],
+            'gemini_model' => ['nullable', 'string', 'max:100'],
+            'clear_gemini_api_key' => ['boolean'],
         ];
     }
 }

@@ -1,189 +1,76 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, CheckCircle2, Clock, GraduationCap, Volume2, Zap } from 'lucide-react';
+import { ChevronLeft, ChevronRight, CheckCircle2, Clock, Volume2, Zap } from 'lucide-react';
 import { useAsync } from '@/hooks/useAsync';
 import { useSpeechSynthesis } from '@/hooks/useSpeechSynthesis';
-import { learningService, vocabularyService, grammarService, readingService, listeningService, conversationService } from '@/services/api';
+import { learningService } from '@/services/api';
 import { useProgressStore } from '@/store/progressStore';
 import { useUiStore } from '@/store/uiStore';
-import { splitHighlight } from '@/utils/format';
 import type { Lesson } from '@/types';
-import { Card, CardHeader } from '@/components/ui/Card';
+import { Card } from '@/components/ui/Card';
 import { Button, IconButton } from '@/components/ui/Button';
-import { Badge, CefrBadge } from '@/components/ui/Badge';
+import { Badge } from '@/components/ui/Badge';
 import { EmptyState, PageLoader } from '@/components/ui/Feedback';
 import { PageHeader } from '@/components/feature/shared/PageHeader';
 
-/** Renders the lesson body according to its skill type. */
+/**
+ * Generic body: the lesson's own HTML `content` plus its flat `items` list.
+ * A lesson's content shape doesn't vary by skill — that richer, per-skill
+ * presentation lives in the dedicated Vocabulary/Grammar/Conversation pages,
+ * which read the same underlying data.
+ */
 function LessonBody({ lesson }: { lesson: Lesson }) {
     const { speak } = useSpeechSynthesis();
+    const items = lesson.items ?? [];
 
-    const { data: words } = useAsync(
-        () => (lesson.vocabularyIds ? vocabularyService.listByIds(lesson.vocabularyIds) : Promise.resolve([])),
-        [lesson.id],
-    );
-
-    const { data: topic } = useAsync(
-        () => (lesson.grammarTopicId ? grammarService.getTopic(lesson.grammarTopicId) : Promise.resolve(null)),
-        [lesson.id],
-    );
-
-    const { data: text } = useAsync(
-        () => (lesson.readingTextId ? readingService.get(lesson.readingTextId) : Promise.resolve(null)),
-        [lesson.id],
-    );
-
-    const { data: track } = useAsync(
-        () => (lesson.listeningTrackId ? listeningService.get(lesson.listeningTrackId) : Promise.resolve(null)),
-        [lesson.id],
-    );
-
-    const { data: scenario } = useAsync(
-        () => (lesson.conversationId ? conversationService.get(lesson.conversationId) : Promise.resolve(null)),
-        [lesson.id],
-    );
-
-    if (lesson.type === 'vocabulary' && words) {
-        return (
-            <div className="space-y-3">
-                {words.map((word) => (
-                    <Card key={word.id} className="flex items-start gap-4">
-                        <IconButton
-                            label={`Dengarkan ${word.word}`}
-                            variant="outline"
-                            size="sm"
-                            onClick={() => speak(word.word)}
-                        >
-                            <Volume2 className="size-4" />
-                        </IconButton>
-
-                        <div className="min-w-0 flex-1">
-                            <div className="flex flex-wrap items-baseline gap-2">
-                                <p className="font-display text-lg font-bold">{word.word}</p>
-                                <span className="ipa text-sm text-fg-muted">{word.ipa}</span>
-                                <Badge tone="neutral">{word.partOfSpeech}</Badge>
-                                <CefrBadge level={word.cefr} />
-                            </div>
-                            <p className="mt-1 text-sm font-medium text-primary">{word.meaning}</p>
-                            <p className="mt-2 text-sm italic text-fg-muted">"{word.example}"</p>
-                            <p className="text-sm text-fg-muted">{word.exampleMeaning}</p>
-                        </div>
-                    </Card>
-                ))}
-            </div>
-        );
-    }
-
-    if (lesson.type === 'grammar' && topic) {
-        return (
-            <div className="space-y-5">
+    return (
+        <div className="space-y-5">
+            {lesson.content && (
                 <Card>
-                    <CardHeader title={topic.title} subtitle={topic.explanation} />
-                    {topic.formula && (
-                        <div className="rounded-sm bg-primary-50 p-4 dark:bg-primary/10">
-                            <p className="mb-1 text-xs font-bold uppercase tracking-wide text-primary">Rumus</p>
-                            <p className="font-mono text-sm">{topic.formula}</p>
-                        </div>
-                    )}
+                    <div
+                        className="prose-sm max-w-none text-sm leading-relaxed"
+                        dangerouslySetInnerHTML={{ __html: lesson.content }}
+                    />
                 </Card>
+            )}
 
-                <Card>
-                    <CardHeader title="Contoh kalimat" />
-                    <ul className="space-y-3">
-                        {topic.examples.map((example, index) => (
-                            <li key={index} className="rounded-sm bg-surface-sunken p-3">
-                                <p className="text-sm">
-                                    {splitHighlight(example.sentence).map((chunk, i) =>
-                                        chunk.bold ? (
-                                            <strong key={i} className="rounded bg-secondary/20 px-1 text-secondary-700 dark:text-secondary-300">
-                                                {chunk.text}
-                                            </strong>
-                                        ) : (
-                                            <span key={i}>{chunk.text}</span>
-                                        ),
+            {items.length > 0 && (
+                <div className="space-y-3">
+                    {items.map((item) => (
+                        <Card key={item.id} className="flex items-start gap-4">
+                            <IconButton
+                                label={`Dengarkan ${item.term}`}
+                                variant="outline"
+                                size="sm"
+                                onClick={() => speak(item.term)}
+                            >
+                                <Volume2 className="size-4" />
+                            </IconButton>
+
+                            <div className="min-w-0 flex-1">
+                                <div className="flex flex-wrap items-baseline gap-2">
+                                    <p className="font-display text-lg font-bold">{item.term}</p>
+                                    {item.reading && item.reading !== item.term && (
+                                        <span className="text-sm text-fg-muted">{item.reading}</span>
                                     )}
-                                </p>
-                                <p className="mt-1 text-sm text-fg-muted">{example.meaning}</p>
-                            </li>
-                        ))}
-                    </ul>
-                </Card>
-
-                {topic.commonMistakes.length > 0 && (
-                    <Card>
-                        <CardHeader title="Kesalahan umum" />
-                        <ul className="space-y-3">
-                            {topic.commonMistakes.map((mistake, index) => (
-                                <li key={index} className="rounded-sm border border-[var(--surface-border)] p-3">
-                                    <p className="text-sm text-danger line-through">{mistake.wrong}</p>
-                                    <p className="text-sm font-semibold text-success">{mistake.right}</p>
-                                    <p className="mt-1 text-xs text-fg-muted">{mistake.why}</p>
-                                </li>
-                            ))}
-                        </ul>
-                    </Card>
-                )}
-            </div>
-        );
-    }
-
-    if (lesson.type === 'reading' && text) {
-        return (
-            <Card>
-                <CardHeader title={text.title} subtitle={`${text.wordCount} kata · ${text.readingMinutes} menit baca`} />
-                <div className="prose-sm max-w-none space-y-4 leading-relaxed">
-                    {text.body.split('\n\n').map((paragraph, index) => (
-                        <p key={index} className="text-sm leading-7">
-                            {paragraph}
-                        </p>
+                                    {item.romaji && <span className="text-sm text-fg-muted">{item.romaji}</span>}
+                                </div>
+                                {item.meaning && <p className="mt-1 text-sm font-medium text-primary">{item.meaning}</p>}
+                                {item.example && <p className="mt-2 text-sm italic text-fg-muted">"{item.example}"</p>}
+                                {item.example_meaning && (
+                                    <p className="text-sm text-fg-muted">{item.example_meaning}</p>
+                                )}
+                            </div>
+                        </Card>
                     ))}
                 </div>
-                <Button to={`/app/reading/${text.id}`} variant="outline" className="mt-5">
-                    Buka dengan glosarium
-                </Button>
-            </Card>
-        );
-    }
+            )}
 
-    if (lesson.type === 'listening' && track) {
-        return (
-            <Card>
-                <CardHeader title={track.title} subtitle={track.description} />
-                <Button to={`/app/listening/${track.id}`} icon={<Volume2 className="size-4" />}>
-                    Buka pemutar audio
-                </Button>
-            </Card>
-        );
-    }
-
-    if (lesson.type === 'conversation' && scenario) {
-        return (
-            <Card>
-                <CardHeader title={scenario.title} subtitle={scenario.context} />
-                <Button to={`/app/conversation/${scenario.id}`}>Mulai percakapan</Button>
-            </Card>
-        );
-    }
-
-    if (lesson.type === 'speaking') {
-        return (
-            <Card>
-                <CardHeader title="Latihan pelafalan" subtitle="Rekam suaramu dan dapatkan skor otomatis." />
-                <Button to="/app/speaking">Buka latihan speaking</Button>
-            </Card>
-        );
-    }
-
-    if (lesson.type === 'writing') {
-        return (
-            <Card>
-                <CardHeader title="Latihan menulis" subtitle="Kerjakan prompt dengan rubrik penilaian." />
-                <Button to="/app/writing">Buka latihan writing</Button>
-            </Card>
-        );
-    }
-
-    return <EmptyState title="Materi belum tersedia" description="Konten untuk materi ini sedang disiapkan." />;
+            {!lesson.content && items.length === 0 && (
+                <EmptyState title="Materi belum tersedia" description="Konten untuk materi ini sedang disiapkan." />
+            )}
+        </div>
+    );
 }
 
 export default function LessonPage() {
@@ -219,29 +106,30 @@ export default function LessonPage() {
         );
     }
 
-    const done = lessonStatus(lesson.id) === 'completed';
+    const moduleSlug = lesson.module?.slug;
+    const done = lessonStatus(lesson.slug) === 'completed';
 
     async function handleComplete() {
         if (!lesson) return;
 
         setSubmitting(true);
 
-        const xp = await completeLesson(lesson.id, lesson.moduleId);
+        const xp = await completeLesson(lesson.slug, String(lesson.module?.id ?? ''), lesson.xp_reward);
 
         toast(`+${xp} XP — materi selesai!`, 'success', 'Kerja bagus');
         setSubmitting(false);
 
         const next = neighbours?.next;
-        navigate(next ? `/app/learning/lesson/${next.id}` : `/app/learning/${lesson.moduleId}`);
+        navigate(next ? `/app/learning/lesson/${next.slug}` : moduleSlug ? `/app/learning/${moduleSlug}` : '/app/learning');
     }
 
     return (
         <>
             <PageHeader
-                backTo={`/app/learning/${lesson.moduleId}`}
+                backTo={moduleSlug ? `/app/learning/${moduleSlug}` : '/app/learning'}
                 backLabel="Kembali ke modul"
                 title={lesson.title}
-                description={lesson.description}
+                description={lesson.summary ?? undefined}
                 badge={
                     done ? (
                         <Badge tone="success" icon={<CheckCircle2 className="size-3" />}>
@@ -254,33 +142,20 @@ export default function LessonPage() {
             <div className="mb-5 flex flex-wrap gap-4 text-sm text-fg-muted">
                 <span className="flex items-center gap-1.5">
                     <Clock className="size-4" />
-                    {lesson.durationMinutes} menit
+                    {lesson.estimated_minutes} menit
                 </span>
                 <span className="flex items-center gap-1.5">
-                    <Zap className="size-4" />+{lesson.xpReward} XP
+                    <Zap className="size-4" />+{lesson.xp_reward} XP
                 </span>
             </div>
 
             <LessonBody lesson={lesson} />
 
-            {lesson.quizId && (
-                <Card className="mt-6 flex flex-wrap items-center justify-between gap-4 bg-primary-50 dark:bg-primary/10">
-                    <div className="flex items-center gap-3">
-                        <GraduationCap className="size-6 text-primary" />
-                        <div>
-                            <p className="font-display font-bold">Kuis penutup materi</p>
-                            <p className="text-sm text-fg-muted">Uji pemahamanmu sebelum lanjut.</p>
-                        </div>
-                    </div>
-                    <Button to={`/app/quiz/${lesson.quizId}`}>Kerjakan kuis</Button>
-                </Card>
-            )}
-
             {/* Bottom navigation */}
             <div className="mt-8 flex flex-wrap items-center justify-between gap-3 border-t border-[var(--surface-border)] pt-6">
                 {neighbours?.previous ? (
                     <Link
-                        to={`/app/learning/lesson/${neighbours.previous.id}`}
+                        to={`/app/learning/lesson/${neighbours.previous.slug}`}
                         className="inline-flex items-center gap-1.5 text-sm font-medium text-fg-muted transition hover:text-primary"
                     >
                         <ChevronLeft className="size-4" />
@@ -301,7 +176,7 @@ export default function LessonPage() {
 
                 {neighbours?.next ? (
                     <Link
-                        to={`/app/learning/lesson/${neighbours.next.id}`}
+                        to={`/app/learning/lesson/${neighbours.next.slug}`}
                         className="inline-flex items-center gap-1.5 text-sm font-medium text-fg-muted transition hover:text-primary"
                     >
                         {neighbours.next.title}

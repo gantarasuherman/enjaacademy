@@ -1,127 +1,250 @@
 {
     "modules": [
         {
-            "id": "mod-vocab-core",
-            "title": "Core Vocabulary",
-            "description": "Bangun fondasi 1.000 kata paling sering dipakai, dikelompokkan per tema.",
-            "level": "beginner",
-            "cefr": "A2",
-            "category": "vocabulary",
-            "thumbnail": "",
+            "id": 1,
+            "name": "Core Vocabulary",
+            "slug": "mod-vocab-core",
             "icon": "BookMarked",
             "color": "secondary",
-            "durationMinutes": 240,
-            "lessonIds": ["les-voc-01", "les-voc-02", "les-voc-03"],
-            "order": 1
+            "content_type": "vocabulary",
+            "description": "Bangun fondasi 1.000 kata paling sering dipakai, dikelompokkan per tema.",
+            "lessons_count": 3,
+            "is_enrolled": false,
+            "language": { "name": "Bahasa Inggris", "slug": "english", "flag": "🇬🇧" }
         },
         {
-            "id": "mod-grammar-basic",
-            "title": "Grammar Foundations",
-            "description": "Parts of speech dan 8 tense inti — cukup untuk menyusun kalimat apa pun.",
-            "level": "beginner",
-            "cefr": "A2",
-            "category": "grammar",
-            "thumbnail": "",
+            "id": 2,
+            "name": "Grammar Foundations",
+            "slug": "mod-grammar-basic",
             "icon": "Sigma",
             "color": "primary",
-            "durationMinutes": 300,
-            "lessonIds": ["les-gr-01", "les-gr-02", "les-gr-03"],
-            "order": 2
+            "content_type": "grammar",
+            "description": "Parts of speech dan 8 tense inti — cukup untuk menyusun kalimat apa pun.",
+            "lessons_count": 3,
+            "is_enrolled": false,
+            "language": { "name": "Bahasa Inggris", "slug": "english", "flag": "🇬🇧" }
         },
         {
-            "id": "mod-listening",
-            "title": "Listening Lab",
-            "description": "Latih telinga dengan aksen Amerika, Britania, dan Australia.",
-            "level": "intermediate",
-            "cefr": "B1",
-            "category": "listening",
-            "thumbnail": "",
+            "id": 3,
+            "name": "Listening Lab",
+            "slug": "mod-listening",
             "icon": "Headphones",
             "color": "info",
-            "durationMinutes": 180,
-            "lessonIds": ["les-lis-01", "les-lis-02"],
-            "order": 3
+            "content_type": "listening",
+            "description": "Latih telinga dengan aksen Amerika, Britania, dan Australia.",
+            "lessons_count": 2,
+            "is_enrolled": false,
+            "language": { "name": "Bahasa Inggris", "slug": "english", "flag": "🇬🇧" }
         },
         {
-            "id": "mod-speaking",
-            "title": "Speaking & Pronunciation",
-            "description": "Rekam suaramu, dapatkan skor pelafalan, dan perbaiki bunyi yang sulit.",
-            "level": "intermediate",
-            "cefr": "B1",
-            "category": "speaking",
-            "thumbnail": "",
+            "id": 4,
+            "name": "Speaking & Pronunciation",
+            "slug": "mod-speaking",
             "icon": "Mic",
             "color": "success",
-            "durationMinutes": 150,
-            "lessonIds": ["les-spk-01", "les-spk-02"],
-            "order": 4
+            "content_type": "speaking",
+            "description": "Rekam suaramu, dapatkan skor pelafalan, dan perbaiki bunyi yang sulit.",
+            "lessons_count": 2,
+            "is_enrolled": false,
+            "language": { "name": "Bahasa Inggris", "slug": "english", "flag": "🇬🇧" }
         },
         {
-            "id": "mod-reading",
-            "title": "Reading Room",
-            "description": "Cerita, berita, artikel, dan dokumentasi teknis dengan glosarium.",
-            "level": "intermediate",
-            "cefr": "B2",
-            "category": "reading",
-            "thumbnail": "",
+            "id": 5,
+            "name": "Reading Room",
+            "slug": "mod-reading",
             "icon": "BookOpen",
             "color": "primary",
-            "durationMinutes": 200,
-            "lessonIds": ["les-read-01", "les-read-02"],
-            "order": 5
+            "content_type": "reading",
+            "description": "Cerita, berita, artikel, dan dokumentasi teknis dengan glosarium.",
+            "lessons_count": 2,
+            "is_enrolled": false,
+            "language": { "name": "Bahasa Inggris", "slug": "english", "flag": "🇬🇧" }
         },
         {
-            "id": "mod-writing",
-            "title": "Writing Studio",
-            "description": "Dari kalimat tunggal sampai esai, lengkap dengan rubrik penilaian.",
-            "level": "advanced",
-            "cefr": "B2",
-            "category": "writing",
-            "thumbnail": "",
+            "id": 6,
+            "name": "Writing Studio",
+            "slug": "mod-writing",
             "icon": "PenLine",
             "color": "secondary",
-            "durationMinutes": 220,
-            "lessonIds": ["les-wr-01", "les-wr-02"],
-            "order": 6
+            "content_type": "writing",
+            "description": "Dari kalimat tunggal sampai esai, lengkap dengan rubrik penilaian.",
+            "lessons_count": 2,
+            "is_enrolled": false,
+            "language": { "name": "Bahasa Inggris", "slug": "english", "flag": "🇬🇧" }
         },
         {
-            "id": "mod-conversation",
-            "title": "Real-life Conversation",
-            "description": "Skenario restoran, hotel, wawancara kerja, dan rapat tim.",
-            "level": "intermediate",
-            "cefr": "B1",
-            "category": "conversation",
-            "thumbnail": "",
+            "id": 7,
+            "name": "Real-life Conversation",
+            "slug": "mod-conversation",
             "icon": "MessagesSquare",
             "color": "info",
-            "durationMinutes": 160,
-            "lessonIds": ["les-conv-01", "les-conv-02"],
-            "order": 7
+            "content_type": "conversation",
+            "description": "Skenario restoran, hotel, wawancara kerja, dan rapat tim.",
+            "lessons_count": 2,
+            "is_enrolled": false,
+            "language": { "name": "Bahasa Inggris", "slug": "english", "flag": "🇬🇧" }
+        },
+        {
+            "id": 8,
+            "name": "Hiragana",
+            "slug": "hiragana",
+            "icon": "あ",
+            "color": "rose",
+            "content_type": "kana",
+            "description": "46 huruf dasar Jepang — fondasi sebelum belajar apa pun.",
+            "lessons_count": 2,
+            "is_enrolled": false,
+            "language": { "name": "Bahasa Jepang", "slug": "japanese", "flag": "🇯🇵" }
+        },
+        {
+            "id": 9,
+            "name": "Katakana",
+            "slug": "katakana",
+            "icon": "ア",
+            "color": "pink",
+            "content_type": "kana",
+            "description": "Huruf untuk menulis kata serapan asing dan nama luar negeri.",
+            "lessons_count": 1,
+            "is_enrolled": false,
+            "language": { "name": "Bahasa Jepang", "slug": "japanese", "flag": "🇯🇵" }
+        },
+        {
+            "id": 10,
+            "name": "Kanji",
+            "slug": "kanji",
+            "icon": "漢",
+            "color": "red",
+            "content_type": "kanji",
+            "description": "Karakter kanji dasar level N5, dikelompokkan per tema.",
+            "lessons_count": 1,
+            "is_enrolled": false,
+            "language": { "name": "Bahasa Jepang", "slug": "japanese", "flag": "🇯🇵" }
+        },
+        {
+            "id": 11,
+            "name": "Kosakata Jepang",
+            "slug": "kosakata-jepang",
+            "icon": "book",
+            "color": "orange",
+            "content_type": "vocabulary",
+            "description": "Kosakata harian dari salam sampai kata kerja, level N5.",
+            "lessons_count": 2,
+            "is_enrolled": false,
+            "language": { "name": "Bahasa Jepang", "slug": "japanese", "flag": "🇯🇵" }
+        },
+        {
+            "id": 12,
+            "name": "Tata Bahasa Jepang",
+            "slug": "tata-bahasa-jepang",
+            "icon": "sitemap",
+            "color": "amber",
+            "content_type": "grammar",
+            "description": "Pola kalimat dasar N5 — partikel, bentuk kata kerja, dan struktur inti.",
+            "lessons_count": 1,
+            "is_enrolled": false,
+            "language": { "name": "Bahasa Jepang", "slug": "japanese", "flag": "🇯🇵" }
+        },
+        {
+            "id": 13,
+            "name": "Percakapan Jepang",
+            "slug": "percakapan-jepang",
+            "icon": "chat",
+            "color": "lime",
+            "content_type": "conversation",
+            "description": "Skenario percakapan situasional — perkenalan, restoran, dan sehari-hari.",
+            "lessons_count": 1,
+            "is_enrolled": false,
+            "language": { "name": "Bahasa Jepang", "slug": "japanese", "flag": "🇯🇵" }
+        },
+        {
+            "id": 14,
+            "name": "Menulis Jepang",
+            "slug": "menulis-jepang",
+            "icon": "pencil",
+            "color": "teal",
+            "content_type": "writing",
+            "description": "Latihan menulis dari huruf sampai kalimat sederhana.",
+            "lessons_count": 1,
+            "is_enrolled": false,
+            "language": { "name": "Bahasa Jepang", "slug": "japanese", "flag": "🇯🇵" }
+        },
+        {
+            "id": 15,
+            "name": "JLPT",
+            "slug": "jlpt",
+            "icon": "certificate",
+            "color": "emerald",
+            "content_type": "exam",
+            "description": "Persiapan ujian JLPT N5 — ringkasan dan latihan lintas materi.",
+            "lessons_count": 1,
+            "is_enrolled": false,
+            "language": { "name": "Bahasa Jepang", "slug": "japanese", "flag": "🇯🇵" }
         }
     ],
 
     "lessons": [
-        { "id": "les-voc-01", "moduleId": "mod-vocab-core", "title": "Daily Life Words", "description": "Kata-kata yang kamu pakai setiap hari.", "type": "vocabulary", "order": 1, "durationMinutes": 15, "xpReward": 20, "vocabularyIds": ["voc-001", "voc-002", "voc-003", "voc-004", "voc-005", "voc-006"], "quizId": null },
-        { "id": "les-voc-02", "moduleId": "mod-vocab-core", "title": "Travel Essentials", "description": "Bertahan hidup di bandara dan hotel.", "type": "vocabulary", "order": 2, "durationMinutes": 15, "xpReward": 20, "vocabularyIds": ["voc-101", "voc-102", "voc-103", "voc-104", "voc-105", "voc-106"], "quizId": "quiz-voc-travel" },
-        { "id": "les-voc-03", "moduleId": "mod-vocab-core", "title": "Business & Work", "description": "Bahasa Inggris untuk rapat dan email.", "type": "vocabulary", "order": 3, "durationMinutes": 18, "xpReward": 25, "vocabularyIds": ["voc-201", "voc-202", "voc-203", "voc-204", "voc-205", "voc-206"], "quizId": null },
+        { "id": 101, "moduleId": 1, "title": "Daily Life Words", "slug": "les-voc-01", "level": "A2", "summary": "Kata-kata yang kamu pakai setiap hari.", "content": "<p>Kata-kata yang kamu pakai setiap hari.</p>", "estimated_minutes": 15, "xp_reward": 20, "items": [], "quizId": null },
+        { "id": 102, "moduleId": 1, "title": "Travel Essentials", "slug": "les-voc-02", "level": "A2", "summary": "Bertahan hidup di bandara dan hotel.", "content": "<p>Bertahan hidup di bandara dan hotel.</p>", "estimated_minutes": 15, "xp_reward": 20, "items": [], "quizId": "quiz-voc-travel" },
+        { "id": 103, "moduleId": 1, "title": "Business & Work", "slug": "les-voc-03", "level": "B1", "summary": "Bahasa Inggris untuk rapat dan email.", "content": "<p>Bahasa Inggris untuk rapat dan email.</p>", "estimated_minutes": 18, "xp_reward": 25, "items": [], "quizId": null },
 
-        { "id": "les-gr-01", "moduleId": "mod-grammar-basic", "title": "Simple Present & Simple Past", "description": "Dua tense pertama yang harus dikuasai.", "type": "grammar", "order": 1, "durationMinutes": 25, "xpReward": 30, "grammarTopicId": "gr-verbs", "quizId": "quiz-tense-01" },
-        { "id": "les-gr-02", "moduleId": "mod-grammar-basic", "title": "Parts of Speech", "description": "Noun, verb, adjective, adverb, preposition.", "type": "grammar", "order": 2, "durationMinutes": 30, "xpReward": 30, "grammarTopicId": "gr-nouns", "quizId": null },
-        { "id": "les-gr-03", "moduleId": "mod-grammar-basic", "title": "Conditionals & Passive", "description": "Struktur kalimat tingkat menengah.", "type": "grammar", "order": 3, "durationMinutes": 30, "xpReward": 35, "grammarTopicId": "gr-conditionals", "quizId": null },
+        { "id": 201, "moduleId": 2, "title": "Simple Present & Simple Past", "slug": "les-gr-01", "level": "A2", "summary": "Dua tense pertama yang harus dikuasai.", "content": "<p>Dua tense pertama yang harus dikuasai.</p>", "estimated_minutes": 25, "xp_reward": 30, "items": [], "quizId": "quiz-tense-01" },
+        { "id": 202, "moduleId": 2, "title": "Parts of Speech", "slug": "les-gr-02", "level": "A2", "summary": "Noun, verb, adjective, adverb, preposition.", "content": "<p>Noun, verb, adjective, adverb, preposition.</p>", "estimated_minutes": 30, "xp_reward": 30, "items": [], "quizId": null },
+        { "id": 203, "moduleId": 2, "title": "Conditionals & Passive", "slug": "les-gr-03", "level": "B1", "summary": "Struktur kalimat tingkat menengah.", "content": "<p>Struktur kalimat tingkat menengah.</p>", "estimated_minutes": 30, "xp_reward": 35, "items": [], "quizId": null },
 
-        { "id": "les-lis-01", "moduleId": "mod-listening", "title": "Ordering Coffee", "description": "Percakapan kedai kopi dengan aksen Amerika.", "type": "listening", "order": 1, "durationMinutes": 12, "xpReward": 20, "listeningTrackId": "lis-001", "quizId": "quiz-lis-001" },
-        { "id": "les-lis-02", "moduleId": "mod-listening", "title": "Airport Announcement", "description": "Pengumuman bandara aksen British.", "type": "listening", "order": 2, "durationMinutes": 12, "xpReward": 25, "listeningTrackId": "lis-002", "quizId": "quiz-lis-002" },
+        { "id": 301, "moduleId": 3, "title": "Ordering Coffee", "slug": "les-lis-01", "level": "A2", "summary": "Percakapan kedai kopi dengan aksen Amerika.", "content": "<p>Percakapan kedai kopi dengan aksen Amerika.</p>", "estimated_minutes": 12, "xp_reward": 20, "items": [], "quizId": "quiz-lis-001" },
+        { "id": 302, "moduleId": 3, "title": "Airport Announcement", "slug": "les-lis-02", "level": "B1", "summary": "Pengumuman bandara aksen British.", "content": "<p>Pengumuman bandara aksen British.</p>", "estimated_minutes": 12, "xp_reward": 25, "items": [], "quizId": "quiz-lis-002" },
 
-        { "id": "les-spk-01", "moduleId": "mod-speaking", "title": "Polite Requests", "description": "Meminta sesuatu dengan sopan.", "type": "speaking", "order": 1, "durationMinutes": 15, "xpReward": 25, "speakingIds": ["spk-001", "spk-002"], "quizId": null },
-        { "id": "les-spk-02", "moduleId": "mod-speaking", "title": "Tricky Sounds: /θ/ and /ð/", "description": "Bunyi 'th' yang paling sering salah.", "type": "speaking", "order": 2, "durationMinutes": 18, "xpReward": 30, "speakingIds": ["spk-003", "spk-004"], "quizId": null },
+        { "id": 401, "moduleId": 4, "title": "Polite Requests", "slug": "les-spk-01", "level": "B1", "summary": "Meminta sesuatu dengan sopan.", "content": "<p>Meminta sesuatu dengan sopan.</p>", "estimated_minutes": 15, "xp_reward": 25, "items": [], "quizId": null },
+        { "id": 402, "moduleId": 4, "title": "Tricky Sounds: /θ/ and /ð/", "slug": "les-spk-02", "level": "B1", "summary": "Bunyi 'th' yang paling sering salah.", "content": "<p>Bunyi 'th' yang paling sering salah.</p>", "estimated_minutes": 18, "xp_reward": 30, "items": [], "quizId": null },
 
-        { "id": "les-read-01", "moduleId": "mod-reading", "title": "Short Story: Missing the Train", "description": "Cerita pendek tingkat A2.", "type": "reading", "order": 1, "durationMinutes": 15, "xpReward": 25, "readingTextId": "read-001", "quizId": "quiz-read-001" },
-        { "id": "les-read-02", "moduleId": "mod-reading", "title": "News: Remote Work", "description": "Artikel berita tingkat B2.", "type": "reading", "order": 2, "durationMinutes": 20, "xpReward": 35, "readingTextId": "read-002", "quizId": "quiz-read-002" },
+        { "id": 501, "moduleId": 5, "title": "Short Story: Missing the Train", "slug": "les-read-01", "level": "A2", "summary": "Cerita pendek tingkat A2.", "content": "<p>Cerita pendek tingkat A2.</p>", "estimated_minutes": 15, "xp_reward": 25, "items": [], "quizId": "quiz-read-001" },
+        { "id": 502, "moduleId": 5, "title": "News: Remote Work", "slug": "les-read-02", "level": "B2", "summary": "Artikel berita tingkat B2.", "content": "<p>Artikel berita tingkat B2.</p>", "estimated_minutes": 20, "xp_reward": 35, "items": [], "quizId": "quiz-read-002" },
 
-        { "id": "les-wr-01", "moduleId": "mod-writing", "title": "Writing a Paragraph", "description": "Topic sentence, supporting detail, kesimpulan.", "type": "writing", "order": 1, "durationMinutes": 25, "xpReward": 30, "writingTaskId": "wr-001", "quizId": null },
-        { "id": "les-wr-02", "moduleId": "mod-writing", "title": "Professional Email", "description": "Menulis email kerja yang jelas dan sopan.", "type": "writing", "order": 2, "durationMinutes": 25, "xpReward": 35, "writingTaskId": "wr-002", "quizId": null },
+        { "id": 601, "moduleId": 6, "title": "Writing a Paragraph", "slug": "les-wr-01", "level": "B1", "summary": "Topic sentence, supporting detail, kesimpulan.", "content": "<p>Topic sentence, supporting detail, kesimpulan.</p>", "estimated_minutes": 25, "xp_reward": 30, "items": [], "quizId": null },
+        { "id": 602, "moduleId": 6, "title": "Professional Email", "slug": "les-wr-02", "level": "B2", "summary": "Menulis email kerja yang jelas dan sopan.", "content": "<p>Menulis email kerja yang jelas dan sopan.</p>", "estimated_minutes": 25, "xp_reward": 35, "items": [], "quizId": null },
 
-        { "id": "les-conv-01", "moduleId": "mod-conversation", "title": "At the Restaurant", "description": "Memesan makanan dan meminta bon.", "type": "conversation", "order": 1, "durationMinutes": 15, "xpReward": 25, "conversationId": "conv-001", "quizId": null },
-        { "id": "les-conv-02", "moduleId": "mod-conversation", "title": "Job Interview", "description": "Menjawab pertanyaan wawancara umum.", "type": "conversation", "order": 2, "durationMinutes": 20, "xpReward": 35, "conversationId": "conv-002", "quizId": null }
+        { "id": 701, "moduleId": 7, "title": "At the Restaurant", "slug": "les-conv-01", "level": "B1", "summary": "Memesan makanan dan meminta bon.", "content": "<p>Memesan makanan dan meminta bon.</p>", "estimated_minutes": 15, "xp_reward": 25, "items": [], "quizId": null },
+        { "id": 702, "moduleId": 7, "title": "Job Interview", "slug": "les-conv-02", "level": "B1", "summary": "Menjawab pertanyaan wawancara umum.", "content": "<p>Menjawab pertanyaan wawancara umum.</p>", "estimated_minutes": 20, "xp_reward": 35, "items": [], "quizId": null },
+
+        { "id": 801, "moduleId": 8, "title": "Vokal — あ行", "slug": "les-hira-01", "level": "N5", "summary": "Lima vokal dasar hiragana.", "content": "<p>Lima vokal dasar: あいうえお.</p>", "estimated_minutes": 8, "xp_reward": 15,
+          "items": [
+              { "id": 8001, "term": "あ", "reading": "あ", "romaji": "a", "meaning": "Dibaca \"a\"", "example": "あめ (ame)", "example_meaning": "hujan", "extra": { "script": "hiragana" } },
+              { "id": 8002, "term": "い", "reading": "い", "romaji": "i", "meaning": "Dibaca \"i\"", "example": "いぬ (inu)", "example_meaning": "anjing", "extra": { "script": "hiragana" } }
+          ], "quizId": null },
+        { "id": 802, "moduleId": 8, "title": "Baris K — か行", "slug": "les-hira-02", "level": "N5", "summary": "Konsonan k dipasangkan dengan lima vokal.", "content": "<p>かきくけこ.</p>", "estimated_minutes": 8, "xp_reward": 15,
+          "items": [
+              { "id": 8003, "term": "か", "reading": "か", "romaji": "ka", "meaning": "Dibaca \"ka\"", "example": "かさ (kasa)", "example_meaning": "payung", "extra": { "script": "hiragana" } }
+          ], "quizId": null },
+
+        { "id": 901, "moduleId": 9, "title": "Vokal — ア行", "slug": "les-kata-01", "level": "N5", "summary": "Katakana dipakai untuk kata serapan.", "content": "<p>アイウエオ.</p>", "estimated_minutes": 8, "xp_reward": 15,
+          "items": [
+              { "id": 9001, "term": "ア", "reading": "ア", "romaji": "a", "meaning": "Dibaca \"a\"", "example": "アメリカ (amerika)", "example_meaning": "Amerika", "extra": { "script": "katakana" } }
+          ], "quizId": null },
+
+        { "id": 1001, "moduleId": 10, "title": "Angka 1–10", "slug": "les-kanji-01", "level": "N5", "summary": "Sepuluh kanji pertama.", "content": "<p>一二三四五六七八九十.</p>", "estimated_minutes": 12, "xp_reward": 25,
+          "items": [
+              { "id": 10001, "term": "一", "reading": "ひと(つ)", "romaji": "ICHI", "meaning": "satu", "example": "一つ (hitotsu)", "example_meaning": "satu buah", "extra": { "strokes": 1, "jlpt": "N5" } }
+          ], "quizId": null },
+
+        { "id": 1101, "moduleId": 11, "title": "Salam dan ungkapan harian", "slug": "les-kosa-01", "level": "N5", "summary": "Dua puluh ungkapan yang dipakai setiap hari.", "content": "<p>Salam dasar sehari-hari.</p>", "estimated_minutes": 12, "xp_reward": 25,
+          "items": [
+              { "id": 11001, "term": "おはようございます", "reading": "おはようございます", "romaji": "ohayou gozaimasu", "meaning": "selamat pagi (sopan)", "example": "先生、おはようございます。", "example_meaning": "Selamat pagi, Bu/Pak Guru.", "extra": { "kategori": "salam", "jlpt": "N5" } }
+          ], "quizId": null },
+        { "id": 1102, "moduleId": 11, "title": "Angka dan penggolong", "slug": "les-kosa-02", "level": "N5", "summary": "Kata penggolong Jepang.", "content": "<p>Menghitung benda dan orang.</p>", "estimated_minutes": 15, "xp_reward": 30, "items": [], "quizId": null },
+
+        { "id": 1201, "moduleId": 12, "title": "Vokal — あ行", "slug": "les-gr-jp-01", "level": "N5", "summary": "Partikel dasar は, が, を, に.", "content": "<p>Partikel dasar dalam kalimat Jepang.</p>", "estimated_minutes": 12, "xp_reward": 25,
+          "items": [
+              { "id": 12001, "term": "は", "reading": "は (wa)", "romaji": "wa", "meaning": "penanda topik — ditulis は tapi dibaca \"wa\"", "example": "私は学生です。", "example_meaning": "Saya (topik) adalah pelajar.", "extra": { "golongan": "partikel", "jlpt": "N5" } }
+          ], "quizId": null },
+
+        { "id": 1301, "moduleId": 13, "title": "Perkenalan diri", "slug": "les-conv-jp-01", "level": "N5", "summary": "Percakapan perkenalan diri sederhana.", "content": "<p>Latihan dialog perkenalan.</p>", "estimated_minutes": 10, "xp_reward": 20,
+          "items": [
+              { "id": 13001, "term": "はじめまして。田中です。", "reading": "はじめまして。たなかです。", "romaji": "Hajimemashite. Tanaka desu.", "meaning": "Salam kenal. Saya Tanaka.", "example": "田中:", "example_meaning": "Dengarkan", "extra": { "speaker": "田中", "giliran": "lawan", "urutan": 1, "situasi": "perkenalan" } },
+              { "id": 13002, "term": "はじめまして。リナと申します。", "reading": "はじめまして。リナともうします。", "romaji": "Hajimemashite. Rina to moushimasu.", "meaning": "Salam kenal. Nama saya Rina.", "example": "あなた:", "example_meaning": "Giliran kamu berbicara", "extra": { "speaker": "あなた", "giliran": "peserta", "urutan": 2, "situasi": "perkenalan" } }
+          ], "quizId": null },
+
+        { "id": 1401, "moduleId": 14, "title": "Menulis hiragana dasar", "slug": "les-wr-jp-01", "level": "N5", "summary": "Latihan menulis huruf hiragana.", "content": "<p>Latihan menulis huruf demi huruf.</p>", "estimated_minutes": 15, "xp_reward": 25, "items": [], "quizId": null },
+
+        { "id": 1501, "moduleId": 15, "title": "Ringkasan JLPT N5", "slug": "les-jlpt-01", "level": "N5", "summary": "Ringkasan lintas materi untuk persiapan ujian.", "content": "<p>Ringkasan menyeluruh N5.</p>", "estimated_minutes": 30, "xp_reward": 40, "items": [], "quizId": null }
     ]
 }

@@ -48,6 +48,20 @@ class KanjiSeeder extends Seeder
     {
         return [
             [
+                'title' => 'Mengenal Kanji',
+                'summary' => 'Apa itu kanji, bedanya dengan hiragana/katakana, dan kenapa satu karakter bisa dibaca beberapa cara.',
+                'minutes' => 8,
+                'xp' => 15,
+                'content' => '<p><strong>Kanji</strong> (漢字) adalah karakter yang diadopsi dari huruf Tionghoa (Hanzi), berbeda mendasar dari hiragana/katakana: satu karakter kanji mewakili sebuah <strong>arti</strong>, bukan cuma bunyi. 日 misalnya berarti "matahari" atau "hari", dan bisa dibaca beberapa cara tergantung konteksnya.</p>'
+                    .'<p>Tiap kanji biasanya punya dua jenis cara baca:</p>'
+                    .'<ul>'
+                    .'<li><strong>On\'yomi</strong> (cara baca China) — dipakai saat kanji digabung dengan kanji lain, mis. 日本 "nihon" (Jepang)</li>'
+                    .'<li><strong>Kun\'yomi</strong> (cara baca asli Jepang) — dipakai saat kanji berdiri sendiri, mis. 日 "hi" (hari/matahari)</li>'
+                    .'</ul>'
+                    .'<p>Kenapa perlu dipelajari? Tulisan Jepang sehari-hari — koran, buku, rambu jalan — adalah campuran kanji dan kana. Menguasai kanji dasar (level N5, sekitar 100 karakter) sudah cukup untuk memahami kalimat-kalimat sederhana. Modul ini mengelompokkan kanji per tema (angka, alam, keluarga, dst.) supaya lebih mudah diingat dibanding dihafal berurutan tanpa pola.</p>',
+                'items' => [],
+            ],
+            [
                 'title' => 'Angka 1–10',
                 'summary' => 'Sepuluh kanji pertama yang dipelajari setiap pemula.',
                 'minutes' => 12,

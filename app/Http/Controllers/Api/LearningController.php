@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\LessonResource;
 use App\Http\Resources\ModuleResource;
 use App\Models\Lesson;
+use App\Repositories\Contracts\EnrollmentRepositoryInterface;
 use App\Repositories\Contracts\LearningModuleRepositoryInterface;
 use App\Repositories\Contracts\LessonRepositoryInterface;
 use App\Services\Gamification\ProgressService;
@@ -21,6 +22,7 @@ class LearningController extends Controller
         private readonly LearningModuleRepositoryInterface $modules,
         private readonly LessonRepositoryInterface $lessons,
         private readonly ProgressService $progress,
+        private readonly EnrollmentRepositoryInterface $enrollments,
     ) {}
 
     public function modules(Request $request): JsonResponse
@@ -66,5 +68,24 @@ class LearningController extends Controller
     public function dashboard(Request $request): JsonResponse
     {
         return response()->json($this->progress->dashboardFor($request->user()));
+    }
+
+    /**
+     * Enrolls the user if not already enrolled, otherwise unenrolls them.
+     * This only records that the student took the class — it does not gate
+     * access, which is still `study`/`{permission_prefix}.view`.
+     */
+    public function toggleEnrollment(Request $request, string $moduleSlug): JsonResponse
+    {
+        $module = $this->modules->findBySlug($moduleSlug);
+
+        abort_if($module === null, 404);
+        $this->authorize('study', $module);
+
+        $enrolled = $this->enrollments->toggle($request->user(), $module);
+
+        return response()->json([
+            'data' => ['module' => $module->slug, 'enrolled' => $enrolled],
+        ]);
     }
 }

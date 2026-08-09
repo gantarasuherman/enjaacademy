@@ -8,7 +8,7 @@ import { vocabularyService } from '@/services/api';
 import { useProgressStore } from '@/store/progressStore';
 import { useUiStore } from '@/store/uiStore';
 import { cn } from '@/utils/cn';
-import type { VocabularyItem } from '@/types';
+import type { LanguageSlug, VocabularyItem } from '@/types';
 import { Card, CardHeader } from '@/components/ui/Card';
 import { Button, IconButton } from '@/components/ui/Button';
 import { Badge, CefrBadge, Chip } from '@/components/ui/Badge';
@@ -18,6 +18,12 @@ import { DynamicIcon } from '@/components/ui/DynamicIcon';
 import { PageHeader } from '@/components/feature/shared/PageHeader';
 
 const CEFR_LEVELS = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+
+const LANGUAGES: { id: LanguageSlug | 'all'; label: string }[] = [
+    { id: 'all', label: 'Semua Bahasa' },
+    { id: 'japanese', label: '🇯🇵 Bahasa Jepang' },
+    { id: 'english', label: '🇬🇧 Bahasa Inggris' },
+];
 
 /** Right-hand detail panel — becomes a bottom sheet on mobile. */
 function WordDetail({ word, onClose }: { word: VocabularyItem | null; onClose: () => void }) {
@@ -140,14 +146,21 @@ export default function VocabularyPage() {
 
     const [search, setSearch] = useState('');
     const [cefr, setCefr] = useState<string>('');
+    const [lang, setLang] = useState<LanguageSlug | 'all'>('all');
     const [selected, setSelected] = useState<VocabularyItem | null>(null);
 
     const debounced = useDebounce(search, 250);
 
     const { data: categories } = useAsync(() => vocabularyService.listCategories(), []);
     const { data: words, loading } = useAsync(
-        () => vocabularyService.list({ categoryId, search: debounced, cefr: cefr || undefined }),
-        [categoryId, debounced, cefr],
+        () =>
+            vocabularyService.list({
+                categoryId,
+                search: debounced,
+                cefr: cefr || undefined,
+                language: lang === 'all' ? undefined : lang,
+            }),
+        [categoryId, debounced, cefr, lang],
     );
 
     const { isBookmarked } = useProgressStore();
@@ -158,6 +171,10 @@ export default function VocabularyPage() {
     const activeCategory = useMemo(
         () => categories?.find((category) => category.id === categoryId),
         [categories, categoryId],
+    );
+
+    const visibleCategories = (categories ?? []).filter(
+        (category) => lang === 'all' || category.language === lang,
     );
 
     return (
@@ -172,12 +189,28 @@ export default function VocabularyPage() {
                 backLabel="Semua kategori"
             />
 
+            {/* Language chips */}
+            <div className="mb-3 flex flex-wrap gap-2">
+                {LANGUAGES.map((item) => (
+                    <Chip
+                        key={item.id}
+                        active={lang === item.id}
+                        onClick={() => {
+                            setLang(item.id);
+                            navigate('/app/vocabulary');
+                        }}
+                    >
+                        {item.label}
+                    </Chip>
+                ))}
+            </div>
+
             {/* Category chips */}
             <div className="mb-4 flex flex-wrap gap-2">
                 <Chip active={!categoryId} onClick={() => navigate('/app/vocabulary')}>
                     Semua
                 </Chip>
-                {(categories ?? []).map((category) => (
+                {visibleCategories.map((category) => (
                     <Chip
                         key={category.id}
                         active={categoryId === category.id}
@@ -273,11 +306,11 @@ export default function VocabularyPage() {
             </div>
 
             {/* Category overview when no category is picked */}
-            {!categoryId && (categories ?? []).length > 0 && (
+            {!categoryId && visibleCategories.length > 0 && (
                 <Card className="mt-8">
                     <CardHeader title="Jelajahi per kategori" />
                     <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                        {categories!.map((category) => (
+                        {visibleCategories.map((category) => (
                             <button
                                 key={category.id}
                                 type="button"

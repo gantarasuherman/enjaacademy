@@ -6,7 +6,6 @@ import { useUiStore } from '@/store/uiStore';
 import { useThemeStore } from '@/store/themeStore';
 import { useAuthStore } from '@/store/authStore';
 import { useProgressStore } from '@/store/progressStore';
-import { streakFromActivity } from '@/utils/gamification';
 import { ALL_NAV_ITEMS } from './navigation';
 import { Avatar } from '@/components/ui/Avatar';
 import { IconButton } from '@/components/ui/Button';
@@ -79,11 +78,10 @@ export function Topbar() {
     const { toggleSidebar, sidebarCollapsed, setSearchOpen } = useUiStore();
     const { theme, toggle: toggleTheme } = useThemeStore();
     const { user, logout } = useAuthStore();
-    const activity = useProgressStore((state) => state.activity);
+    const streak = useProgressStore((state) => state.streakDays);
     const [menuOpen, setMenuOpen] = useState(false);
     const navigate = useNavigate();
 
-    const streak = streakFromActivity(activity);
     const isDark = theme === 'dark' || (theme === 'system' && document.documentElement.classList.contains('dark'));
 
     // Cmd/Ctrl+K opens the palette, matching the shortcut users expect.

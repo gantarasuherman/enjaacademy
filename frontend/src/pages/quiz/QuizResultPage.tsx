@@ -1,22 +1,40 @@
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { CheckCircle2, Clock, Lightbulb, RotateCcw, Target, XCircle, Zap } from 'lucide-react';
+import {
+    CheckCircle2,
+    Clock,
+    History,
+    Lightbulb,
+    RotateCcw,
+    Target,
+    Trophy,
+    XCircle,
+    Zap,
+} from 'lucide-react';
 import { useQuizStore } from '@/store/quizStore';
 import { cn } from '@/utils/cn';
-import { formatDuration } from '@/utils/format';
+import { formatDate, formatDuration } from '@/utils/format';
 import { Card, CardHeader } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { ProgressRing } from '@/components/ui/Progress';
-import { EmptyState } from '@/components/ui/Feedback';
+import { Alert, EmptyState } from '@/components/ui/Feedback';
 import { StatCard } from '@/components/feature/shared/StatCard';
+
+/** Motivational copy by score bracket — always derived from the real score, never hardcoded per-quiz. */
+function scoreMessage(score: number): string {
+    if (score >= 90) return 'Luar biasa! 🎉';
+    if (score >= 75) return 'Bagus! Terus berlatih 💪';
+    if (score >= 60) return 'Cukup baik, coba lagi!';
+    return 'Jangan menyerah, ayo belajar lagi!';
+}
 
 export default function QuizResultPage() {
     const { quizId = '' } = useParams();
     const navigate = useNavigate();
 
-    const { quiz, questions, result, records, start } = useQuizStore();
+    const { quiz, questions, result, records, overview } = useQuizStore();
 
     // A direct visit (or a refresh) has no result in memory to show.
     useEffect(() => {
@@ -34,6 +52,8 @@ export default function QuizResultPage() {
     }
 
     const answerMap = new Map(records.map((record) => [record.questionId, record]));
+    const attemptNumber = overview?.attemptsUsed ?? overview?.history[0]?.attemptNumber ?? null;
+    const canRetry = overview ? overview.canAttempt : true;
 
     return (
         <div className="mx-auto max-w-3xl">
@@ -44,6 +64,11 @@ export default function QuizResultPage() {
                 transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
             >
                 <Card className="text-center">
+                    <div className="mb-4 flex flex-wrap items-center justify-center gap-2 text-xs text-fg-muted">
+                        {attemptNumber !== null && <Badge tone="neutral">Percobaan #{attemptNumber}</Badge>}
+                        <span>{formatDate(result.completedAt, 'd MMMM yyyy • HH:mm')}</span>
+                    </div>
+
                     <ProgressRing
                         value={result.score}
                         size={148}
@@ -61,6 +86,8 @@ export default function QuizResultPage() {
                         {result.passed ? '🎉 Lulus!' : 'Belum lulus'}
                     </h1>
 
+                    <p className="mt-1 font-display text-sm font-bold text-primary">{scoreMessage(result.score)}</p>
+
                     <p className="mt-1.5 text-sm text-fg-muted">
                         {result.passed
                             ? `Kamu menjawab ${result.correctCount} dari ${result.totalCount} soal dengan benar.`
@@ -73,16 +100,22 @@ export default function QuizResultPage() {
                         </Badge>
                     )}
 
+                    {!canRetry && (
+                        <Alert tone="warning" title="Kesempatan kuis telah habis" className="mt-4 text-left">
+                            Kamu telah menggunakan seluruh {overview?.attemptsLimit} kesempatan untuk kuis ini.
+                        </Alert>
+                    )}
+
                     <div className="mt-6 flex flex-wrap justify-center gap-2">
-                        <Button
-                            onClick={() => {
-                                void start(quizId);
-                                navigate(`/app/quiz/${quizId}`);
-                            }}
-                            icon={<RotateCcw className="size-4" />}
-                        >
-                            Coba lagi
-                        </Button>
+                        {canRetry ? (
+                            <Button onClick={() => navigate(`/app/quiz/${quizId}`)} icon={<RotateCcw className="size-4" />}>
+                                Ulangi Quiz
+                            </Button>
+                        ) : (
+                            <Button onClick={() => navigate(`/app/quiz/${quizId}`)} icon={<History className="size-4" />}>
+                                Lihat Riwayat Nilai
+                            </Button>
+                        )}
                         <Button to="/app/quiz" variant="outline">
                             Kuis lain
                         </Button>
@@ -117,6 +150,53 @@ export default function QuizResultPage() {
                     tone="info"
                 />
             </div>
+
+            {/* Attempt stats */}
+            {overview && overview.attemptsUsed > 0 && (
+                <div className="mt-5 grid gap-4 sm:grid-cols-4">
+                    <StatCard icon={Trophy} label="Nilai terbaik" value={overview.best ?? '—'} tone="success" />
+                    <StatCard icon={XCircle} label="Nilai terendah" value={overview.worst ?? '—'} tone="warning" />
+                    <StatCard icon={Target} label="Rata-rata" value={overview.average ?? '—'} tone="primary" />
+                    <StatCard icon={History} label="Total percobaan" value={overview.attemptsUsed} tone="info" />
+                </div>
+            )}
+
+            {/* History */}
+            {overview && overview.history.length > 1 && (
+                <Card className="mt-5">
+                    <CardHeader
+                        title="Riwayat Nilai"
+                        subtitle="Terbaru ke terlama"
+                        action={<History className="size-5 text-fg-muted" />}
+                    />
+                    <ol className="space-y-2">
+                        {overview.history.map((attempt) => (
+                            <li
+                                key={attempt.attemptNumber}
+                                className="flex items-center justify-between rounded-sm bg-surface-sunken px-3 py-2 text-sm"
+                            >
+                                <div className="flex items-center gap-3">
+                                    <span className="grid size-7 shrink-0 place-items-center rounded-full bg-surface text-xs font-bold text-fg-muted">
+                                        #{attempt.attemptNumber}
+                                    </span>
+                                    <div>
+                                        <p className="font-semibold">{attempt.score} / 100</p>
+                                        <p className="text-xs text-fg-muted">
+                                            {attempt.correctCount}/{attempt.totalCount} benar ·{' '}
+                                            {formatDate(attempt.completedAt, 'd MMMM yyyy • HH:mm')}
+                                        </p>
+                                    </div>
+                                </div>
+                                {attempt.passed ? (
+                                    <CheckCircle2 className="size-4 shrink-0 text-success" />
+                                ) : (
+                                    <XCircle className="size-4 shrink-0 text-danger" />
+                                )}
+                            </li>
+                        ))}
+                    </ol>
+                </Card>
+            )}
 
             {/* Review */}
             <Card className="mt-5">

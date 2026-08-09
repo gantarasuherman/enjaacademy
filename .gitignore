@@ -34,3 +34,6 @@ yarn-error.log
 /frontend/dist
 /frontend/dev-dist
 /frontend/.env
+
+# macOS
+.DS_Store

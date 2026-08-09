@@ -10,8 +10,9 @@ class DatabaseSeeder extends Seeder
 {
     /**
      * Order matters:
-     *   roles/permissions -> users -> learning content (creates module
-     *   permissions) -> menus (reads modules and permissions).
+     *   roles/permissions -> users -> learning content (creates modules and
+     *   permissions) -> Japanese content (fills the modules it owns) ->
+     *   menus (reads modules and permissions).
      */
     public function run(): void
     {
@@ -21,7 +22,10 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             AchievementSeeder::class,
             LearningContentSeeder::class,
+            JapaneseContentSeeder::class,
+            GrammarStructureSeeder::class,
             QuizSeeder::class,
+            FlashcardSeeder::class,
             MenuSeeder::class,
         ]);
 

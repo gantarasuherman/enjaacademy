@@ -52,6 +52,45 @@ class AuthController extends Controller
         ]);
     }
 
+    /**
+     * Self-registration. Every new account lands on the Student role (view
+     * access to every learning module — see LearningContentSeeder) and is
+     * auto-verified/active, since there is no email-sending or admin-approval
+     * flow in this app yet — the same trade-off the seeded demo accounts make.
+     */
+    public function register(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:150'],
+            'email' => ['required', 'email', 'max:180', 'unique:users,email'],
+            'password' => ['required', 'string', 'min:6'],
+            'device_name' => ['nullable', 'string', 'max:100'],
+        ]);
+
+        $user = User::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']),
+            'email_verified_at' => now(),
+            'is_active' => true,
+            'locale' => 'id',
+            'timezone' => 'Asia/Jakarta',
+        ]);
+
+        $user->assignRole('Student');
+        $user->stat()->create();
+
+        $token = $user->createToken(
+            $validated['device_name'] ?? 'api',
+            $user->getAllPermissions()->pluck('name')->all() ?: ['basic'],
+        );
+
+        return response()->json([
+            'token' => $token->plainTextToken,
+            'user' => new UserResource($user->load('roles')),
+        ], 201);
+    }
+
     public function me(Request $request): UserResource
     {
         return new UserResource($request->user()->load(['roles', 'stat']));

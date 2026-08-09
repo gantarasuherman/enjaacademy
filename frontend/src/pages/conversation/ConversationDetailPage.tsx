@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { CheckCircle2, Eye, EyeOff, Mic, MicOff, RotateCcw, Volume2 } from 'lucide-react';
+import { CheckCircle2, Mic, MicOff, RotateCcw, Volume2 } from 'lucide-react';
 import { useAsync } from '@/hooks/useAsync';
 import { scorePronunciation, useSpeechRecognition } from '@/hooks/useSpeechRecognition';
 import { useSpeechSynthesis } from '@/hooks/useSpeechSynthesis';
@@ -26,7 +26,7 @@ export default function ConversationDetailPage() {
     const toast = useUiStore((state) => state.toast);
 
     const [step, setStep] = useState(0);
-    const [showTranslation, setShowTranslation] = useState(false);
+    const [revealedLines, setRevealedLines] = useState<Set<string>>(new Set());
     const [scores, setScores] = useState<Record<string, number>>({});
     const [finished, setFinished] = useState(false);
 
@@ -71,6 +71,15 @@ export default function ConversationDetailPage() {
         }
     }
 
+    function toggleReveal(lineId: string) {
+        setRevealedLines((prev) => {
+            const next = new Set(prev);
+            if (next.has(lineId)) next.delete(lineId);
+            else next.add(lineId);
+            return next;
+        });
+    }
+
     function restart() {
         setStep(0);
         setScores({});
@@ -100,18 +109,9 @@ export default function ConversationDetailPage() {
                 description={scenario.context}
                 badge={<CefrBadge level={scenario.cefr} />}
                 action={
-                    <div className="flex gap-2">
-                        <Button
-                            variant="outline"
-                            icon={showTranslation ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
-                            onClick={() => setShowTranslation((v) => !v)}
-                        >
-                            Terjemahan
-                        </Button>
-                        <Button variant="ghost" icon={<RotateCcw className="size-4" />} onClick={restart}>
-                            Ulangi
-                        </Button>
-                    </div>
+                    <Button variant="ghost" icon={<RotateCcw className="size-4" />} onClick={restart}>
+                        Ulangi
+                    </Button>
                 }
             />
 
@@ -134,6 +134,10 @@ export default function ConversationDetailPage() {
                 <div className="space-y-6">
                     {/* Dialogue thread */}
                     <Card>
+                        <p className="mb-4 text-xs text-fg-muted">
+                            Cara baca (romaji) selalu tampil. Arahkan kursor atau ketuk kalimat untuk melihat
+                            terjemahan Bahasa Indonesia.
+                        </p>
                         <div className="space-y-4">
                             {visibleLines.map((line) => {
                                 const mine = line.role === 'b';
@@ -155,23 +159,37 @@ export default function ConversationDetailPage() {
                                             {line.speaker.slice(0, 2).toUpperCase()}
                                         </span>
 
-                                        <div className={cn('min-w-0 max-w-[80%]', mine && 'items-end')}>
+                                        <div className={cn('group/bubble min-w-0 max-w-[80%]', mine && 'items-end')}>
                                             <p className="mb-1 text-xs font-medium text-fg-muted">{line.speaker}</p>
 
-                                            <div
+                                            <button
+                                                type="button"
+                                                onClick={() => toggleReveal(line.id)}
                                                 className={cn(
-                                                    'rounded-md px-4 py-2.5 text-sm',
+                                                    'block w-full rounded-md px-4 py-2.5 text-left text-sm transition',
                                                     mine
                                                         ? 'bg-primary text-white'
                                                         : 'bg-surface-sunken text-fg',
                                                 )}
                                             >
                                                 {line.text}
-                                            </div>
+                                            </button>
 
-                                            {showTranslation && (
-                                                <p className="mt-1 text-xs text-fg-muted">{line.translation}</p>
+                                            {line.romaji && (
+                                                <p className={cn('mt-1 text-xs italic text-fg-muted', mine && 'text-right')}>
+                                                    {line.romaji}
+                                                </p>
                                             )}
+
+                                            <p
+                                                className={cn(
+                                                    'mt-1 text-xs text-primary',
+                                                    mine && 'text-right',
+                                                    revealedLines.has(line.id) ? 'block' : 'hidden group-hover/bubble:block',
+                                                )}
+                                            >
+                                                {line.translation}
+                                            </p>
 
                                             <div className={cn('mt-1.5 flex items-center gap-2', mine && 'justify-end')}>
                                                 {ttsSupported && !mine && (
@@ -206,12 +224,24 @@ export default function ConversationDetailPage() {
                                         subtitle="Ucapkan kalimat berikut sejelas mungkin."
                                     />
 
-                                    <div className="rounded-sm bg-surface-sunken p-4 text-center">
+                                    <button
+                                        type="button"
+                                        onClick={() => toggleReveal(currentLine!.id)}
+                                        className="group/turn w-full rounded-sm bg-surface-sunken p-4 text-center"
+                                    >
                                         <p className="font-display text-lg font-bold">{currentLine!.text}</p>
-                                        {showTranslation && (
-                                            <p className="mt-1 text-sm text-fg-muted">{currentLine!.translation}</p>
+                                        {currentLine!.romaji && (
+                                            <p className="mt-1 text-sm italic text-fg-muted">{currentLine!.romaji}</p>
                                         )}
-                                    </div>
+                                        <p
+                                            className={cn(
+                                                'mt-1 text-sm text-primary',
+                                                revealedLines.has(currentLine!.id) ? 'block' : 'hidden group-hover/turn:block',
+                                            )}
+                                        >
+                                            {currentLine!.translation}
+                                        </p>
+                                    </button>
 
                                     <div className="mt-5 flex flex-col items-center gap-3">
                                         <button

@@ -5,6 +5,8 @@
 
 export type CEFRLevel = 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2';
 export type Difficulty = 'beginner' | 'intermediate' | 'advanced';
+/** Which language this content teaches — absent on older mock rows that predate the bilingual catalog. */
+export type LanguageSlug = 'japanese' | 'english';
 
 export type SkillType =
     | 'vocabulary'
@@ -42,39 +44,57 @@ export interface UserSettings {
 
 /* ------------------------------------------------------------ Learning ---- */
 
+/**
+ * Mirrors `ModuleResource` (backend) exactly — a module is a row in
+ * `learning_modules`, not a per-skill mock concept. `content_type` is the
+ * backend's `content_type` enum (kana, kanji, vocabulary, grammar,
+ * conversation, listening, speaking, reading, writing, exam).
+ */
 export interface LearningModule {
-    id: string;
-    title: string;
-    description: string;
-    level: Difficulty;
-    cefr: CEFRLevel;
-    category: SkillType;
-    thumbnail: string;
+    id: number;
+    name: string;
+    slug: string;
     icon: string;
     color: string;
-    durationMinutes: number;
-    lessonIds: string[];
-    order: number;
+    content_type: SkillType | 'kana' | 'kanji' | 'exam';
+    description: string | null;
+    lessons_count?: number;
+    /** Whether the current user took this class. A record, not an access gate. */
+    is_enrolled?: boolean;
+    language?: { name: string; slug: string; flag: string };
 }
 
+/** One row inside a lesson — mirrors the `items` array of `LessonResource`. */
+export interface LessonItem {
+    id: number;
+    term: string;
+    reading: string | null;
+    romaji: string | null;
+    meaning: string | null;
+    example: string | null;
+    example_meaning: string | null;
+    extra: Record<string, unknown> | null;
+}
+
+/**
+ * Mirrors `LessonResource` (backend) exactly. A lesson's content is generic
+ * — HTML `content` plus a flat list of `items` — regardless of what skill
+ * its parent module teaches. Per-skill pages (Vocabulary, Grammar,
+ * Conversation) build their own richer view on top of the same items.
+ */
 export interface Lesson {
-    id: string;
-    moduleId: string;
+    id: number;
     title: string;
-    description: string;
-    type: SkillType;
-    order: number;
-    durationMinutes: number;
-    xpReward: number;
-    /** Populated depending on `type`. */
-    vocabularyIds?: string[];
-    grammarTopicId?: string;
-    listeningTrackId?: string;
-    readingTextId?: string;
-    writingTaskId?: string;
-    conversationId?: string;
-    speakingIds?: string[];
-    quizId?: string;
+    slug: string;
+    level: string | null;
+    summary: string | null;
+    content?: string | null;
+    translated_content?: string | null;
+    estimated_minutes: number;
+    xp_reward: number;
+    items_count?: number;
+    module?: LearningModule;
+    items?: LessonItem[];
 }
 
 /* ---------------------------------------------------------- Vocabulary ---- */
@@ -86,6 +106,7 @@ export interface Category {
     color: string;
     description: string;
     wordCount: number;
+    language?: LanguageSlug;
 }
 
 export interface VocabularyItem {
@@ -103,6 +124,7 @@ export interface VocabularyItem {
     categoryId: string;
     cefr: CEFRLevel;
     difficulty: Difficulty;
+    language?: LanguageSlug;
 }
 
 /* ------------------------------------------------------------- Grammar ---- */
@@ -121,6 +143,7 @@ export interface GrammarTopic {
     examples: GrammarExample[];
     commonMistakes: { wrong: string; right: string; why: string }[];
     exerciseIds: string[];
+    language?: LanguageSlug;
 }
 
 export interface GrammarExample {
@@ -194,8 +217,10 @@ export interface ReadingText {
     readingMinutes: number;
     coverImage: string | null;
     body: string;
+    translatedBody?: string | null;
     glossary: { word: string; meaning: string }[];
     quizId: string | null;
+    language?: LanguageSlug;
 }
 
 /* ------------------------------------------------------------- Writing ---- */
@@ -228,6 +253,7 @@ export interface DialogueLine {
     speaker: string;
     role: 'a' | 'b';
     text: string;
+    romaji?: string | null;
     translation: string;
     audioUrl: string | null;
     /** When set, the learner speaks this line instead of listening to it. */
@@ -243,6 +269,7 @@ export interface ConversationScenario {
     icon: string;
     keyPhrases: { phrase: string; meaning: string }[];
     lines: DialogueLine[];
+    language?: LanguageSlug;
 }
 
 /* ---------------------------------------------------------- Flashcards ---- */
@@ -355,6 +382,33 @@ export interface QuizResult {
     completedAt: string;
 }
 
+export interface QuizAttemptSummary {
+    attemptNumber: number;
+    score: number;
+    correctCount: number;
+    totalCount: number;
+    passed: boolean;
+    durationSeconds: number;
+    completedAt: string;
+}
+
+/** Attempt history + stats + remaining-attempts info for one quiz/user pair. */
+export interface QuizAttemptsOverview {
+    quizId: string;
+    attemptsUsed: number;
+    /** `null` = unlimited. */
+    attemptsLimit: number | null;
+    /** `null` = unlimited. */
+    attemptsLeft: number | null;
+    canAttempt: boolean;
+    best: number | null;
+    worst: number | null;
+    average: number | null;
+    latest: number | null;
+    /** Newest first. */
+    history: QuizAttemptSummary[];
+}
+
 /* ----------------------------------------------------------- Progress ---- */
 
 export type ProgressStatus = 'not-started' | 'in-progress' | 'completed';
@@ -375,6 +429,38 @@ export interface DailyActivity {
     minutes: number;
     xp: number;
     lessonsCompleted: number;
+}
+
+/** Raw shape of `GET /learning/dashboard` — see ProgressService::dashboardFor(). */
+export interface DashboardStats {
+    stat: {
+        id: number;
+        xp_total: number;
+        level: number;
+        streak_days: number;
+        longest_streak: number;
+        last_active_date: string | null;
+        lessons_completed: number;
+        quizzes_completed: number;
+        perfect_quizzes: number;
+        flashcards_reviewed: number;
+        minutes_learned: number;
+    };
+    level: number;
+    xp_total: number;
+    xp_into_level: number;
+    xp_for_next: number;
+    level_percent: number;
+    /** Keyed by ISO date (`YYYY-MM-DD`), not an array — the backend returns a gap-filled map. */
+    xp_per_day: Record<string, number>;
+    modules: (LearningModule & { completed_lessons: number; completion_percent: number })[];
+    recent: Array<{
+        id: number;
+        amount: number;
+        reason: string;
+        created_at: string;
+        source_type: string | null;
+    }>;
 }
 
 /* -------------------------------------------------------- Achievement ---- */

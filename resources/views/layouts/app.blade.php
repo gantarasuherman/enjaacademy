@@ -29,15 +29,15 @@
     <aside
         x-data
         class="fixed inset-y-0 left-0 z-40 flex w-64 flex-col border-r border-slate-200 bg-white
-               transition-transform duration-200 lg:translate-x-0 dark:border-slate-800 dark:bg-slate-900"
-        :class="$store.ui.sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
+               transition-all duration-200 lg:translate-x-0 dark:border-slate-800 dark:bg-slate-900"
+        :class="[$store.ui.sidebarOpen ? 'translate-x-0' : '-translate-x-full', $store.ui.sidebarCollapsed ? 'lg:w-20' : 'lg:w-64']"
     >
         <div class="flex h-16 shrink-0 items-center gap-2.5 border-b border-slate-200 px-4 dark:border-slate-800">
             <a href="{{ route('admin.home') }}" class="flex min-w-0 items-center gap-2.5">
                 <span class="grid size-9 shrink-0 place-items-center rounded-lg bg-brand-600 text-white">
                     <x-icon name="book-open" class="size-5" />
                 </span>
-                <span class="truncate font-semibold">{{ $appSettings()['app_name'] ?? config('app.name') }}</span>
+                <span class="truncate font-semibold" x-show="!$store.ui.sidebarCollapsed" x-cloak>{{ $appSettings()['app_name'] ?? config('app.name') }}</span>
             </a>
 
             <button type="button" @click="$store.ui.sidebarOpen = false"
@@ -54,7 +54,7 @@
                 @forelse ($sidebarMenus as $item)
                     <x-navigation.sidebar-item :item="$item" />
                 @empty
-                    <li class="px-3 py-8 text-center text-sm text-slate-400">
+                    <li class="px-3 py-8 text-center text-sm text-slate-400" x-show="!$store.ui.sidebarCollapsed" x-cloak>
                         {{ __('No menu is visible for your role yet.') }}
                         @can('menus.create')
                             <a href="{{ route('admin.menus.create') }}" class="mt-2 block font-medium text-brand-600 hover:underline">
@@ -66,11 +66,25 @@
             </ul>
         </nav>
 
+        {{-- Collapse toggle — desktop only, mobile uses the close button above --}}
+        <button type="button" @click="$store.ui.toggleSidebarCollapsed()"
+                class="hidden shrink-0 items-center gap-2.5 border-t border-slate-200 px-4 py-3 text-sm font-medium
+                       text-slate-500 transition hover:bg-slate-100 hover:text-slate-900 lg:flex
+                       dark:border-slate-800 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white"
+                :class="$store.ui.sidebarCollapsed && 'justify-center'"
+                :aria-label="$store.ui.sidebarCollapsed ? '{{ __('Expand sidebar') }}' : '{{ __('Collapse sidebar') }}'">
+            <svg class="size-4.5 shrink-0 transition-transform duration-200" :class="$store.ui.sidebarCollapsed && 'rotate-180'"
+                 fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
+            </svg>
+            <span x-show="!$store.ui.sidebarCollapsed" x-cloak>{{ __('Collapse') }}</span>
+        </button>
+
         <div class="border-t border-slate-200 p-3 dark:border-slate-800">
-            <div class="flex items-center gap-3 rounded-lg px-2 py-2">
-                <img src="{{ auth()->user()->avatar_url }}" alt=""
+            <div class="flex items-center gap-3 rounded-lg px-2 py-2" :class="$store.ui.sidebarCollapsed && 'justify-center'">
+                <img src="{{ auth()->user()->avatar_url }}" alt="" title="{{ auth()->user()->name }}"
                      class="size-9 shrink-0 rounded-full object-cover">
-                <div class="min-w-0 flex-1">
+                <div class="min-w-0 flex-1" x-show="!$store.ui.sidebarCollapsed" x-cloak>
                     <p class="truncate text-sm font-medium">{{ auth()->user()->name }}</p>
                     <p class="truncate text-xs text-slate-500">{{ auth()->user()->getRoleNames()->implode(', ') ?: __('No role') }}</p>
                 </div>
@@ -84,7 +98,7 @@
          class="fixed inset-0 z-30 bg-slate-950/50 backdrop-blur-sm lg:hidden"></div>
 
     {{-- ==================== MAIN ==================== --}}
-    <div class="lg:pl-64">
+    <div x-data class="transition-[padding] duration-200" :class="$store.ui.sidebarCollapsed ? 'lg:pl-20' : 'lg:pl-64'">
 
         {{-- Topbar --}}
         <header class="sticky top-0 z-20 flex h-16 items-center gap-3 border-b border-slate-200 bg-white/85 px-4 backdrop-blur-md lg:px-6 dark:border-slate-800 dark:bg-slate-900/85">

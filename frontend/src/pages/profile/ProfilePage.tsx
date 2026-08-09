@@ -4,7 +4,7 @@ import { useAuthStore } from '@/store/authStore';
 import { useProgressStore } from '@/store/progressStore';
 import { useUiStore } from '@/store/uiStore';
 import { userService } from '@/services/api';
-import { levelInfo, streakFromActivity } from '@/utils/gamification';
+import { levelInfo } from '@/utils/gamification';
 import { formatDate, formatNumber } from '@/utils/format';
 import { Card, CardHeader } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
@@ -24,7 +24,7 @@ const GOALS = [10, 15, 20, 30, 45, 60].map((minutes) => ({
 
 export default function ProfilePage() {
     const { user, patchUser } = useAuthStore();
-    const { xp, activity, progress, unlocked } = useProgressStore();
+    const { xp, unlocked, streakDays, lessonsCompleted } = useProgressStore();
     const toast = useUiStore((state) => state.toast);
 
     const [form, setForm] = useState({
@@ -36,8 +36,8 @@ export default function ProfilePage() {
     const [saving, setSaving] = useState(false);
 
     const info = levelInfo(xp);
-    const streak = streakFromActivity(activity);
-    const completedLessons = progress.filter((row) => row.lessonId && row.status === 'completed').length;
+    const streak = streakDays;
+    const completedLessons = lessonsCompleted;
     const unlockedCount = unlocked.filter((item) => item.unlockedAt).length;
 
     async function handleSubmit(event: FormEvent) {

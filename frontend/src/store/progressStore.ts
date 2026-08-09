@@ -9,16 +9,26 @@ interface ProgressState {
     activity: DailyActivity[];
     unlocked: UnlockedAchievement[];
     bookmarks: Bookmark[];
+    enrolledModuleIds: string[];
     xp: number;
+    /** Real values from `GET /learning/dashboard` — 0 until the first successful `hydrate()`. */
+    streakDays: number;
+    longestStreak: number;
+    lessonsCompleted: number;
+    /** Per-module completion percent from the backend, keyed by module id (as string). */
+    moduleCompletion: Record<string, number>;
     loading: boolean;
 
     hydrate: () => Promise<void>;
-    completeLesson: (lessonId: string, moduleId: string) => Promise<number>;
+    completeLesson: (lessonId: string, moduleId: string, xpReward: number) => Promise<number>;
     awardXp: (amount: number) => { levelUp: boolean; level: number };
     recordMinutes: (minutes: number) => void;
 
     toggleBookmark: (payload: Omit<Bookmark, 'id' | 'createdAt'>) => void;
     isBookmarked: (kind: Bookmark['kind'], refId: string) => boolean;
+
+    toggleEnrollment: (moduleId: string) => void;
+    isEnrolled: (moduleId: string) => boolean;
 
     lessonStatus: (lessonId: string) => Progress['status'];
     modulePercent: (moduleId: string) => number;
@@ -34,24 +44,73 @@ export const useProgressStore = create<ProgressState>()(
             activity: [],
             unlocked: [],
             bookmarks: [],
+            enrolledModuleIds: [],
             xp: 0,
+            streakDays: 0,
+            longestStreak: 0,
+            lessonsCompleted: 0,
+            moduleCompletion: {},
             loading: false,
 
             hydrate: async () => {
                 set({ loading: true });
 
-                const [progress, activity, unlocked, bookmarks] = await Promise.all([
-                    learningService.listProgress(),
-                    userService.getActivity(),
-                    userService.listUnlocked(),
-                    userService.listBookmarks(),
-                ]);
+                // Some of these endpoints don't exist yet (achievements/bookmarks
+                // are still mock-only) — `allSettled` means one 404 no longer
+                // freezes every other piece of progress state along with it.
+                const [dashboardResult, progressResult, activityResult, unlockedResult, bookmarksResult] =
+                    await Promise.allSettled([
+                        learningService.getDashboard(),
+                        learningService.listProgress(),
+                        userService.getActivity(),
+                        userService.listUnlocked(),
+                        userService.listBookmarks(),
+                    ]);
 
-                set({ progress, activity, unlocked, bookmarks, loading: false });
+                set((state) => {
+                    const next: Partial<ProgressState> = { loading: false };
+
+                    if (progressResult.status === 'fulfilled') next.progress = progressResult.value;
+                    if (activityResult.status === 'fulfilled') next.activity = activityResult.value;
+                    if (unlockedResult.status === 'fulfilled') next.unlocked = unlockedResult.value;
+                    if (bookmarksResult.status === 'fulfilled') next.bookmarks = bookmarksResult.value;
+
+                    const dashboard = dashboardResult.status === 'fulfilled' ? dashboardResult.value : null;
+
+                    if (dashboard) {
+                        next.xp = dashboard.xp_total;
+                        next.streakDays = dashboard.stat.streak_days;
+                        next.longestStreak = dashboard.stat.longest_streak;
+                        next.lessonsCompleted = dashboard.stat.lessons_completed;
+                        next.moduleCompletion = Object.fromEntries(
+                            dashboard.modules.map((module) => [String(module.id), module.completion_percent]),
+                        );
+
+                        // Merge real per-day XP into whatever local activity rows
+                        // already exist (from `recordMinutes()`) rather than
+                        // replacing them outright — the backend only tracks
+                        // cumulative minutes, not a per-day breakdown, so that
+                        // part of each row has to stay locally sourced.
+                        const base = next.activity ?? state.activity;
+                        const byDate = new Map(base.map((row) => [row.date, row]));
+
+                        for (const [date, xp] of Object.entries(dashboard.xp_per_day)) {
+                            const existing = byDate.get(date);
+                            byDate.set(
+                                date,
+                                existing ? { ...existing, xp } : { date, minutes: 0, xp, lessonsCompleted: 0 },
+                            );
+                        }
+
+                        next.activity = [...byDate.values()].sort((a, b) => a.date.localeCompare(b.date));
+                    }
+
+                    return next;
+                });
             },
 
-            completeLesson: async (lessonId, moduleId) => {
-                const { xpEarned } = await learningService.completeLesson(lessonId);
+            completeLesson: async (lessonId, moduleId, xpReward) => {
+                const { xpEarned } = await learningService.completeLesson(lessonId, xpReward);
 
                 set((state) => {
                     const existing = state.progress.find((p) => p.lessonId === lessonId);
@@ -151,10 +210,28 @@ export const useProgressStore = create<ProgressState>()(
             isBookmarked: (kind, refId) =>
                 get().bookmarks.some((b) => b.kind === kind && b.refId === refId),
 
+            toggleEnrollment: (moduleId) => {
+                set((state) => ({
+                    enrolledModuleIds: state.enrolledModuleIds.includes(moduleId)
+                        ? state.enrolledModuleIds.filter((id) => id !== moduleId)
+                        : [...state.enrolledModuleIds, moduleId],
+                }));
+
+                // Fire-and-forget sync; the local state is the source of truth
+                // for the current session either way.
+                void learningService.toggleEnrollment(moduleId).catch(() => undefined);
+            },
+
+            isEnrolled: (moduleId) => get().enrolledModuleIds.includes(moduleId),
+
             lessonStatus: (lessonId) =>
                 get().progress.find((p) => p.lessonId === lessonId)?.status ?? 'not-started',
 
             modulePercent: (moduleId) => {
+                const real = get().moduleCompletion[moduleId];
+
+                if (real !== undefined) return real;
+
                 const rows = get().progress.filter((p) => p.moduleId === moduleId && p.lessonId);
 
                 if (rows.length === 0) {
@@ -175,7 +252,12 @@ export const useProgressStore = create<ProgressState>()(
                 activity: state.activity,
                 unlocked: state.unlocked,
                 bookmarks: state.bookmarks,
+                enrolledModuleIds: state.enrolledModuleIds,
                 xp: state.xp,
+                streakDays: state.streakDays,
+                longestStreak: state.longestStreak,
+                lessonsCompleted: state.lessonsCompleted,
+                moduleCompletion: state.moduleCompletion,
             }),
         },
     ),

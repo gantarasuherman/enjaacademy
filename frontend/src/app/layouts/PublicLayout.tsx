@@ -29,7 +29,7 @@ export function PublicLayout() {
                         <span className="grid size-9 place-items-center rounded-sm bg-primary text-white">
                             <GraduationCap className="size-5" />
                         </span>
-                        <span className="font-display text-base font-extrabold">English Academy</span>
+                        <span className="font-display text-base font-extrabold">Enja Academy</span>
                     </Link>
 
                     <nav className="ml-6 hidden items-center gap-1 md:flex">
@@ -106,7 +106,7 @@ export function PublicLayout() {
                             <span className="grid size-8 place-items-center rounded-sm bg-primary text-white">
                                 <GraduationCap className="size-4" />
                             </span>
-                            <span className="font-display font-extrabold">English Academy</span>
+                            <span className="font-display font-extrabold">Enja Academy</span>
                         </div>
                         <p className="mt-3 max-w-sm text-sm text-fg-muted">
                             Belajar Bahasa Inggris terstruktur dari A1 sampai C2 — vocabulary, grammar, listening,
@@ -135,7 +135,7 @@ export function PublicLayout() {
                 </div>
 
                 <div className="border-t border-[var(--surface-border)] px-4 py-5 text-center text-xs text-fg-muted">
-                    © {new Date().getFullYear()} English Academy. Dibangun dengan React 19, TypeScript & Laravel.
+                    © {new Date().getFullYear()} Enja Academy. Dibangun dengan React 19, TypeScript & Laravel.
                 </div>
             </footer>
         </div>

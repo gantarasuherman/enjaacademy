@@ -86,14 +86,14 @@ export default function LandingPage() {
                             </Badge>
 
                             <h1 className="mt-4 font-display text-4xl font-extrabold leading-[1.1] tracking-tight lg:text-5xl">
-                                Kuasai Bahasa Inggris
+                                Kuasai Bahasa Jepang & Inggris
                                 <span className="block text-primary">satu langkah setiap hari.</span>
                             </h1>
 
                             <p className="mt-5 max-w-lg text-base text-fg-muted">
-                                Tujuh skill dalam satu jalur belajar: vocabulary, grammar, listening, speaking,
-                                reading, writing, dan conversation. Lengkap dengan quiz, flashcard, dan pelacakan
-                                progres yang jujur.
+                                Dua bahasa dalam satu jalur belajar: hiragana, katakana, kanji, vocabulary,
+                                grammar, listening, speaking, reading, writing, dan conversation. Lengkap dengan
+                                quiz, flashcard, dan pelacakan progres yang jujur.
                             </p>
 
                             <div className="mt-8 flex flex-wrap gap-3">

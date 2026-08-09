@@ -51,14 +51,21 @@ trait SeedsLearningContent
         $keptSlugs = [];
 
         foreach (array_values($lessons) as $order => $definition) {
+            // Str::slug() drops non-Latin script entirely, so a pure-Japanese
+            // title collapses to the module slug and collides with every
+            // other lesson in the set — callers with such titles must pass
+            // an explicit ASCII `slug`.
+            $slug = $definition['slug'] ?? Str::slug($moduleSlug.'-'.$definition['title']);
+
             $lesson = Lesson::updateOrCreate(
-                ['slug' => Str::slug($moduleSlug.'-'.$definition['title'])],
+                ['slug' => $slug],
                 [
                     'learning_module_id' => $module->id,
                     'title' => $definition['title'],
                     'level' => $definition['level'] ?? 'N5',
                     'summary' => $definition['summary'] ?? null,
                     'content' => $definition['content'] ?? null,
+                    'translated_content' => $definition['translated_content'] ?? null,
                     'estimated_minutes' => $definition['minutes'] ?? 10,
                     'xp_reward' => $definition['xp'] ?? 20,
                     'sort_order' => $order,

@@ -16,7 +16,7 @@ import { useProgressStore } from '@/store/progressStore';
 import { useFlashcardStore } from '@/store/flashcardStore';
 import { useAsync } from '@/hooks/useAsync';
 import { learningService, userService } from '@/services/api';
-import { levelInfo, streakFromActivity, achievementPercent } from '@/utils/gamification';
+import { levelInfo, achievementPercent } from '@/utils/gamification';
 import { formatCompact, formatNumber } from '@/utils/format';
 import { Card, CardHeader } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
@@ -30,7 +30,7 @@ import { ActivityAreaChart } from '@/components/feature/shared/charts';
 
 export default function DashboardPage() {
     const user = useAuthStore((state) => state.user);
-    const { xp, activity, unlocked, todayMinutes, modulePercent } = useProgressStore();
+    const { xp, activity, unlocked, todayMinutes, modulePercent, streakDays } = useProgressStore();
     const dueCount = useFlashcardStore((state) => state.dueCount());
 
     const { data: modules, loading: modulesLoading } = useAsync(() => learningService.listModules(), []);
@@ -38,14 +38,14 @@ export default function DashboardPage() {
     const { data: leaderboard } = useAsync(() => userService.getLeaderboard(), []);
 
     const info = levelInfo(xp);
-    const streak = streakFromActivity(activity);
+    const streak = streakDays;
     const goal = user?.dailyGoalMinutes ?? 20;
     const minutesToday = todayMinutes();
     const goalPercent = Math.min(100, Math.round((minutesToday / goal) * 100));
 
     // "Continue learning" = the module with the most progress that isn't done.
     const inProgress = (modules ?? [])
-        .map((module) => ({ module, percent: modulePercent(module.id) }))
+        .map((module) => ({ module, percent: modulePercent(String(module.id)) }))
         .filter((row) => row.percent > 0 && row.percent < 100)
         .sort((a, b) => b.percent - a.percent);
 
@@ -129,7 +129,7 @@ export default function DashboardPage() {
                                 <Skeleton className="mt-2 h-8 w-56 bg-white/20" />
                             ) : nextUp.module ? (
                                 <>
-                                    <h2 className="mt-1 font-display text-2xl font-extrabold">{nextUp.module.title}</h2>
+                                    <h2 className="mt-1 font-display text-2xl font-extrabold">{nextUp.module.name}</h2>
                                     <p className="mt-1.5 max-w-lg text-sm text-white/80">{nextUp.module.description}</p>
 
                                     <div className="mt-5 max-w-sm">
@@ -146,7 +146,7 @@ export default function DashboardPage() {
                                     </div>
 
                                     <Button
-                                        to={`/app/learning/${nextUp.module.id}`}
+                                        to={`/app/learning/${nextUp.module.slug}`}
                                         variant="secondary"
                                         className="mt-5"
                                         icon={<Play className="size-4" />}
@@ -193,16 +193,16 @@ export default function DashboardPage() {
                             {modulesLoading
                                 ? Array.from({ length: 4 }, (_, i) => <Skeleton key={i} className="h-12 w-full" />)
                                 : (modules ?? []).slice(0, 5).map((module) => {
-                                      const percent = modulePercent(module.id);
+                                      const percent = modulePercent(String(module.id));
 
                                       return (
                                           <Link
                                               key={module.id}
-                                              to={`/app/learning/${module.id}`}
+                                              to={`/app/learning/${module.slug}`}
                                               className="block rounded-sm p-2 transition hover:bg-surface-sunken"
                                           >
                                               <div className="mb-1.5 flex items-center justify-between gap-3">
-                                                  <span className="truncate text-sm font-semibold">{module.title}</span>
+                                                  <span className="truncate text-sm font-semibold">{module.name}</span>
                                                   <span className="shrink-0 font-mono text-xs text-fg-muted">{percent}%</span>
                                               </div>
                                               <ProgressBar

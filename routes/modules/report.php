@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Admin\EnrollmentController;
 use App\Http\Controllers\Admin\ReportController;
 use Illuminate\Support\Facades\Route;
 
@@ -22,4 +23,15 @@ Route::controller(ReportController::class)
         Route::get('/leaderboard', 'leaderboard')->name('leaderboard')->middleware("permission:$prefix.view");
         Route::get('/activity', 'activity')->name('activity')->middleware("permission:$prefix.view");
         Route::get('/export', 'export')->name('export')->middleware("permission:$prefix.view");
+    });
+
+// ====================== ENROLLMENTS ======================
+// Who took which class — a record, not an access gate; Admin only.
+$prefix = 'enrollments';
+Route::controller(EnrollmentController::class)
+    ->prefix($prefix)
+    ->name("$prefix.")
+    ->group(function () use ($prefix) {
+        Route::get('/', 'index')->name('index')->middleware("permission:$prefix.view");
+        Route::delete('/{enrollment}', 'destroy')->name('destroy')->middleware("permission:$prefix.delete");
     });

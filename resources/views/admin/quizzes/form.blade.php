@@ -208,11 +208,28 @@
                                value="{{ old('xp_reward', $quiz->xp_reward ?? 50) }}" class="input">
                     </div>
 
-                    <div>
-                        <label for="max_attempts" class="label">{{ __('Maksimal percobaan') }}</label>
-                        <input id="max_attempts" name="max_attempts" type="number" min="1"
-                               value="{{ old('max_attempts', $quiz->max_attempts) }}" class="input"
-                               placeholder="{{ __('kosong = tak terbatas') }}">
+                    <div x-data="{ unlimited: {{ old('max_attempts', $quiz->max_attempts) ? 'false' : 'true' }} }">
+                        <label class="label">{{ __('Pengaturan Percobaan') }}</label>
+                        <p class="help mt-0 mb-2">{{ __('Berapa kali satu siswa boleh mengerjakan kuis ini.') }}</p>
+
+                        <div class="flex flex-wrap gap-4">
+                            <label class="inline-flex items-center gap-2 text-sm">
+                                <input type="radio" value="true" x-model.boolean="unlimited" class="accent-brand-600">
+                                {{ __('Tidak Terbatas') }}
+                            </label>
+                            <label class="inline-flex items-center gap-2 text-sm">
+                                <input type="radio" value="false" x-model.boolean="unlimited" class="accent-brand-600">
+                                {{ __('Dibatasi') }}
+                            </label>
+                        </div>
+
+                        <div x-show="!unlimited" x-collapse class="mt-3">
+                            <label for="max_attempts" class="label">{{ __('Maksimal Percobaan') }}</label>
+                            <input id="max_attempts" name="max_attempts" type="number" min="1"
+                                   :required="!unlimited" :disabled="unlimited"
+                                   value="{{ old('max_attempts', $quiz->max_attempts) }}" class="input">
+                            <p class="help">{{ __('Harus berupa angka bulat, minimal 1.') }}</p>
+                        </div>
                     </div>
                 </div>
             </div>

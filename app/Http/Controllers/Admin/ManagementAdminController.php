@@ -23,6 +23,11 @@ class ManagementAdminController extends Controller
         return view('admin.management-admin.index', [
             'general' => $this->settings->group('general'),
             'meta' => $this->settings->group('meta'),
+            'integrations' => [
+                // The key itself is never sent to the browser, only whether one is set.
+                'gemini_api_key_set' => $this->settings->hasSecret('gemini_api_key'),
+                'gemini_model' => $this->settings->get('gemini_model', config('services.gemini.model')),
+            ],
             'roles' => Role::orderBy('name')->pluck('name', 'name'),
         ]);
     }
@@ -59,5 +64,20 @@ class ManagementAdminController extends Controller
         }
 
         return back()->with('success', __('Meta settings saved.'));
+    }
+
+    public function updateIntegrations(SettingRequest $request): RedirectResponse
+    {
+        $this->settings->save([
+            'gemini_model' => $request->input('gemini_model') ?: 'gemini-flash-latest',
+        ], 'integrations');
+
+        if ($request->boolean('clear_gemini_api_key')) {
+            $this->settings->clearSecret('gemini_api_key', 'integrations');
+        } else {
+            $this->settings->saveSecret('gemini_api_key', $request->input('gemini_api_key'), 'integrations');
+        }
+
+        return back()->with('success', __('Integrasi disimpan.'));
     }
 }

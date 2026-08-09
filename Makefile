@@ -99,7 +99,7 @@ assets: ## Build admin-panel assets (Blade/Alpine/Tailwind)
 spa-build: ## Build the React SPA
 	$(WS) bash -lc 'cd /var/www/frontend && npm install --no-audit --no-fund && npm run build'
 
-spa-dev: ## Run the React SPA dev server (host port 5174)
+spa-dev: ## Run the React SPA dev server (host port 5173)
 	$(WS_TTY) bash -lc 'cd /var/www/frontend && npm run dev -- --host 0.0.0.0'
 
 deploy-spa: spa-build ## Build the SPA and publish it into public/app

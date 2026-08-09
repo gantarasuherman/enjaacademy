@@ -4,7 +4,7 @@ import { useAsync } from '@/hooks/useAsync';
 import { learningService } from '@/services/api';
 import { useProgressStore } from '@/store/progressStore';
 import { useAuthStore } from '@/store/authStore';
-import { levelInfo, streakFromActivity } from '@/utils/gamification';
+import { levelInfo } from '@/utils/gamification';
 import { formatNumber } from '@/utils/format';
 import { Card, CardHeader } from '@/components/ui/Card';
 import { Chip } from '@/components/ui/Badge';
@@ -26,21 +26,21 @@ export default function ProgressPage() {
     const [metric, setMetric] = useState<'xp' | 'minutes'>('xp');
 
     const user = useAuthStore((state) => state.user);
-    const { xp, activity, progress, modulePercent } = useProgressStore();
+    const { xp, activity, progress, modulePercent, streakDays, lessonsCompleted } = useProgressStore();
     const { data: modules, loading } = useAsync(() => learningService.listModules(), []);
 
     const info = levelInfo(xp);
-    const streak = streakFromActivity(activity);
+    const streak = streakDays;
 
     const windowed = activity.slice(-range);
     const totalMinutes = windowed.reduce((sum, day) => sum + day.minutes, 0);
     const totalXp = windowed.reduce((sum, day) => sum + day.xp, 0);
     const activeDays = windowed.filter((day) => day.minutes > 0).length;
-    const completedLessons = progress.filter((row) => row.lessonId && row.status === 'completed').length;
+    const completedLessons = lessonsCompleted;
 
     // Time split per skill, derived from each module's completion.
     const skillSplit = (modules ?? [])
-        .map((module) => ({ name: module.title, value: modulePercent(module.id) }))
+        .map((module) => ({ name: module.name, value: modulePercent(String(module.id)) }))
         .filter((row) => row.value > 0);
 
     return (
@@ -118,12 +118,12 @@ export default function ProgressPage() {
                         ) : (
                             <div className="space-y-4">
                                 {(modules ?? []).map((module) => {
-                                    const percent = modulePercent(module.id);
+                                    const percent = modulePercent(String(module.id));
 
                                     return (
                                         <div key={module.id}>
                                             <div className="mb-1.5 flex items-center justify-between gap-3">
-                                                <span className="truncate text-sm font-medium">{module.title}</span>
+                                                <span className="truncate text-sm font-medium">{module.name}</span>
                                                 <span className="shrink-0 font-mono text-xs text-fg-muted">{percent}%</span>
                                             </div>
                                             <ProgressBar

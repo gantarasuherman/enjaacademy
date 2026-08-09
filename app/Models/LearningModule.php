@@ -70,6 +70,11 @@ class LearningModule extends Model
         return $this->morphMany(UserProgress::class, 'trackable');
     }
 
+    public function enrollments(): HasMany
+    {
+        return $this->hasMany(Enrollment::class);
+    }
+
     public function scopeActive(Builder $query): Builder
     {
         return $query->where('is_active', true);

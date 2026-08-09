@@ -6,6 +6,7 @@ namespace Database\Seeders;
 
 use App\Models\Setting;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Crypt;
 
 class SettingSeeder extends Seeder
 {
@@ -24,6 +25,8 @@ class SettingSeeder extends Seeder
         ['group' => 'meta', 'key' => 'meta_description', 'value' => 'Platform belajar bahasa Jepang dan Inggris: hiragana, katakana, kanji, JLPT, TOEFL, IELTS, dengan kuis, flashcard, dan pelacakan progres.', 'type' => 'string', 'label' => 'Meta description'],
         ['group' => 'meta', 'key' => 'meta_keywords', 'value' => 'belajar bahasa jepang, hiragana, katakana, kanji, jlpt, bahasa inggris, toefl, ielts', 'type' => 'string', 'label' => 'Meta keywords'],
         ['group' => 'meta', 'key' => 'analytics_id', 'value' => null, 'type' => 'string', 'label' => 'Analytics measurement ID'],
+
+        ['group' => 'integrations', 'key' => 'gemini_model', 'value' => 'gemini-flash-latest', 'type' => 'string', 'label' => 'Model Gemini'],
     ];
 
     public function run(): void
@@ -35,6 +38,33 @@ class SettingSeeder extends Seeder
             );
         }
 
+        $this->seedGeminiKeyOnce();
+
         app(\App\Services\Setting\SettingService::class)->forget();
+    }
+
+    /**
+     * Seeds `gemini_api_key` from the .env value on first run only — once
+     * the row exists (whether from this seeder or the admin Settings UI),
+     * re-running db:seed must never overwrite it, or an admin-entered key
+     * would silently revert to a stale .env value.
+     */
+    private function seedGeminiKeyOnce(): void
+    {
+        if (Setting::query()->where('key', 'gemini_api_key')->exists()) {
+            return;
+        }
+
+        $envKey = config('services.gemini.key');
+
+        Setting::create([
+            'group' => 'integrations',
+            'key' => 'gemini_api_key',
+            'value' => $envKey ? Crypt::encryptString($envKey) : null,
+            'type' => 'secret',
+            'label' => 'Gemini API Key',
+            'sort_order' => count($this->settings),
+            'is_public' => false,
+        ]);
     }
 }

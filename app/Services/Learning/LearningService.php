@@ -126,21 +126,25 @@ class LearningService
                 continue;
             }
 
-            /** @var LessonItem $item */
-            $item = LessonItem::updateOrCreate(
-                ['id' => $row['id'] ?? null, 'lesson_id' => $lesson->id],
-                [
-                    'term' => $row['term'],
-                    'reading' => $row['reading'] ?? null,
-                    'romaji' => $row['romaji'] ?? null,
-                    'meaning' => $row['meaning'] ?? null,
-                    'example' => $row['example'] ?? null,
-                    'example_meaning' => $row['example_meaning'] ?? null,
-                    'extra' => ! empty($row['extra']) ? $row['extra'] : null,
-                    'sort_order' => $index,
-                    'is_active' => filter_var($row['is_active'] ?? true, FILTER_VALIDATE_BOOLEAN),
-                ],
-            );
+            $attributes = [
+                'term' => $row['term'],
+                'reading' => $row['reading'] ?? null,
+                'romaji' => $row['romaji'] ?? null,
+                'meaning' => $row['meaning'] ?? null,
+                'example' => $row['example'] ?? null,
+                'example_meaning' => $row['example_meaning'] ?? null,
+                'extra' => ! empty($row['extra']) ? $row['extra'] : null,
+                'sort_order' => $index,
+                'is_active' => filter_var($row['is_active'] ?? true, FILTER_VALIDATE_BOOLEAN),
+            ];
+
+            // A brand-new row has no id yet — updateOrCreate() would otherwise
+            // put `id => null` in the search/create attributes, and `id` isn't
+            // fillable, so Eloquent either silently drops it or (in strict
+            // mode) throws a MassAssignmentException.
+            $item = empty($row['id'])
+                ? $lesson->items()->create($attributes)
+                : LessonItem::updateOrCreate(['id' => $row['id'], 'lesson_id' => $lesson->id], $attributes);
 
             $kept[] = $item->id;
         }

@@ -20,6 +20,7 @@ class ModuleResource extends JsonResource
             'content_type' => $this->content_type,
             'description' => $this->description,
             'lessons_count' => $this->whenCounted('lessons'),
+            'is_enrolled' => $this->when(isset($this->is_enrolled), fn () => (bool) $this->is_enrolled),
             'language' => $this->whenLoaded('language', fn () => [
                 'name' => $this->language->name,
                 'slug' => $this->language->slug,

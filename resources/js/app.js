@@ -9,7 +9,8 @@ import menuTree from './components/menu-tree';
 import permissionMatrix from './components/permission-matrix';
 import iconPicker from './components/icon-picker';
 import questionBuilder from './components/question-builder';
-import lessonItemBuilder from './components/lesson-item-builder';
+import lessonBuilder from './components/lesson-builder';
+import featureRoadmap from './components/feature-roadmap';
 import { initCharts } from './components/charts';
 
 Alpine.plugin(collapse);
@@ -20,6 +21,9 @@ Alpine.plugin(persist);
 
 Alpine.store('ui', {
     sidebarOpen: false,
+    // Desktop-only "minimize to icons" state — mobile always uses the
+    // full-width off-canvas sidebar via `sidebarOpen` above, unaffected by this.
+    sidebarCollapsed: Alpine.$persist(false).as('ui.sidebarCollapsed'),
     theme: Alpine.$persist('system').as('ui.theme'),
 
     init() {
@@ -28,6 +32,10 @@ Alpine.store('ui', {
         window
             .matchMedia('(prefers-color-scheme: dark)')
             .addEventListener('change', () => this.theme === 'system' && this.applyTheme());
+    },
+
+    toggleSidebarCollapsed() {
+        this.sidebarCollapsed = !this.sidebarCollapsed;
     },
 
     setTheme(theme) {
@@ -67,7 +75,8 @@ Alpine.data('menuTree', menuTree);
 Alpine.data('permissionMatrix', permissionMatrix);
 Alpine.data('iconPicker', iconPicker);
 Alpine.data('questionBuilder', questionBuilder);
-Alpine.data('lessonItemBuilder', lessonItemBuilder);
+Alpine.data('lessonBuilder', lessonBuilder);
+Alpine.data('featureRoadmap', featureRoadmap);
 
 window.Alpine = Alpine;
 Alpine.start();

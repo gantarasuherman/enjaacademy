@@ -34,5 +34,6 @@ class RepositoryServiceProvider extends ServiceProvider
         Contracts\NoteRepositoryInterface::class => Eloquent\NoteRepository::class,
         Contracts\AchievementRepositoryInterface::class => Eloquent\AchievementRepository::class,
         Contracts\ProgressRepositoryInterface::class => Eloquent\ProgressRepository::class,
+        Contracts\EnrollmentRepositoryInterface::class => Eloquent\EnrollmentRepository::class,
     ];
 }

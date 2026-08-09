@@ -4,7 +4,7 @@ import { BookOpen, Clock, FileText, Newspaper, ScrollText, Terminal } from 'luci
 import { useAsync } from '@/hooks/useAsync';
 import { readingService } from '@/services/api';
 import { useProgressStore } from '@/store/progressStore';
-import type { ReadingText } from '@/types';
+import type { LanguageSlug, ReadingText } from '@/types';
 import { Card } from '@/components/ui/Card';
 import { Badge, CefrBadge, Chip } from '@/components/ui/Badge';
 import { EmptyState, Skeleton } from '@/components/ui/Feedback';
@@ -18,6 +18,12 @@ const TYPES: { id: ReadingText['type'] | 'all'; label: string; icon: typeof Book
     { id: 'documentation', label: 'Dokumentasi', icon: Terminal },
 ];
 
+const LANGUAGES: { id: LanguageSlug | 'all'; label: string }[] = [
+    { id: 'all', label: 'Semua Bahasa' },
+    { id: 'japanese', label: '🇯🇵 Bahasa Jepang' },
+    { id: 'english', label: '🇬🇧 Bahasa Inggris' },
+];
+
 const TYPE_META: Record<ReadingText['type'], { label: string; icon: typeof BookOpen }> = {
     story: { label: 'Cerita', icon: ScrollText },
     news: { label: 'Berita', icon: Newspaper },
@@ -27,11 +33,14 @@ const TYPE_META: Record<ReadingText['type'], { label: string; icon: typeof BookO
 
 export default function ReadingPage() {
     const [type, setType] = useState<ReadingText['type'] | 'all'>('all');
+    const [lang, setLang] = useState<LanguageSlug | 'all'>('all');
 
-    const { data: texts, loading } = useAsync(
+    const { data: allTexts, loading } = useAsync(
         () => readingService.list(type === 'all' ? undefined : type),
         [type],
     );
+
+    const texts = (allTexts ?? []).filter((text) => lang === 'all' || text.language === lang);
 
     const isBookmarked = useProgressStore((state) => state.isBookmarked);
 
@@ -41,6 +50,14 @@ export default function ReadingPage() {
                 title="Reading"
                 description="Cerita pendek, berita, artikel opini, dan dokumentasi teknis — masing-masing dengan glosarium kata sulit dan kuis pemahaman."
             />
+
+            <div className="mb-3 flex flex-wrap gap-2">
+                {LANGUAGES.map((item) => (
+                    <Chip key={item.id} active={lang === item.id} onClick={() => setLang(item.id)}>
+                        {item.label}
+                    </Chip>
+                ))}
+            </div>
 
             <div className="mb-5 flex flex-wrap gap-2">
                 {TYPES.map((item) => {
@@ -65,7 +82,7 @@ export default function ReadingPage() {
                         <Skeleton key={i} className="h-44 w-full" />
                     ))}
                 </div>
-            ) : (texts ?? []).length === 0 ? (
+            ) : texts.length === 0 ? (
                 <EmptyState
                     icon={<BookOpen className="size-6" />}
                     title="Belum ada bacaan di kategori ini"
@@ -73,7 +90,7 @@ export default function ReadingPage() {
                 />
             ) : (
                 <div className="grid gap-4 sm:grid-cols-2">
-                    {texts!.map((text) => {
+                    {texts.map((text) => {
                         const meta = TYPE_META[text.type];
                         const Icon = meta.icon;
 
@@ -85,6 +102,8 @@ export default function ReadingPage() {
                                             <Icon className="size-5" />
                                         </span>
                                         <div className="flex flex-wrap justify-end gap-1.5">
+                                            {text.language === 'japanese' && <Badge tone="neutral">🇯🇵</Badge>}
+                                            {text.language === 'english' && <Badge tone="neutral">🇬🇧</Badge>}
                                             <Badge tone="neutral">{meta.label}</Badge>
                                             <CefrBadge level={text.cefr} />
                                         </div>

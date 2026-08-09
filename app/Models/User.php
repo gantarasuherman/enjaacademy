@@ -29,7 +29,7 @@ class User extends Authenticatable implements MustVerifyEmailContract
 
     protected $fillable = [
         'name', 'username', 'email', 'password', 'phone', 'avatar', 'bio',
-        'birth_date', 'gender', 'locale', 'timezone', 'is_active',
+        'birth_date', 'gender', 'locale', 'timezone', 'is_active', 'email_verified_at',
     ];
 
     protected $hidden = ['password', 'remember_token'];
@@ -89,6 +89,11 @@ class User extends Authenticatable implements MustVerifyEmailContract
     public function notes(): HasMany
     {
         return $this->hasMany(Note::class);
+    }
+
+    public function enrollments(): HasMany
+    {
+        return $this->hasMany(Enrollment::class);
     }
 
     public function achievements(): BelongsToMany

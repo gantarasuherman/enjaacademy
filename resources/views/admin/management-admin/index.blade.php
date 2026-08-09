@@ -6,7 +6,7 @@
 
     <div x-data="{ tab: 'general' }" class="space-y-6">
         <div class="flex gap-1 border-b border-slate-200 dark:border-slate-800">
-            @foreach (['general' => __('Umum'), 'meta' => __('Meta / SEO')] as $key => $label)
+            @foreach (['general' => __('Umum'), 'meta' => __('Meta / SEO'), 'integrations' => __('Integrasi')] as $key => $label)
                 <button type="button" @click="tab = '{{ $key }}'"
                         :class="tab === '{{ $key }}'
                             ? 'border-brand-600 text-brand-600'
@@ -155,6 +155,69 @@
 
             <div class="flex justify-end">
                 <button type="submit" class="btn-primary">{{ __('Simpan meta') }}</button>
+            </div>
+        </form>
+
+        {{-- Integrations --}}
+        <form x-show="tab === 'integrations'" x-cloak method="POST" action="{{ route('admin.management-admin.update-integrations') }}"
+              class="space-y-6">
+            @csrf
+
+            <div class="card p-5" x-data="{ showKey: false, clear: false }">
+                <h2 class="mb-1 font-semibold">{{ __('AI Content Generator (Gemini)') }}</h2>
+                <p class="help mt-0 mb-4">
+                    {{ __('Dipakai fitur "Buat dengan AI" di halaman materi. Dapatkan API key gratis di') }}
+                    <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener" class="text-brand-600 hover:underline">aistudio.google.com/apikey</a>
+                    {{ __('— tanpa kartu kredit.') }}
+                </p>
+
+                <div class="space-y-4">
+                    <div>
+                        <label for="gemini_api_key" class="label">{{ __('API Key') }}</label>
+
+                        <div class="relative">
+                            <input :type="showKey ? 'text' : 'password'" id="gemini_api_key" name="gemini_api_key"
+                                   x-bind:disabled="clear" autocomplete="off" class="input pr-10 font-mono"
+                                   placeholder="{{ $integrations['gemini_api_key_set'] ? '•••••••••••••••• ('.__('tersimpan').')' : __('Belum diatur') }}">
+                            <button type="button" @click="showKey = !showKey"
+                                    class="absolute inset-y-0 right-0 grid w-10 place-items-center text-slate-400 hover:text-slate-600">
+                                <x-icon name="eye" class="size-4" />
+                            </button>
+                        </div>
+
+                        <p class="help">
+                            {{ __('Kosongkan untuk mempertahankan key yang sudah tersimpan.') }}
+                            @if ($integrations['gemini_api_key_set'])
+                                <span class="text-emerald-600 dark:text-emerald-400">{{ __('Key sudah diatur.') }}</span>
+                            @else
+                                <span class="text-amber-600 dark:text-amber-400">{{ __('Belum ada key — fitur AI akan menampilkan "belum diaktifkan".') }}</span>
+                            @endif
+                        </p>
+
+                        @if ($integrations['gemini_api_key_set'])
+                            <label class="mt-2 flex items-center gap-2 text-sm text-rose-600">
+                                <input type="hidden" name="clear_gemini_api_key" value="0">
+                                <input type="checkbox" name="clear_gemini_api_key" value="1" x-model="clear"
+                                       class="rounded border-slate-300 text-rose-600">
+                                {{ __('Hapus API key dari Pengaturan (kembali memakai .env jika ada)') }}
+                            </label>
+                        @endif
+
+                        @error('gemini_api_key') <p class="mt-1 text-xs text-rose-600">{{ $message }}</p> @enderror
+                    </div>
+
+                    <div class="max-w-xs">
+                        <label for="gemini_model" class="label">{{ __('Model') }}</label>
+                        <input id="gemini_model" name="gemini_model"
+                               value="{{ old('gemini_model', $integrations['gemini_model']) }}"
+                               class="input font-mono text-sm" placeholder="gemini-flash-latest">
+                        <p class="help">{{ __('Kosongkan untuk memakai default (gemini-flash-latest).') }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-end">
+                <button type="submit" class="btn-primary">{{ __('Simpan integrasi') }}</button>
             </div>
         </form>
     </div>

@@ -139,7 +139,7 @@ Laradock task runner
   Frontend
     assets        Build admin-panel assets
     spa-build     Build the React SPA
-    spa-dev       React SPA dev server (http://localhost:5174)
+    spa-dev       React SPA dev server (http://localhost:5173)
     deploy-spa    Build the SPA and publish it into public/app
 
 Usage:  .\ld.ps1 <task>

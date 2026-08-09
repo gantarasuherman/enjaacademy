@@ -36,6 +36,22 @@ class KanaSeeder extends Seeder
     {
         return [
             [
+                'title' => 'Mengenal Hiragana',
+                'summary' => 'Apa itu hiragana, kapan dipakai, dan cara membacanya — sebelum mulai menghafal huruf satu per satu.',
+                'minutes' => 6,
+                'xp' => 10,
+                'content' => '<p><strong>Hiragana</strong> (ひらがな) adalah salah satu dari tiga sistem tulisan Jepang, bersama katakana dan kanji. Hiragana adalah huruf <strong>fonetik</strong> — tiap huruf mewakili satu bunyi (suku kata), bukan sebuah arti.</p>'
+                    .'<p>Hiragana dipakai untuk:</p>'
+                    .'<ul>'
+                    .'<li>Kata asli Jepang yang tidak (atau belum) ditulis dengan kanji</li>'
+                    .'<li>Partikel tata bahasa (は, が, を, に, dan lainnya)</li>'
+                    .'<li>Akhiran kata kerja dan kata sifat yang berubah bentuk (okurigana)</li>'
+                    .'<li><em>Furigana</em> — bantuan bacaan kecil di atas kanji yang sulit</li>'
+                    .'</ul>'
+                    .'<p>Ada 46 huruf dasar (disebut <em>gojūon</em>, "50 bunyi" — meski sebenarnya 46 setelah beberapa dihapus dari penggunaan modern), ditambah variasi <em>dakuten</em> (゛), <em>handakuten</em> (゜), dan gabungan <em>yōon</em> (きゃ, しゅ, dst). Cara belajar paling efektif: hafal per baris konsonan — baris vokal dulu, baru baris K, S, T, dan seterusnya, persis urutan lesson-lesson berikutnya di modul ini.</p>',
+                'items' => [],
+            ],
+            [
                 'title' => 'Vokal — あ行',
                 'summary' => 'Lima vokal dasar. Semua bunyi hiragana lain dibangun dari kelimanya.',
                 'minutes' => 8,
@@ -246,6 +262,22 @@ class KanaSeeder extends Seeder
     private function katakanaLessons(): array
     {
         return [
+            [
+                'title' => 'Mengenal Katakana',
+                'summary' => 'Apa bedanya dengan hiragana, dan kenapa bentuknya lebih kaku dan bersudut.',
+                'minutes' => 6,
+                'xp' => 10,
+                'content' => '<p><strong>Katakana</strong> (カタカナ) mewakili bunyi yang <em>persis sama</em> dengan hiragana — か dan カ sama-sama dibaca "ka". Bedanya bukan pada bunyi, tapi pada <strong>kapan dipakai</strong> dan <strong>bentuknya</strong>.</p>'
+                    .'<p>Katakana dipakai untuk:</p>'
+                    .'<ul>'
+                    .'<li>Kata serapan dari bahasa asing (コーヒー "koohii" dari <em>coffee</em>)</li>'
+                    .'<li>Nama orang dan tempat luar negeri (アメリカ "Amerika")</li>'
+                    .'<li>Onomatope dan bunyi-bunyian</li>'
+                    .'<li>Penekanan — mirip fungsi huruf miring dalam Bahasa Indonesia</li>'
+                    .'</ul>'
+                    .'<p>Secara bentuk, katakana lebih <strong>bersudut dan lurus</strong> dibanding hiragana yang melengkung — ini sengaja dirancang begitu supaya dua sistem tulisan mudah dibedakan sekilas pandang dalam satu kalimat. Karena bunyinya sama persis dengan hiragana, belajar katakana biasanya lebih cepat begitu hiragana sudah dikuasai.</p>',
+                'items' => [],
+            ],
             [
                 'title' => 'Vokal — ア行',
                 'summary' => 'Katakana dipakai untuk kata serapan, nama asing, dan penekanan.',

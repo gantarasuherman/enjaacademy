@@ -69,6 +69,16 @@ class QuizAttemptRepository extends BaseRepository implements QuizAttemptReposit
             ->get();
     }
 
+    public function forQuiz(User $user, Quiz $quiz): Collection
+    {
+        return QuizAttempt::query()
+            ->where('user_id', $user->id)
+            ->where('quiz_id', $quiz->id)
+            ->finished()
+            ->oldest('finished_at')
+            ->get();
+    }
+
     public function bestScore(User $user, Quiz $quiz): ?int
     {
         $best = QuizAttempt::query()

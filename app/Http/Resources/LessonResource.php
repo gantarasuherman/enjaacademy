@@ -19,6 +19,7 @@ class LessonResource extends JsonResource
             'level' => $this->level,
             'summary' => $this->summary,
             'content' => $this->when($this->relationLoaded('items'), fn () => $this->content),
+            'translated_content' => $this->when($this->relationLoaded('items'), fn () => $this->translated_content),
             'estimated_minutes' => $this->estimated_minutes,
             'xp_reward' => $this->xp_reward,
             'items_count' => $this->whenCounted('items'),

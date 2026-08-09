@@ -1,10 +1,17 @@
-import { defineConfig } from 'vite';
+import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import { VitePWA } from 'vite-plugin-pwa';
 import path from 'node:path';
 
-export default defineConfig({
+export default defineConfig(({ mode }) => {
+    // `import.meta.env` only exposes VITE_-prefixed vars to client code — the
+    // config file itself needs `loadEnv()` to read frontend/.env at all, this
+    // was previously missing so VITE_PROXY_TARGET was silently ignored and
+    // the proxy fell back to a hardcoded (and wrong) default.
+    const env = loadEnv(mode, process.cwd(), '');
+
+    return {
     /*
      * The SPA is mounted under /app on the Laravel host (public/app), and its
      * React routes are already written as /app/*. Setting base here makes the
@@ -20,10 +27,10 @@ export default defineConfig({
             registerType: 'autoUpdate',
             includeAssets: ['favicon.svg', 'robots.txt'],
             manifest: {
-                name: 'English Academy — Belajar Bahasa Inggris',
-                short_name: 'English Academy',
+                name: 'Enja Academy — Belajar Bahasa Jepang & Inggris',
+                short_name: 'Enja Academy',
                 description:
-                    'Belajar Bahasa Inggris terstruktur: vocabulary, grammar, listening, speaking, reading, writing, quiz, dan flashcard.',
+                    'Belajar Bahasa Jepang dan Inggris terstruktur: vocabulary, grammar, listening, speaking, reading, writing, quiz, dan flashcard.',
                 theme_color: '#02468B',
                 background_color: '#F8FAFC',
                 display: 'standalone',
@@ -79,8 +86,13 @@ export default defineConfig({
         watch: { usePolling: true },
         proxy: {
             // Keeps the browser same-origin in dev, so Sanctum cookies work.
+            // Default targets the `nginx` container by its Docker Compose
+            // service name — this dev server runs inside `workspace`, which
+            // shares a network with `nginx` but has no route to the host's
+            // "localhost", so a host-facing port (8000/8001/etc.) here would
+            // silently fail every request.
             '/api': {
-                target: process.env.VITE_PROXY_TARGET ?? 'http://localhost:8000',
+                target: env.VITE_PROXY_TARGET || 'http://nginx',
                 changeOrigin: true,
             },
         },
@@ -101,4 +113,5 @@ export default defineConfig({
             },
         },
     },
+    };
 });

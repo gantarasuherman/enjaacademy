@@ -43,9 +43,13 @@ class LearningModuleRepository extends BaseRepository implements LearningModuleR
     /**
      * Permission-aware listing: a module is offered only when the user holds
      * `{permission_prefix}.view`, so admins gate content without touching code.
+     * Each module is also annotated with `is_enrolled` — enrollment is a
+     * record, not a gate, so it never affects which modules appear here.
      */
     public function accessibleFor(User $user): Collection
     {
+        $enrolledIds = $user->enrollments()->pluck('learning_module_id')->all();
+
         return LearningModule::query()
             ->active()
             ->with('language')
@@ -53,6 +57,10 @@ class LearningModuleRepository extends BaseRepository implements LearningModuleR
             ->orderBy('sort_order')
             ->get()
             ->filter(fn (LearningModule $module) => $user->can($module->permission('view')))
+            ->each(fn (LearningModule $module) => $module->setAttribute(
+                'is_enrolled',
+                in_array($module->id, $enrolledIds, true),
+            ))
             ->groupBy(fn (LearningModule $module) => $module->language->name);
     }
 
