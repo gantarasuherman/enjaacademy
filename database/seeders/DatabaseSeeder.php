@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             LearningContentSeeder::class,
             JapaneseContentSeeder::class,
             GrammarStructureSeeder::class,
+            GrammarPatternSeeder::class,
             QuizSeeder::class,
             FlashcardSeeder::class,
             MenuSeeder::class,

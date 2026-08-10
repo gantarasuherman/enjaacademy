@@ -21,11 +21,20 @@ class GrammarLevelRequest extends FormRequest
 
     public function rules(): array
     {
-        $id = $this->route('grammar_level')?->id;
+        $level = $this->route('grammar_level');
+        $language = $this->input('language', $level?->language ?? 'japanese');
+        $track = $this->input('track', $level?->track ?? 'grammar');
 
         return [
             'name' => ['required', 'string', 'max:100'],
-            'slug' => ['nullable', 'string', 'max:100', Rule::unique('grammar_levels', 'slug')->ignore($id)],
+            'language' => ['required', 'string', Rule::in(['japanese', 'english'])],
+            'track' => ['required', 'string', Rule::in(['grammar', 'structure'])],
+            'slug' => [
+                'nullable', 'string', 'max:100',
+                Rule::unique('grammar_levels', 'slug')
+                    ->where(fn ($q) => $q->where('language', $language)->where('track', $track))
+                    ->ignore($level?->id),
+            ],
             'color' => ['nullable', 'string', 'max:30'],
             'description' => ['nullable', 'string', 'max:1000'],
             'sort_order' => ['nullable', 'integer', 'min:0'],

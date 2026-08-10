@@ -8,7 +8,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\GrammarLevelRequest;
 use App\Models\GrammarLevel;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class GrammarLevelController extends Controller
@@ -18,7 +17,10 @@ class GrammarLevelController extends Controller
         $this->authorize('viewAny', GrammarLevel::class);
 
         return view('admin.grammar.levels.index', [
-            'levels' => GrammarLevel::withCount('categories')->orderBy('sort_order')->get(),
+            'levels' => GrammarLevel::withCount('categories')
+                ->orderBy('language')->orderBy('track')->orderBy('sort_order')
+                ->get()
+                ->groupBy(fn (GrammarLevel $level) => "{$level->language}|{$level->track}"),
         ]);
     }
 
@@ -32,7 +34,14 @@ class GrammarLevelController extends Controller
     public function store(GrammarLevelRequest $request): RedirectResponse
     {
         $data = $request->validated();
-        $data['slug'] = ($data['slug'] ?? '') ?: Str::slug($data['name']);
+
+        // No manual slug fallback here — leaving `slug` out entirely when
+        // blank lets HasSlug's boot hook run `generateUniqueSlug()`, which is
+        // scoped to this level's (language, track) tree. Precomputing it here
+        // would bypass that uniqueness check.
+        if (($data['slug'] ?? '') === '') {
+            unset($data['slug']);
+        }
 
         $level = GrammarLevel::create($data);
 

@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Clock, Sigma, Waypoints } from 'lucide-react';
+import { ArrowRight, BookMarked, Clock, Sigma, Waypoints } from 'lucide-react';
 import { useAsync } from '@/hooks/useAsync';
-import { grammarService } from '@/services/api';
-import type { LanguageSlug, Tense } from '@/types';
+import { grammarService, jlptGrammarService } from '@/services/api';
+import type { JlptGrammarCategory, JlptGrammarLevel, LanguageSlug, Tense } from '@/types';
 import { Card, CardHeader } from '@/components/ui/Card';
-import { Badge, CefrBadge, Chip } from '@/components/ui/Badge';
+import { Badge, CefrBadge, Chip, type BadgeTone } from '@/components/ui/Badge';
 import { Tabs, TabPanel } from '@/components/ui/Tabs';
 import { Pagination } from '@/components/ui/Pagination';
 import { EmptyState, Skeleton } from '@/components/ui/Feedback';
@@ -44,23 +44,121 @@ const GROUP_TONE: Record<Tense['group'], 'success' | 'info' | 'secondary' | 'pri
 
 const HAS_TENSES = import.meta.env.VITE_DATA_SOURCE !== 'api';
 
+const LEVEL_COLOR_TONE: Record<string, BadgeTone> = {
+    emerald: 'success',
+    sky: 'info',
+    amber: 'warning',
+    orange: 'secondary',
+    rose: 'danger',
+};
+
 const LANGUAGES: { id: LanguageSlug | 'all'; label: string }[] = [
     { id: 'all', label: 'Semua Bahasa' },
     { id: 'japanese', label: '🇯🇵 Bahasa Jepang' },
     { id: 'english', label: '🇬🇧 Bahasa Inggris' },
 ];
 
+/** Shared level-picker + paginated category-grid used by both the Grammar and Struktur tabs. */
+function LevelCategoryBrowser({
+    loading,
+    levels,
+    activeLevel,
+    onSelectLevel,
+    categoriesPage,
+    emptyLevelsTitle,
+}: {
+    loading: boolean;
+    levels: JlptGrammarLevel[] | null | undefined;
+    activeLevel: JlptGrammarLevel | null;
+    onSelectLevel: (levelId: string) => void;
+    categoriesPage: { page: number; setPage: (p: number) => void; pageRows: JlptGrammarCategory[]; totalPages: number };
+    emptyLevelsTitle: string;
+}) {
+    if (loading) return <Skeleton className="h-40 w-full" />;
+
+    if (!levels || levels.length === 0) {
+        return <EmptyState title={emptyLevelsTitle} description="Konten sedang disiapkan." />;
+    }
+
+    return (
+        <>
+            <div className="mb-5 flex flex-wrap gap-2">
+                {levels.map((level) => (
+                    <Chip key={level.id} active={activeLevel?.id === level.id} onClick={() => onSelectLevel(level.id)}>
+                        {level.name}
+                    </Chip>
+                ))}
+            </div>
+
+            {activeLevel?.description && <p className="mb-5 text-sm text-fg-muted">{activeLevel.description}</p>}
+
+            {categoriesPage.pageRows.length === 0 ? (
+                <EmptyState title="Belum ada kategori di level ini" />
+            ) : (
+                <>
+                    <div className="grid gap-4 sm:grid-cols-2">
+                        {categoriesPage.pageRows.map((category) => {
+                            const total = category.patternsCount + category.children.reduce((sum, c) => sum + c.patternsCount, 0);
+
+                            return (
+                                <Link key={category.id} to={`/app/grammar/jlpt/${category.id}`} className="block h-full">
+                                    <Card interactive className="flex h-full flex-col">
+                                        <div className="flex items-start justify-between gap-3">
+                                            <h3 className="font-display text-base font-bold">{category.name}</h3>
+                                            {activeLevel && (
+                                                <Badge tone={LEVEL_COLOR_TONE[activeLevel.color] ?? 'neutral'}>{activeLevel.name}</Badge>
+                                            )}
+                                        </div>
+                                        <p className="mt-2 flex-1 text-sm text-fg-muted">
+                                            {total} pola
+                                            {category.children.length > 0 && ` · ${category.children.length} subkategori`}
+                                        </p>
+                                        <span className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-primary">
+                                            Lihat pola <ArrowRight className="size-3.5" />
+                                        </span>
+                                    </Card>
+                                </Link>
+                            );
+                        })}
+                    </div>
+                    <Pagination
+                        page={categoriesPage.page}
+                        totalPages={categoriesPage.totalPages}
+                        onChange={categoriesPage.setPage}
+                        className="mt-6"
+                    />
+                </>
+            )}
+        </>
+    );
+}
+
 export default function GrammarPage() {
     const [tab, setTab] = useState('tenses');
     const [group, setGroup] = useState<string>('all');
     const [lang, setLang] = useState<LanguageSlug | 'all'>('all');
+    const [grammarLevelId, setGrammarLevelId] = useState<string | null>(null);
+    const [structureLevelId, setStructureLevelId] = useState<string | null>(null);
+
+    // Grammar and Structure are both leveled per-language (JLPT N5-N1 for
+    // Japanese, Beginner..Advanced for English) — when the top language
+    // filter is "Semua Bahasa" there's no single level scheme to show, so
+    // these two tabs fall back to Japanese.
+    const cmsLanguage = lang === 'all' ? 'japanese' : lang;
 
     const { data: allTopics, loading: topicsLoading } = useAsync(() => grammarService.listTopics(), []);
     const { data: tenses, loading: tensesLoading } = useAsync(() => grammarService.listTenses(), []);
+    const { data: grammarLevels, loading: grammarLoading } = useAsync(
+        () => jlptGrammarService.listLevels({ language: cmsLanguage, track: 'grammar' }),
+        [cmsLanguage],
+    );
+    const { data: structureLevels, loading: structureLoading } = useAsync(
+        () => jlptGrammarService.listLevels({ language: cmsLanguage, track: 'structure' }),
+        [cmsLanguage],
+    );
 
     const topics = (allTopics ?? []).filter((topic) => lang === 'all' || topic.language === lang);
     const partsOfSpeech = topics.filter((topic) => topic.kind === 'parts-of-speech');
-    const structures = topics.filter((topic) => topic.kind === 'structure');
     // The dedicated `tenses`/`Tense[]` system below (`HAS_TENSES`) has no
     // backend at all and hides itself in `api` mode — this is a second,
     // parallel way to reach tense content that *does* have a real backend
@@ -73,13 +171,18 @@ export default function GrammarPage() {
     const tenseTopicsPage = usePage(tenseTopics);
     const tensesPage = usePage(filteredTenses);
     const partsPage = usePage(partsOfSpeech);
-    const structuresPage = usePage(structures);
+
+    const activeGrammarLevel = grammarLevels?.find((l) => l.id === grammarLevelId) ?? grammarLevels?.[0] ?? null;
+    const grammarCategoriesPage = usePage(activeGrammarLevel?.categories ?? []);
+
+    const activeStructureLevel = structureLevels?.find((l) => l.id === structureLevelId) ?? structureLevels?.[0] ?? null;
+    const structureCategoriesPage = usePage(activeStructureLevel?.categories ?? []);
 
     return (
         <>
             <PageHeader
                 title="Grammar"
-                description="Fondasi tata bahasa: parts of speech, delapan tense inti, dan struktur kalimat tingkat menengah — semuanya dengan rumus, contoh, dan kesalahan umum."
+                description="Fondasi tata bahasa: parts of speech, tenses, struktur kalimat, dan grammar berjenjang (Beginner–Advanced / N5–N1) — semuanya dengan rumus, contoh, dan kesalahan umum."
             />
 
             <div className="mb-4 flex flex-wrap gap-2">
@@ -99,7 +202,8 @@ export default function GrammarPage() {
                         count: HAS_TENSES ? tenses?.length : tenseTopics.length,
                     },
                     { id: 'parts', label: 'Parts of Speech', icon: <Sigma className="size-4" />, count: partsOfSpeech.length },
-                    { id: 'structures', label: 'Struktur', icon: <Waypoints className="size-4" />, count: structures.length },
+                    { id: 'structures', label: 'Struktur', icon: <Waypoints className="size-4" />, count: structureLevels?.length },
+                    { id: 'grammar', label: 'Grammar', icon: <BookMarked className="size-4" />, count: grammarLevels?.length },
                 ]}
                 active={tab}
                 onChange={setTab}
@@ -242,31 +346,26 @@ export default function GrammarPage() {
 
             {/* --------------------------------------------------- Structures */}
             <TabPanel id="structures" active={tab}>
-                {topicsLoading ? (
-                    <Skeleton className="h-40 w-full" />
-                ) : (
-                    <>
-                    <div className="grid gap-4 sm:grid-cols-2">
-                        {structuresPage.pageRows.map((topic) => (
-                            <Link key={topic.id} to={`/app/grammar/${topic.id}`} className="block h-full">
-                                <Card interactive className="flex h-full flex-col">
-                                    <div className="flex items-start justify-between gap-3">
-                                        <h3 className="font-display text-base font-bold">{topic.title}</h3>
-                                        <CefrBadge level={topic.cefr} />
-                                    </div>
-                                    <p className="mt-2 line-clamp-3 flex-1 text-sm text-fg-muted">{topic.explanation}</p>
-                                    {topic.formula && (
-                                        <div className="mt-3 rounded-sm bg-surface-sunken p-3">
-                                            <p className="font-mono text-[11px] leading-relaxed">{topic.formula}</p>
-                                        </div>
-                                    )}
-                                </Card>
-                            </Link>
-                        ))}
-                    </div>
-                    <Pagination page={structuresPage.page} totalPages={structuresPage.totalPages} onChange={structuresPage.setPage} className="mt-6" />
-                    </>
-                )}
+                <LevelCategoryBrowser
+                    loading={structureLoading}
+                    levels={structureLevels}
+                    activeLevel={activeStructureLevel}
+                    onSelectLevel={setStructureLevelId}
+                    categoriesPage={structureCategoriesPage}
+                    emptyLevelsTitle="Belum ada level struktur"
+                />
+            </TabPanel>
+
+            {/* ----------------------------------------------------- Grammar */}
+            <TabPanel id="grammar" active={tab}>
+                <LevelCategoryBrowser
+                    loading={grammarLoading}
+                    levels={grammarLevels}
+                    activeLevel={activeGrammarLevel}
+                    onSelectLevel={setGrammarLevelId}
+                    categoriesPage={grammarCategoriesPage}
+                    emptyLevelsTitle="Belum ada level grammar"
+                />
             </TabPanel>
 
             <Card className="mt-8">

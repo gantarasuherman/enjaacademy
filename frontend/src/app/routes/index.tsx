@@ -22,6 +22,8 @@ const VocabularyPage = lazy(() => import('@/pages/vocabulary/VocabularyPage'));
 const GrammarPage = lazy(() => import('@/pages/grammar/GrammarPage'));
 const GrammarTopicPage = lazy(() => import('@/pages/grammar/GrammarTopicPage'));
 const TensePage = lazy(() => import('@/pages/grammar/TensePage'));
+const JlptCategoryPage = lazy(() => import('@/pages/grammar/JlptCategoryPage'));
+const JlptPatternPage = lazy(() => import('@/pages/grammar/JlptPatternPage'));
 
 const ListeningPage = lazy(() => import('@/pages/listening/ListeningPage'));
 const ListeningDetailPage = lazy(() => import('@/pages/listening/ListeningDetailPage'));
@@ -83,6 +85,8 @@ const routes: RouteObject[] = [
 
             { path: 'grammar', element: <GrammarPage /> },
             { path: 'grammar/tenses/:tenseId', element: <TensePage /> },
+            { path: 'grammar/jlpt/pattern/:patternId', element: <JlptPatternPage /> },
+            { path: 'grammar/jlpt/:categoryId', element: <JlptCategoryPage /> },
             { path: 'grammar/:topicId', element: <GrammarTopicPage /> },
 
             { path: 'listening', element: <ListeningPage /> },

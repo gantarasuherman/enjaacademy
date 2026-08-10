@@ -152,6 +152,43 @@ export interface GrammarExample {
     highlight?: string;
 }
 
+/* ------------------------------------------------------ JLPT Grammar CMS ---- */
+/** The admin-extensible level -> category -> pattern system (currently Japanese-only). */
+
+export type GrammarTrackLanguage = 'japanese' | 'english';
+export type GrammarTrack = 'grammar' | 'structure';
+
+export interface JlptGrammarCategory {
+    id: string;
+    name: string;
+    slug: string;
+    patternsCount: number;
+    children: JlptGrammarCategory[];
+    level?: JlptGrammarLevel;
+    parent?: { id: string; name: string } | null;
+}
+
+export interface JlptGrammarLevel {
+    id: string;
+    name: string;
+    language: GrammarTrackLanguage;
+    track: GrammarTrack;
+    color: string;
+    description: string | null;
+    categories: JlptGrammarCategory[];
+}
+
+export interface JlptGrammarPattern {
+    id: string;
+    title: string;
+    explanation: string;
+    formula: string | null;
+    level: string | null;
+    category: string | null;
+    examples: { sentence: string; translation: string | null }[];
+    mistakes: { wrong: string; right: string | null; why: string | null }[];
+}
+
 export interface Tense {
     id: string;
     name: string;

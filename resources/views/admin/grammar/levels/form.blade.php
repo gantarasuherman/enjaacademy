@@ -29,6 +29,24 @@
                 </div>
 
                 <div>
+                    <label for="language" class="label">{{ __('Bahasa') }} <span class="text-rose-500">*</span></label>
+                    <select id="language" name="language" required class="input">
+                        <option value="japanese" @selected(old('language', $level->language ?? 'japanese') === 'japanese')>{{ __('Bahasa Jepang') }}</option>
+                        <option value="english" @selected(old('language', $level->language ?? 'japanese') === 'english')>{{ __('Bahasa Inggris') }}</option>
+                    </select>
+                    @error('language') <p class="mt-1 text-xs text-rose-600">{{ $message }}</p> @enderror
+                </div>
+
+                <div>
+                    <label for="track" class="label">{{ __('Jenis materi') }} <span class="text-rose-500">*</span></label>
+                    <select id="track" name="track" required class="input">
+                        <option value="grammar" @selected(old('track', $level->track ?? 'grammar') === 'grammar')>{{ __('Grammar') }}</option>
+                        <option value="structure" @selected(old('track', $level->track ?? 'grammar') === 'structure')>{{ __('Struktur kalimat') }}</option>
+                    </select>
+                    @error('track') <p class="mt-1 text-xs text-rose-600">{{ $message }}</p> @enderror
+                </div>
+
+                <div>
                     <label for="color" class="label">{{ __('Warna badge') }}</label>
                     <select id="color" name="color" class="input">
                         @foreach (config('admin.menu.badge_colors') as $color)

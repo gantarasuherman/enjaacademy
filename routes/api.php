@@ -80,6 +80,7 @@ Route::middleware('auth:sanctum')->group(function () {
         ->name("$prefix.")
         ->group(function () {
             Route::get('/levels', 'levels')->name('levels');
+            Route::get('/categories/{grammar_category}', 'showCategory')->name('categories.show');
             Route::get('/categories/{grammar_category}/patterns', 'patterns')->name('patterns');
             Route::get('/patterns/{grammar_pattern}', 'show')->name('show');
         });

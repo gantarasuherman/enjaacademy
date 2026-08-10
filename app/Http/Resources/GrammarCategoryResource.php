@@ -17,6 +17,11 @@ class GrammarCategoryResource extends JsonResource
             'slug' => $this->slug,
             'patternsCount' => $this->whenLoaded('patterns', fn () => $this->patterns->count(), 0),
             'children' => GrammarCategoryResource::collection($this->whenLoaded('children')),
+            'level' => $this->whenLoaded('level', fn () => new GrammarLevelResource($this->level)),
+            'parent' => $this->whenLoaded('parent', fn () => $this->parent ? [
+                'id' => (string) $this->parent->id,
+                'name' => $this->parent->name,
+            ] : null),
         ];
     }
 }

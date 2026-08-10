@@ -14,6 +14,8 @@ class GrammarLevelResource extends JsonResource
         return [
             'id' => $this->slug,
             'name' => $this->name,
+            'language' => $this->language,
+            'track' => $this->track,
             'color' => $this->color,
             'description' => $this->description,
             'categories' => GrammarCategoryResource::collection($this->whenLoaded('categories')),

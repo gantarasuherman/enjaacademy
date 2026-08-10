@@ -20,7 +20,9 @@
                     <label for="grammar_level_id" class="label">{{ __('Level') }} <span class="text-rose-500">*</span></label>
                     <select id="grammar_level_id" name="grammar_level_id" required class="input">
                         @foreach ($levels as $level)
-                            <option value="{{ $level->id }}" @selected(old('grammar_level_id', $category->grammar_level_id) == $level->id)>{{ $level->name }}</option>
+                            <option value="{{ $level->id }}" @selected(old('grammar_level_id', $category->grammar_level_id) == $level->id)>
+                                {{ $level->name }} — {{ $level->language === 'english' ? __('Inggris') : __('Jepang') }} · {{ $level->track === 'structure' ? __('Struktur') : __('Grammar') }}
+                            </option>
                         @endforeach
                     </select>
                     @error('grammar_level_id') <p class="mt-1 text-xs text-rose-600">{{ $message }}</p> @enderror
