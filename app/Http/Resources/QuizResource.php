@@ -19,6 +19,7 @@ class QuizResource extends JsonResource
             'title' => $this->title,
             'description' => $this->description ?? '',
             'cefr' => $this->level,
+            'category' => $this->category,
             'timeLimitSeconds' => $this->time_limit_seconds,
             'passScore' => $this->pass_score,
             'xpReward' => $this->xp_reward,

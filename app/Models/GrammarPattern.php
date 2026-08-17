@@ -23,7 +23,7 @@ class GrammarPattern extends Model
     protected string $slugSource = 'title';
 
     protected $fillable = [
-        'grammar_category_id', 'title', 'slug', 'explanation', 'formula',
+        'grammar_category_id', 'title', 'title_romaji', 'slug', 'explanation', 'formula',
         'sort_order', 'is_published', 'published_at', 'created_by',
     ];
 

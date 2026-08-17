@@ -31,7 +31,7 @@ class QuizController extends Controller
 
         return view('admin.quizzes.index', [
             'quizzes' => $this->quizzes->paginate(
-                $request->only(['search', 'module', 'difficulty', 'is_published', 'sort', 'direction']),
+                $request->only(['search', 'module', 'difficulty', 'category', 'is_published', 'sort', 'direction']),
                 $this->perPage(),
             ),
             'modules' => $this->modules->forSelect(),
@@ -44,6 +44,7 @@ class QuizController extends Controller
 
         return view('admin.quizzes.form', [
             'quiz' => new Quiz([
+                'category' => 'quiz',
                 'difficulty' => 'easy',
                 'pass_score' => 70,
                 'xp_reward' => 50,

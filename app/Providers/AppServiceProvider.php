@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Models\Achievement;
+use App\Models\DailyQuizAttempt;
 use App\Models\Flashcard;
 use App\Models\FlashcardDeck;
 use App\Models\GrammarPattern;
@@ -18,7 +19,11 @@ use App\Models\QuizAttempt;
 use App\Models\User;
 use App\Observers\AuditableObserver;
 use App\Observers\MenuObserver;
+use App\Services\AI\AiClientInterface;
 use App\Services\AI\GeminiClient;
+use App\Services\AI\GrokClient;
+use App\Services\AI\GroqClient;
+use App\Services\Payment\TripayGateway;
 use App\Services\Setting\SettingService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -42,6 +47,48 @@ class AppServiceProvider extends ServiceProvider
             return new GeminiClient(
                 $settings->get('gemini_api_key') ?: config('services.gemini.key'),
                 $settings->get('gemini_model') ?: config('services.gemini.model'),
+            );
+        });
+
+        $this->app->singleton(GrokClient::class, function ($app) {
+            $settings = $app->make(SettingService::class);
+
+            return new GrokClient(
+                $settings->get('grok_api_key') ?: config('services.grok.key'),
+                $settings->get('grok_model') ?: config('services.grok.model'),
+            );
+        });
+
+        $this->app->singleton(GroqClient::class, function ($app) {
+            $settings = $app->make(SettingService::class);
+
+            return new GroqClient(
+                $settings->get('groq_api_key') ?: config('services.groq.key'),
+                $settings->get('groq_model') ?: config('services.groq.model'),
+            );
+        });
+
+        // Which provider backs every "Buat dengan AI" feature — admin-selectable
+        // (Pengaturan → Integrasi → "Provider AI Aktif"), defaults to Gemini.
+        $this->app->singleton(AiClientInterface::class, function ($app) {
+            $settings = $app->make(SettingService::class);
+
+            return match ($settings->get('ai_provider', 'gemini')) {
+                'grok' => $app->make(GrokClient::class),
+                'groq' => $app->make(GroqClient::class),
+                default => $app->make(GeminiClient::class),
+            };
+        });
+
+        $this->app->singleton(TripayGateway::class, function ($app) {
+            $settings = $app->make(SettingService::class);
+
+            return new TripayGateway(
+                $settings->get('tripay_merchant_code') ?: config('services.tripay.merchant_code'),
+                $settings->get('tripay_api_key') ?: config('services.tripay.api_key'),
+                $settings->get('tripay_private_key') ?: config('services.tripay.private_key'),
+                config('services.tripay.sandbox', true),
+                config('services.tripay.method', 'QRIS2'),
             );
         });
     }
@@ -77,6 +124,7 @@ class AppServiceProvider extends ServiceProvider
             'lesson_item' => LessonItem::class,
             'quiz' => Quiz::class,
             'quiz_attempt' => QuizAttempt::class,
+            'daily_quiz_attempt' => DailyQuizAttempt::class,
             'grammar_pattern' => GrammarPattern::class,
             'flashcard' => Flashcard::class,
             'flashcard_deck' => FlashcardDeck::class,

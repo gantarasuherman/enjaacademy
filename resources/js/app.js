@@ -10,6 +10,7 @@ import permissionMatrix from './components/permission-matrix';
 import iconPicker from './components/icon-picker';
 import questionBuilder from './components/question-builder';
 import lessonBuilder from './components/lesson-builder';
+import videoLessonBuilder from './components/video-lesson-builder';
 import featureRoadmap from './components/feature-roadmap';
 import { initCharts } from './components/charts';
 
@@ -76,6 +77,7 @@ Alpine.data('permissionMatrix', permissionMatrix);
 Alpine.data('iconPicker', iconPicker);
 Alpine.data('questionBuilder', questionBuilder);
 Alpine.data('lessonBuilder', lessonBuilder);
+Alpine.data('videoLessonBuilder', videoLessonBuilder);
 Alpine.data('featureRoadmap', featureRoadmap);
 
 window.Alpine = Alpine;

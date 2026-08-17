@@ -18,6 +18,7 @@ class LessonResource extends JsonResource
             'slug' => $this->slug,
             'level' => $this->level,
             'summary' => $this->summary,
+            'video_url' => $this->video_url,
             'content' => $this->when($this->relationLoaded('items'), fn () => $this->content),
             'translated_content' => $this->when($this->relationLoaded('items'), fn () => $this->translated_content),
             'estimated_minutes' => $this->estimated_minutes,

@@ -4,6 +4,7 @@ import {
     BookMarked,
     BookOpen,
     Bookmark,
+    Flame,
     GraduationCap,
     Headphones,
     LayoutDashboard,
@@ -14,6 +15,7 @@ import {
     ScrollText,
     Settings,
     Sigma,
+    Timer,
     Trophy,
     TrendingUp,
     User,
@@ -42,11 +44,16 @@ export const NAV_SECTIONS: NavSection[] = [
         title: 'Utama',
         items: [
             { label: 'Dashboard', to: '/app/dashboard', icon: LayoutDashboard },
+            { label: 'Kursus Saya', to: '/app/learning/my', icon: GraduationCap },
             { label: 'Learning Path', to: '/app/learning', icon: Layers, match: '/app/learning' },
         ],
     },
     {
-        title: 'Skill',
+        // The 7 skills from the business-flow spec's "Latihan (Skill
+        // Practice)" nav group — this section used to be titled "Skill",
+        // renamed to free up "Latihan" for its intended meaning and avoid
+        // colliding with the group below.
+        title: 'Latihan',
         items: [
             { label: 'Vocabulary', to: '/app/vocabulary', icon: BookMarked, match: '/app/vocabulary' },
             { label: 'Grammar', to: '/app/grammar', icon: Sigma, match: '/app/grammar' },
@@ -58,10 +65,14 @@ export const NAV_SECTIONS: NavSection[] = [
         ],
     },
     {
-        title: 'Latihan',
+        // Formerly titled "Latihan" — renamed so that name is unambiguous
+        // for the skill-practice group above (business-flow spec section 1).
+        title: 'Uji Kemampuan',
         items: [
             { label: 'Flashcard', to: '/app/flashcard', icon: Layers, match: '/app/flashcard' },
             { label: 'Quiz', to: '/app/quiz', icon: GraduationCap, match: '/app/quiz' },
+            { label: 'Tes', to: '/app/test', icon: Timer, match: '/app/test' },
+            { label: 'Kata Lemah', to: '/app/weak-words', icon: Flame },
             { label: 'Bookmark', to: '/app/bookmark', icon: Bookmark },
         ],
     },

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Services\Gamification;
 
+use App\Models\Certificate;
+use App\Models\LearningModule;
 use App\Models\Lesson;
 use App\Models\Quiz;
 use App\Models\QuizAttempt;
@@ -115,6 +117,41 @@ class ProgressService
         $this->progress->touch($user, $lesson, $percent);
     }
 
+    /**
+     * One-time XP for a skill-practice attempt (Speaking exercise, Writing
+     * prompt, …) against any trackable model. Marks the attempt as visited
+     * either way, but XP is only ever granted the first time THIS trackable
+     * ever produces a non-zero amount for this user — checked against
+     * `XpLog` directly (not `UserProgress.status`) so a first attempt that
+     * scores too low for XP doesn't block a later, better attempt from
+     * still earning it, while a retry after already earning XP can't farm
+     * more by resubmitting.
+     */
+    public function completeSkillPractice(User $user, Model $trackable, int $xp, string $reason): int
+    {
+        $this->progress->touch($user, $trackable, 100, 'completed');
+
+        if ($xp <= 0) {
+            return 0;
+        }
+
+        $alreadyAwarded = XpLog::where('user_id', $user->id)
+            ->where('source_type', $trackable->getMorphClass())
+            ->where('source_id', $trackable->getKey())
+            ->exists();
+
+        if ($alreadyAwarded) {
+            return 0;
+        }
+
+        // Not `return $this->awardXp(...)` — that call returns levels
+        // gained (for a "level up!" toast elsewhere), not the XP amount,
+        // which is what the caller here actually needs to report back.
+        $this->awardXp($user, $xp, $reason, $trackable);
+
+        return $xp;
+    }
+
     /** Grants quiz XP and updates the quiz counters. */
     public function recordQuizAttempt(User $user, QuizAttempt $attempt, Quiz $quiz): int
     {
@@ -176,6 +213,19 @@ class ProgressService
             ->count();
 
         $this->progress->touch($user, $module, (int) round($done / $total * 100));
+
+        if ($done === $total) {
+            $this->maybeIssueCertificate($user, $module);
+        }
+    }
+
+    /** Idempotent: a module can only ever earn one certificate per user. */
+    private function maybeIssueCertificate(User $user, LearningModule $module): void
+    {
+        Certificate::firstOrCreate(
+            ['user_id' => $user->id, 'learning_module_id' => $module->id],
+            ['issued_at' => now()],
+        );
     }
 
     /** Everything the student dashboard needs, in one call. */
@@ -193,6 +243,7 @@ class ProgressService
             'xp_per_day' => $this->progress->xpPerDay($user, 30),
             'modules' => $this->progress->moduleCompletion($user),
             'recent' => $this->progress->recentActivity($user, 8),
+            'active_module_id' => $user->active_module_id ? (string) $user->active_module_id : null,
         ];
     }
 }

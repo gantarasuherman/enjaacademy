@@ -26,6 +26,8 @@ class DatabaseSeeder extends Seeder
             GrammarStructureSeeder::class,
             GrammarPatternSeeder::class,
             QuizSeeder::class,
+            VocabularyWordSeeder::class,
+            JapaneseVocabularyImportSeeder::class,
             FlashcardSeeder::class,
             MenuSeeder::class,
         ]);

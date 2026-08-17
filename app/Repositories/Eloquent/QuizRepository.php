@@ -28,6 +28,7 @@ class QuizRepository extends BaseRepository implements QuizRepositoryInterface
             ->search($filters['search'] ?? null)
             ->forModule($filters['module'] ?? null)
             ->when($filters['difficulty'] ?? null, fn (Builder $q, $d) => $q->where('difficulty', $d))
+            ->when($filters['category'] ?? null, fn (Builder $q, $c) => $q->where('category', $c))
             ->when(isset($filters['is_published']) && $filters['is_published'] !== '', fn (Builder $q) => $q->where('is_published', (bool) $filters['is_published']))
             ->withCount('questions');
     }

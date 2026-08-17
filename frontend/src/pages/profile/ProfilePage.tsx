@@ -15,7 +15,10 @@ import { ProgressBar, ProgressRing } from '@/components/ui/Progress';
 import { PageHeader } from '@/components/feature/shared/PageHeader';
 import { StatCard } from '@/components/feature/shared/StatCard';
 
-const LEVELS = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'].map((level) => ({ value: level, label: level }));
+const LEVELS = ['Beginner', 'Elementary', 'Intermediate', 'Upper-Intermediate', 'Advanced'].map((level) => ({
+    value: level,
+    label: level,
+}));
 
 const GOALS = [10, 15, 20, 30, 45, 60].map((minutes) => ({
     value: String(minutes),
@@ -30,7 +33,7 @@ export default function ProfilePage() {
     const [form, setForm] = useState({
         name: user?.name ?? '',
         email: user?.email ?? '',
-        targetLevel: user?.targetLevel ?? 'B1',
+        targetLevel: user?.targetLevel ?? 'Intermediate',
         dailyGoalMinutes: String(user?.dailyGoalMinutes ?? 20),
     });
     const [saving, setSaving] = useState(false);
@@ -80,7 +83,7 @@ export default function ProfilePage() {
                             <Badge tone="secondary" icon={<Flame className="size-3" />}>
                                 {streak} hari
                             </Badge>
-                            <Badge tone="info">Target {user?.targetLevel ?? 'B1'}</Badge>
+                            <Badge tone="info">Target {user?.targetLevel ?? 'Intermediate'}</Badge>
                         </div>
 
                         {user?.joinedAt && (

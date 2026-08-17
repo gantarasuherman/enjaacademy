@@ -29,6 +29,11 @@
                         <option value="{{ $value }}" @selected(request('difficulty') === $value)>{{ $label }}</option>
                     @endforeach
                 </select>
+                <select name="category" class="input w-32 text-sm">
+                    <option value="">{{ __('Semua jenis') }}</option>
+                    <option value="quiz" @selected(request('category') === 'quiz')>{{ __('Kuis') }}</option>
+                    <option value="test" @selected(request('category') === 'test')>{{ __('Tes') }}</option>
+                </select>
                 <input type="search" name="search" value="{{ request('search') }}" placeholder="{{ __('Cari…') }}" class="input w-40 text-sm">
                 <button class="btn-secondary text-sm">{{ __('Filter') }}</button>
             </form>
@@ -39,6 +44,7 @@
                 <thead>
                     <tr>
                         <th>{{ __('Judul') }}</th>
+                        <th>{{ __('Jenis') }}</th>
                         <th>{{ __('Modul') }}</th>
                         <th>{{ __('Tingkat') }}</th>
                         <th class="text-right">{{ __('Soal') }}</th>
@@ -52,6 +58,13 @@
                     @forelse ($quizzes as $quiz)
                         <tr>
                             <td class="font-medium">{{ $quiz->title }}</td>
+                            <td>
+                                @if ($quiz->category === 'test')
+                                    <span class="badge bg-indigo-100 text-indigo-700 dark:bg-indigo-500/15">{{ __('Tes') }}</span>
+                                @else
+                                    <span class="badge bg-slate-200 text-slate-600 dark:bg-slate-700">{{ __('Kuis') }}</span>
+                                @endif
+                            </td>
                             <td class="text-slate-500">{{ $quiz->module?->name ?? '—' }}</td>
                             <td>
                                 @php
@@ -96,7 +109,7 @@
                             </td>
                         </tr>
                     @empty
-                        <tr><td colspan="8" class="py-10 text-center text-sm text-slate-500">{{ __('Tidak ada kuis yang cocok.') }}</td></tr>
+                        <tr><td colspan="9" class="py-10 text-center text-sm text-slate-500">{{ __('Tidak ada kuis yang cocok.') }}</td></tr>
                     @endforelse
                 </tbody>
             </table>

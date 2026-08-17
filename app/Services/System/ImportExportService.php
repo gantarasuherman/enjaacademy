@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace App\Services\System;
 
+use App\Models\Language;
 use App\Models\Lesson;
+use App\Models\VocabularyWord;
 use App\Repositories\Contracts\LessonItemRepositoryInterface;
 use App\Services\Audit\AuditLogger;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -150,5 +153,129 @@ class ImportExportService
                 'example_meaning' => 'Saya belajar bahasa Jepang.',
             ]],
         );
+    }
+
+    /**
+     * Bulk-load vocabulary bank rows (`language` is a slug, e.g. "english" /
+     * "japanese" — rows whose language doesn't match an existing one are
+     * skipped rather than failing the whole import). A row is also skipped
+     * (never updated) when its `(language, word)` pair already exists —
+     * matched case-/whitespace-insensitively — or repeats an earlier row in
+     * the same file, so re-uploading the same sheet twice is a no-op rather
+     * than piling up duplicates.
+     *
+     * @return array{imported: int, skipped: int}
+     */
+    public function importVocabularyWords(UploadedFile $file): array
+    {
+        $rows = $this->parseCsv($file, ['language', 'word', 'meaning_id', 'level']);
+        $languageIds = Language::pluck('id', 'slug');
+        $now = now();
+
+        $existing = VocabularyWord::query()
+            ->get(['language_id', 'word'])
+            ->map(fn (VocabularyWord $w) => $w->language_id.'|'.Str::lower(trim($w->word)))
+            ->flip();
+
+        $seenInFile = [];
+        $skipped = 0;
+
+        $payload = $rows
+            ->filter(function (array $row) use ($languageIds, $existing, &$seenInFile, &$skipped) {
+                if (blank($row['word'] ?? null) || ! $languageIds->has($row['language'] ?? null)) {
+                    return false;
+                }
+
+                $key = $languageIds[$row['language']].'|'.Str::lower(trim($row['word']));
+
+                if ($existing->has($key) || isset($seenInFile[$key])) {
+                    $skipped++;
+
+                    return false;
+                }
+
+                $seenInFile[$key] = true;
+
+                return true;
+            })
+            ->map(fn (array $row) => [
+                'language_id' => $languageIds[$row['language']],
+                'word' => trim($row['word']),
+                'phonetic' => $row['phonetic'] ?: null,
+                'part_of_speech' => $row['part_of_speech'] ?: null,
+                'meaning_id' => $row['meaning_id'] ?? '',
+                'meaning_en' => $row['meaning_en'] ?: null,
+                'level' => $row['level'],
+                'synonyms' => json_encode($this->splitList($row['synonyms'] ?? null)),
+                'antonyms' => json_encode($this->splitList($row['antonyms'] ?? null)),
+                'collocations' => json_encode($this->splitList($row['collocations'] ?? null)),
+                'created_at' => $now,
+                'updated_at' => $now,
+            ])
+            ->values();
+
+        // Chunked — a single multi-row INSERT binds every column of every row as a
+        // placeholder, and MySQL rejects a prepared statement past 65,535 of them
+        // (12 columns/row here, so anything over ~5,400 rows in one INSERT would
+        // hit "Prepared statement contains too many placeholders" on large imports).
+        foreach ($payload->chunk(500) as $chunk) {
+            VocabularyWord::insert($chunk->all());
+        }
+
+        $this->audit->event('imported', __(':count vocabulary word(s) imported, :skipped duplicate(s) skipped.', [
+            'count' => $payload->count(),
+            'skipped' => $skipped,
+        ]));
+
+        return ['imported' => $payload->count(), 'skipped' => $skipped];
+    }
+
+    /** Header row for the vocabulary-word import template, one example row per language scale. */
+    public function vocabularyWordTemplate(): StreamedResponse
+    {
+        return $this->streamCsv(
+            'vocabulary-words-template.csv',
+            ['language', 'word', 'phonetic', 'part_of_speech', 'meaning_id', 'meaning_en', 'level', 'synonyms', 'antonyms', 'collocations'],
+            [
+                [
+                    'language' => 'english',
+                    'word' => 'apple',
+                    'phonetic' => '/ˈæp.əl/',
+                    'part_of_speech' => 'noun',
+                    'meaning_id' => 'apel',
+                    'meaning_en' => 'a round fruit with red or green skin',
+                    'level' => 'Beginner',
+                    'synonyms' => '',
+                    'antonyms' => '',
+                    'collocations' => 'apple pie, apple juice',
+                ],
+                [
+                    'language' => 'japanese',
+                    'word' => '林檎',
+                    'phonetic' => '',
+                    'part_of_speech' => 'noun',
+                    'meaning_id' => 'apel',
+                    'meaning_en' => '',
+                    'level' => 'N5',
+                    'synonyms' => '',
+                    'antonyms' => '',
+                    'collocations' => '',
+                ],
+            ],
+        );
+    }
+
+    /** Comma-separated cell -> trimmed string list, mirroring `VocabularyWordRequest::splitList()`. */
+    private function splitList(?string $value): array
+    {
+        if (blank($value)) {
+            return [];
+        }
+
+        return collect(explode(',', $value))
+            ->map(fn ($v) => trim($v))
+            ->filter(fn ($v) => $v !== '')
+            ->values()
+            ->all();
     }
 }

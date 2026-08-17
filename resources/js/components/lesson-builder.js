@@ -1,4 +1,5 @@
 import Sortable from 'sortablejs';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { ITEM_TYPES, TEMPLATE_FIELDS, templateFor, inferType, applyReadingMirror } from './lesson-builder/item-types.js';
 import { parsePastedText } from './lesson-builder/bulk-paste.js';
 import { draftKeyFor, readDraft, writeDraft, clearDraft, debounce } from './lesson-builder/autosave.js';
@@ -53,6 +54,9 @@ export default function lessonBuilder({
     lesson = {},
     items = [],
     moduleContentType = null,
+    moduleContentTypes = {},
+    moduleLanguages = {},
+    moduleLanguageSlugs = {},
     lessonExists = false,
     draftKey = 'new',
     justSaved = false,
@@ -74,8 +78,38 @@ export default function lessonBuilder({
         isPublished: Boolean(lesson.is_published),
 
         items: items.map((raw) => hydrateItem(raw, moduleContentType)),
-        moduleContentType,
+        moduleContentTypes,
         lessonExists,
+
+        // Reactive to the selected module (not just the value at page load) —
+        // matters for a brand-new lesson where the admin picks the module
+        // after the page renders, e.g. to decide whether a rich-text editor
+        // is safe to mount on "Isi Materi" (see mountContentEditors() below).
+        get moduleContentType() {
+            return this.moduleContentTypes[this.moduleId] ?? moduleContentType;
+        },
+
+        // Bahasa target modul (mis. "Bahasa Jepang" / "Bahasa Inggris") — nama
+        // modul saja ("Reading", "Grammar", dst.) tidak selalu menyebutkan
+        // bahasanya, jadi ini dikirim terpisah supaya AI tidak salah bahasa
+        // saat membuat "Isi Materi".
+        moduleLanguages,
+        get moduleLanguage() {
+            return this.moduleLanguages[this.moduleId] ?? null;
+        },
+
+        // Kana/kanji only make sense for a Japanese module — used to pick
+        // sane default "Jenis" checkboxes for AI item generation instead of
+        // always defaulting to kana+kosakata regardless of the module's
+        // actual language (see openAiItemsDrawer()). Falls back to Japanese
+        // when the module isn't resolvable yet (new lesson, no module
+        // picked) to match this builder's original default behaviour.
+        moduleLanguageSlugs,
+        get isJapaneseModule() {
+            const slug = this.moduleLanguageSlugs[this.moduleId];
+
+            return slug ? slug === 'japanese' : true;
+        },
 
         // ---- item list pagination (display only — every item still renders
         // its hidden inputs so the full set is always submitted; see the
@@ -101,7 +135,7 @@ export default function lessonBuilder({
 
         // ---- UI state ----
         advancedOpen: false,
-        activeDrawer: null, // null | 'item' | 'import' | 'ai-items' | 'ai-translation' | 'preview'
+        activeDrawer: null, // null | 'item' | 'import' | 'ai-items' | 'ai-translation' | 'ai-content' | 'preview'
         editingIndex: null,
         draft: null,
         itemTypes: ITEM_TYPES,
@@ -112,17 +146,39 @@ export default function lessonBuilder({
         importPreview: [],
 
         aiItemsForm: { topic: '', level: '', count: 10, types: { kana: true, kosakata: true, kanji: false, grammar: false }, language: 'Indonesia' },
+        // Once the admin manually toggles a "Jenis" checkbox, openAiItemsDrawer()
+        // stops overwriting their choice on subsequent opens.
+        aiItemsTypesTouched: false,
+        aiContentForm: { focus: '' },
         aiMessage: null,
         aiLoading: false,
         aiGeneratedItems: [],
         aiGeneratedTranslation: null,
+        aiGeneratedContent: null, // null | { summary, content }
 
         lastSavedAt: null,
         restorableDraft: null,
         draftStorageKey: draftKeyFor(draftKey),
 
+        // ---- rich text editors (CKEditor) ----
+        // Keyed by the Alpine state field each editor instance keeps in sync
+        // (`content` / `translatedContent`). Never mounted for Reading
+        // modules — Reading's hover-translation pairing depends on `content`
+        // staying blank-line-separated plain text, not CKEditor's HTML.
+        contentEditors: {},
+
         init() {
-            this.$nextTick(() => this.mountSortable());
+            this.$nextTick(() => {
+                this.mountSortable();
+                this.mountContentEditors();
+            });
+
+            // A brand-new lesson may not have its module picked yet when the
+            // page first renders — mount the rich-text editors the moment a
+            // non-Reading module becomes selected, rather than only at load.
+            this.$watch('moduleContentType', () => {
+                if (!this.contentEditors.content) this.mountContentEditors();
+            });
 
             const found = readDraft(this.draftStorageKey);
 
@@ -214,6 +270,41 @@ export default function lessonBuilder({
             });
         },
 
+        // ---- rich text editors ----
+        mountContentEditors() {
+            if (this.moduleContentType === 'reading') return;
+
+            this.mountEditor('contentEditor', 'content');
+            this.mountEditor('translatedContentEditor', 'translatedContent');
+        },
+
+        /** Replaces the plain `<textarea x-ref="{refName}">` with CKEditor, keeping `this[stateKey]` (and therefore its hidden `x-model` input) in sync on every edit. */
+        mountEditor(refName, stateKey) {
+            const el = this.$refs[refName];
+
+            if (!el || this.contentEditors[stateKey]) return;
+
+            // Set synchronously, before the async `.create()` resolves — the
+            // `moduleContentType` watcher and the initial `$nextTick` call can
+            // both reach this method before the first `ClassicEditor.create()`
+            // promise settles; without this, both calls pass the guard above
+            // and mount two editor instances on the same field (content shown
+            // twice).
+            this.contentEditors[stateKey] = 'pending';
+
+            ClassicEditor.create(el)
+                .then((editor) => {
+                    this.contentEditors[stateKey] = editor;
+                    editor.model.document.on('change:data', () => {
+                        this[stateKey] = editor.getData();
+                    });
+                })
+                .catch((error) => {
+                    console.error('CKEditor failed to initialize', error);
+                    delete this.contentEditors[stateKey];
+                });
+        },
+
         // ---- item drawer ----
         templateFor,
 
@@ -237,6 +328,22 @@ export default function lessonBuilder({
             } else {
                 this.draft[target] = value;
             }
+        },
+
+        openAiItemsDrawer() {
+            if (! this.aiItemsForm.topic.trim()) this.aiItemsForm.topic = this.title;
+            if (! this.aiItemsForm.level.trim()) this.aiItemsForm.level = this.level;
+
+            // Kana/kanji checked by default made sense when every module was
+            // Japanese — for an English (or any non-Japanese) module it was
+            // ticking a type that doesn't apply to the material at all.
+            if (! this.aiItemsTypesTouched) {
+                this.aiItemsForm.types = this.isJapaneseModule
+                    ? { kana: true, kosakata: true, kanji: false, grammar: false }
+                    : { kana: false, kosakata: true, kanji: false, grammar: true };
+            }
+
+            this.activeDrawer = 'ai-items';
         },
 
         openAddItem() {
@@ -365,7 +472,10 @@ export default function lessonBuilder({
             this.aiGeneratedItems = [];
 
             try {
-                const response = await window.post(url, this.aiItemsForm);
+                // Grounds generation in what "Informasi Dasar"/"Isi Materi" already
+                // have — a recommendation from the lesson's own content, not a
+                // blind generation from the topic field alone.
+                const response = await window.post(url, { ...this.aiItemsForm, content: this.content });
 
                 if (response.available && !response.error) {
                     this.aiGeneratedItems = (response.items ?? []).map((raw) => hydrateItem(raw, this.moduleContentType));
@@ -413,7 +523,54 @@ export default function lessonBuilder({
 
         useGeneratedTranslation() {
             this.translatedContent = this.aiGeneratedTranslation ?? '';
+
+            // The CKEditor instance owns `translatedContent` once mounted —
+            // writing to the Alpine state alone won't reach it.
+            const editor = this.contentEditors.translatedContent;
+            if (editor && editor !== 'pending') editor.setData(this.translatedContent);
+
             this.aiGeneratedTranslation = null;
+            this.activeDrawer = null;
+        },
+
+        async generateContent(url) {
+            this.aiLoading = true;
+            this.aiMessage = null;
+            this.aiGeneratedContent = null;
+
+            try {
+                const response = await window.post(url, {
+                    title: this.title,
+                    level: this.level,
+                    content_type: this.moduleContentType,
+                    language: this.moduleLanguage,
+                    focus: this.aiContentForm.focus,
+                });
+
+                if (response.available && !response.error) {
+                    this.aiGeneratedContent = { summary: response.summary ?? '', content: response.content ?? '' };
+                } else {
+                    this.aiMessage = response.message;
+                }
+            } catch {
+                this.aiMessage = 'Terjadi kesalahan menghubungi layanan AI.';
+            } finally {
+                this.aiLoading = false;
+            }
+        },
+
+        useGeneratedContent() {
+            if (!this.aiGeneratedContent) return;
+
+            this.summary = this.aiGeneratedContent.summary;
+            this.content = this.aiGeneratedContent.content;
+
+            // The CKEditor instance (non-Reading modules) owns `content` once
+            // mounted — writing to the Alpine state alone won't reach it.
+            const editor = this.contentEditors.content;
+            if (editor && editor !== 'pending') editor.setData(this.content);
+
+            this.aiGeneratedContent = null;
             this.activeDrawer = null;
         },
 

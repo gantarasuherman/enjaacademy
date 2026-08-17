@@ -135,6 +135,11 @@ return [
             'quiz_perfect_bonus' => 25,
             'flashcard_reviewed' => 2,
             'daily_streak' => 10,
+            'daily_quiz_completed' => 15,
+            'daily_quiz_perfect_bonus' => 10,
+            'speaking_pass' => 10,
+            'speaking_excellent' => 15,
+            'writing_submitted' => 30,
         ],
     ],
 ];

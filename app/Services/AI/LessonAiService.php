@@ -6,10 +6,11 @@ namespace App\Services\AI;
 
 /**
  * Builds the prompts for the admin "Buat dengan AI" lesson-builder feature
- * and reshapes Gemini's structured output into exactly what
+ * and reshapes the active provider's structured output into exactly what
  * lesson-builder.js expects for an item (term/reading/romaji/meaning/
  * example/example_meaning/extra) — matching the six item types defined in
- * resources/js/components/lesson-builder/item-types.js.
+ * resources/js/components/lesson-builder/item-types.js. Which provider
+ * (Gemini/Grok) is active is admin-selectable — see `AiClientInterface`.
  */
 class LessonAiService
 {
@@ -17,15 +18,18 @@ class LessonAiService
 
     private const MAX_ITEMS = 30;
 
-    public function __construct(private readonly GeminiClient $gemini) {}
+    public function __construct(private readonly AiClientInterface $ai) {}
 
     public function available(): bool
     {
-        return $this->gemini->available();
+        return $this->ai->available();
     }
 
+    /** Roughly ~1k tokens — enough for real context without ballooning cost/latency (especially on paid providers like Grok). */
+    private const MAX_CONTENT_CONTEXT = 4000;
+
     /**
-     * @param  array{topic: string, level: ?string, count: int, types: array<string, bool>, language: ?string}  $params
+     * @param  array{topic: string, level: ?string, count: int, types: array<string, bool>, language: ?string, content: ?string}  $params
      * @return array<int, array<string, mixed>>
      */
     public function generateItems(array $params): array
@@ -39,6 +43,16 @@ class LessonAiService
         $language = $params['language'] ?: 'Indonesia';
         $level = $params['level'] ?: 'N5';
 
+        // "Informasi Dasar" (title/level) always seeds `topic`/`level` from the
+        // client side — this is what makes item generation a "recommendation"
+        // instead of a from-scratch request. `content` (Isi Materi), when
+        // present, goes further: the model is told to prefer extracting what
+        // actually appears in the text over free-associating from the topic.
+        $content = trim((string) ($params['content'] ?? ''));
+        $contentSection = $content !== ''
+            ? "\n\nIsi materi pelajaran ini (jadikan acuan utama — utamakan kosakata/pola yang benar-benar MUNCUL di teks ini, bukan sekadar terkait topik secara umum):\n".mb_substr($content, 0, self::MAX_CONTENT_CONTEXT)."\n"
+            : '';
+
         $prompt = <<<PROMPT
             Kamu membuat materi belajar bahasa Jepang untuk aplikasi kursus online.
 
@@ -46,7 +60,7 @@ class LessonAiService
             Level: {$level}
             Jenis item yang diminta: {$this->describeTypes($types)}
             Bahasa penjelasan/arti: {$language}
-            Jumlah item: {$count}
+            Jumlah item: {$count}{$contentSection}
 
             Buat {$count} item pembelajaran sesuai topik dan jenis di atas. Untuk kanji, isi HANYA
             onyomi (katakana) dan kunyomi (hiragana) singkat — JANGAN isi romaji dan JANGAN
@@ -63,7 +77,7 @@ class LessonAiService
             salah secara linguistik.
             PROMPT;
 
-        $items = $this->gemini->generateJson($prompt, $this->itemsSchema($types));
+        $items = $this->ai->generateJson($prompt, $this->itemsSchema($types));
 
         return array_values(array_map(
             fn (array $raw) => $this->toBuilderItem($raw),
@@ -90,7 +104,61 @@ class LessonAiService
             {$content}
             PROMPT;
 
-        return trim($this->gemini->generateText($prompt));
+        return trim($this->ai->generateText($prompt));
+    }
+
+    /**
+     * Fills "Ringkasan" + "Isi Materi" from just the title (+ optional level
+     * and free-text focus instruction) the admin already typed.
+     *
+     * @return array{summary: string, content: string}
+     */
+    public function generateContent(string $title, ?string $contentType, ?string $level, ?string $focus, ?string $language = null): array
+    {
+        $level = $level ?: 'umum';
+        $focusLine = $focus ? "\nFokus/instruksi tambahan dari admin: {$focus}" : '';
+
+        // "Informasi Dasar" (Judul/Level/Modul) always seeds the prompt from
+        // what the admin already typed/selected — the module's target
+        // language especially matters here, since a title like "Reading" or
+        // "Percakapan Sehari-hari" alone doesn't say which language's
+        // vocabulary/grammar the content should actually use.
+        $languageLine = $language ? "\nBahasa yang dipelajari (subjek materi): {$language}" : '';
+
+        // Reading is the one content_type whose `content` field has a real
+        // structural constraint downstream — ReadingDetailPage.tsx splits on
+        // a literal blank line to pair each paragraph with its translation.
+        $formatNote = $contentType === 'reading'
+            ? "\n\nPENTING: pisahkan tiap paragraf dengan SATU BARIS KOSONG (bukan hanya ganti baris) — dipakai fitur hover-terjemahan di aplikasi. Tulis 3-5 paragraf yang mengalir sebagai satu bacaan utuh, bukan poin-poin terpisah."
+            : '';
+
+        $prompt = <<<PROMPT
+            Kamu membuat materi belajar bahasa untuk aplikasi kursus online.
+
+            Judul materi: {$title}
+            Level: {$level}
+            Tipe materi: {$contentType}{$languageLine}{$focusLine}
+
+            Isi:
+            - summary: ringkasan singkat 1-2 kalimat tentang materi ini (ditampilkan sebagai deskripsi singkat di daftar materi)
+            - content: isi materi lengkap — penjelasan/bacaan yang sesuai dengan judul, tipe, dan level di atas, dalam Bahasa Indonesia yang jelas dan mudah dipahami pembelajar. Kosakata/kalimat/karakter contoh yang dipakai HARUS dalam bahasa yang dipelajari di atas (kalau disebutkan), bukan bahasa lain.{$formatNote}
+
+            Jangan mengarang informasi yang salah secara linguistik atau faktual.
+            PROMPT;
+
+        $data = $this->ai->generateJson($prompt, [
+            'type' => 'OBJECT',
+            'properties' => [
+                'summary' => ['type' => 'STRING'],
+                'content' => ['type' => 'STRING'],
+            ],
+            'required' => ['summary', 'content'],
+        ]);
+
+        return [
+            'summary' => trim((string) ($data['summary'] ?? '')),
+            'content' => trim((string) ($data['content'] ?? '')),
+        ];
     }
 
     private function describeTypes(array $types): string

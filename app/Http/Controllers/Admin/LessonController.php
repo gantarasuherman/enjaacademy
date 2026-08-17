@@ -11,6 +11,7 @@ use App\Models\Lesson;
 use App\Models\LessonItem;
 use App\Repositories\Contracts\LearningModuleRepositoryInterface;
 use App\Repositories\Contracts\LessonRepositoryInterface;
+use App\Services\AI\AiErrorTranslator;
 use App\Services\AI\LessonAiService;
 use App\Services\Learning\LearningService;
 use App\Services\System\ImportExportService;
@@ -173,6 +174,9 @@ class LessonController extends Controller
             'count' => ['nullable', 'integer', 'min:1', 'max:30'],
             'types' => ['nullable', 'array'],
             'language' => ['nullable', 'string', 'max:50'],
+            // "Isi Materi" so far — lets item generation reference the actual
+            // lesson content instead of just the topic string.
+            'content' => ['nullable', 'string'],
         ]);
 
         try {
@@ -185,7 +189,7 @@ class LessonController extends Controller
             return response()->json([
                 'available' => true,
                 'error' => true,
-                'message' => __('Gagal menghubungi layanan AI. Coba lagi sebentar lagi.'),
+                'message' => AiErrorTranslator::describe($e),
             ]);
         }
     }
@@ -216,7 +220,50 @@ class LessonController extends Controller
             return response()->json([
                 'available' => true,
                 'error' => true,
-                'message' => __('Gagal menghubungi layanan AI. Coba lagi sebentar lagi.'),
+                'message' => AiErrorTranslator::describe($e),
+            ]);
+        }
+    }
+
+    /** Fills "Ringkasan" + "Isi Materi" from just the title the admin already typed. */
+    public function generateContent(Request $request): JsonResponse
+    {
+        $this->authorize('create', Lesson::class);
+
+        if (! $this->ai->available()) {
+            return response()->json([
+                'available' => false,
+                'message' => __('Fitur AI belum diaktifkan. Hubungi admin untuk mengatur API key.'),
+            ]);
+        }
+
+        $validated = $request->validate([
+            'title' => ['required', 'string', 'max:180'],
+            'content_type' => ['nullable', 'string', 'max:20'],
+            'level' => ['nullable', 'string', 'max:20'],
+            // Target language of the module (e.g. "Bahasa Jepang"), so the AI
+            // doesn't have to guess the subject purely from the title text.
+            'language' => ['nullable', 'string', 'max:50'],
+            'focus' => ['nullable', 'string', 'max:500'],
+        ]);
+
+        try {
+            $data = $this->ai->generateContent(
+                $validated['title'],
+                $validated['content_type'] ?? null,
+                $validated['level'] ?? null,
+                $validated['focus'] ?? null,
+                $validated['language'] ?? null,
+            );
+
+            return response()->json(['available' => true, ...$data]);
+        } catch (Throwable $e) {
+            report($e);
+
+            return response()->json([
+                'available' => true,
+                'error' => true,
+                'message' => AiErrorTranslator::describe($e),
             ]);
         }
     }

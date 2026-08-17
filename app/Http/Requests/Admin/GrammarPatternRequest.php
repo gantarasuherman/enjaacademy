@@ -23,6 +23,7 @@ class GrammarPatternRequest extends FormRequest
         return [
             'grammar_category_id' => ['required', 'integer', 'exists:grammar_categories,id'],
             'title' => ['required', 'string', 'max:200'],
+            'title_romaji' => ['nullable', 'string', 'max:200'],
             'slug' => ['nullable', 'string', 'max:200'],
             'explanation' => ['required', 'string'],
             'formula' => ['nullable', 'string'],
@@ -33,8 +34,10 @@ class GrammarPatternRequest extends FormRequest
             'items.*.id' => ['nullable', 'integer'],
             'items.*.type' => ['required_with:items.*.sentence', 'in:example,mistake'],
             'items.*.sentence' => ['nullable', 'string'],
+            'items.*.romaji' => ['nullable', 'string'],
             'items.*.translation' => ['nullable', 'string'],
             'items.*.correction' => ['nullable', 'string'],
+            'items.*.correction_romaji' => ['nullable', 'string'],
             'items.*.note' => ['nullable', 'string'],
         ];
     }

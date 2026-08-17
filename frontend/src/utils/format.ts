@@ -41,6 +41,13 @@ export function formatCompact(value: number): string {
     return new Intl.NumberFormat('id-ID', { notation: 'compact', maximumFractionDigits: 1 }).format(value);
 }
 
+/** 50000 → "Rp50.000" — course prices are whole Rupiah, no decimals. */
+export function formatCurrency(amount: number): string {
+    return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(
+        amount,
+    );
+}
+
 export function pluralise(count: number, singular: string, plural?: string): string {
     return `${formatNumber(count)} ${count === 1 ? singular : (plural ?? singular)}`;
 }

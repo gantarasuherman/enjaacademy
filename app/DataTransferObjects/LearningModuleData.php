@@ -21,6 +21,8 @@ class LearningModuleData extends BaseData
         public readonly int $sortOrder,
         public readonly bool $isActive,
         public readonly bool $isFeatured,
+        public readonly bool $isPaid,
+        public readonly ?int $price,
         /** Generate `{prefix}.{action}` permissions when saving. */
         public readonly bool $generatePermissions = false,
     ) {}
@@ -28,6 +30,7 @@ class LearningModuleData extends BaseData
     public static function fromRequest(FormRequest $request): static
     {
         $name = (string) $request->string('name');
+        $isPaid = $request->boolean('is_paid');
 
         return new static(
             languageId: (int) $request->input('language_id'),
@@ -41,6 +44,9 @@ class LearningModuleData extends BaseData
             sortOrder: (int) $request->input('sort_order', 0),
             isActive: $request->boolean('is_active'),
             isFeatured: $request->boolean('is_featured'),
+            isPaid: $isPaid,
+            // Never persist a stale price once a module is switched back to free.
+            price: $isPaid ? (int) $request->input('price', 0) : null,
             generatePermissions: $request->boolean('generate_permissions'),
         );
     }
@@ -59,6 +65,8 @@ class LearningModuleData extends BaseData
             'sort_order' => $this->sortOrder,
             'is_active' => $this->isActive,
             'is_featured' => $this->isFeatured,
+            'is_paid' => $this->isPaid,
+            'price' => $this->price,
         ];
     }
 }

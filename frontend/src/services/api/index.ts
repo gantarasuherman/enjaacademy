@@ -16,3 +16,6 @@ export {
     countWords,
 } from './content.service';
 export { userService, usingMockData } from './user.service';
+export { dailyQuizService, weakWordService, vocabularyBankService } from './dailyQuiz.service';
+export { catalogService } from './catalog.service';
+export { checkoutService, type PaymentMode } from './checkout.service';

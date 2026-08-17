@@ -1,4 +1,4 @@
-import type { AnswerRecord, Question, Quiz, QuizAttemptsOverview, QuizResult } from '@/types';
+import type { AnswerRecord, Question, Quiz, QuizAttemptsOverview, QuizCategory, QuizResult } from '@/types';
 import quizData from '@/data/quizzes.json';
 import { http, unwrap } from './client';
 import { delay, source } from './config';
@@ -72,13 +72,15 @@ function expandContractions(value: string): string {
 }
 
 export const quizService = {
-    list: (filters?: { moduleId?: string; cefr?: string }) =>
+    list: (filters?: { moduleId?: string; lessonId?: string; cefr?: string; category?: QuizCategory }) =>
         source(
             () =>
                 delay(
                     quizzes
                         .filter((q) => !filters?.moduleId || q.moduleId === filters.moduleId)
-                        .filter((q) => !filters?.cefr || q.cefr === filters.cefr),
+                        .filter((q) => !filters?.lessonId || q.lessonId === filters.lessonId)
+                        .filter((q) => !filters?.cefr || q.cefr === filters.cefr)
+                        .filter((q) => !filters?.category || (q.category ?? 'quiz') === filters.category),
                 ),
             async () => unwrap<Quiz[]>((await http.get('/quizzes', { params: filters })).data),
         ),

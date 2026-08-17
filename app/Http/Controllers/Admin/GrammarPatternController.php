@@ -126,8 +126,10 @@ class GrammarPatternController extends Controller
             $item->fill([
                 'type' => $row['type'] ?? 'example',
                 'sentence' => $row['sentence'],
+                'romaji' => $row['romaji'] ?? null,
                 'translation' => $row['translation'] ?? null,
                 'correction' => $row['correction'] ?? null,
+                'correction_romaji' => $row['correction_romaji'] ?? null,
                 'note' => $row['note'] ?? null,
                 'sort_order' => $index,
             ])->save();

@@ -45,7 +45,16 @@ export default function JlptPatternPage() {
                 backLabel="Semua topik"
                 title={pattern.title}
                 badge={pattern.level && <Badge tone={LEVEL_NAME_TONE[pattern.level] ?? 'neutral'}>{pattern.level}</Badge>}
-                description={pattern.category}
+                description={
+                    pattern.titleRomaji ? (
+                        <>
+                            <span className="italic text-fg-muted">{pattern.titleRomaji}</span>
+                            {pattern.category && <span> · {pattern.category}</span>}
+                        </>
+                    ) : (
+                        pattern.category
+                    )
+                }
             />
 
             <div className="grid gap-6 lg:grid-cols-3">
@@ -76,6 +85,9 @@ export default function JlptPatternPage() {
                                     >
                                         <div className="min-w-0 flex-1">
                                             <p className="text-sm">{example.sentence}</p>
+                                            {example.romaji && (
+                                                <p className="mt-0.5 text-xs italic text-fg-muted">{example.romaji}</p>
+                                            )}
                                             {example.translation && (
                                                 <p className="mt-1 text-sm text-fg-muted">{example.translation}</p>
                                             )}
@@ -114,11 +126,17 @@ export default function JlptPatternPage() {
                                             <XCircle className="mt-0.5 size-4 shrink-0" />
                                             <span className="line-through">{mistake.wrong}</span>
                                         </p>
+                                        {mistake.wrongRomaji && (
+                                            <p className="ml-6 text-xs italic text-fg-muted">{mistake.wrongRomaji}</p>
+                                        )}
                                         {mistake.right && (
                                             <p className="mt-1.5 flex items-start gap-2 text-sm font-semibold text-success">
                                                 <CheckCircle2 className="mt-0.5 size-4 shrink-0" />
                                                 {mistake.right}
                                             </p>
+                                        )}
+                                        {mistake.rightRomaji && (
+                                            <p className="ml-6 text-xs italic text-fg-muted">{mistake.rightRomaji}</p>
                                         )}
                                         {mistake.why && (
                                             <p className="mt-2 border-t border-[var(--surface-border)] pt-2 text-xs text-fg-muted">

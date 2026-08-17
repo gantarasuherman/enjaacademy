@@ -110,6 +110,7 @@
                                         <option value="true_false">{{ __('Benar / Salah') }}</option>
                                         <option value="fill_blank">{{ __('Isian') }}</option>
                                         <option value="matching">{{ __('Menjodohkan') }}</option>
+                                        <option value="arrange">{{ __('Susun Kata') }}</option>
                                     </select>
 
                                     <input type="number" min="1" :name="`questions[${index}][score]`" x-model="question.score"
@@ -122,7 +123,7 @@
                                 </div>
 
                                 {{-- Options --}}
-                                <template x-if="question.type !== 'fill_blank'">
+                                <template x-if="question.type !== 'fill_blank' && question.type !== 'arrange'">
                                     <div class="space-y-2">
                                         <template x-for="(option, optionIndex) in question.options" :key="optionIndex">
                                             <div class="flex items-center gap-2">
@@ -147,6 +148,34 @@
 
                                         <button type="button" @click="addOption(question)" class="btn-ghost text-xs">
                                             + {{ __('Tambah pilihan') }}
+                                        </button>
+                                    </div>
+                                </template>
+
+                                {{-- Susun Kata: kata dalam urutan yang benar — urutan barisnya sendiri adalah kunci jawaban, jadi diurutkan lewat ↑↓, bukan ditandai. --}}
+                                <template x-if="question.type === 'arrange'">
+                                    <div class="space-y-2">
+                                        <p class="help mt-0">{{ __('Ketik kata-kata sesuai urutan kalimat yang benar — siswa akan melihatnya dalam urutan acak dan harus menyusunnya kembali.') }}</p>
+
+                                        <template x-for="(option, optionIndex) in question.options" :key="optionIndex">
+                                            <div class="flex items-center gap-2">
+                                                <span class="w-5 shrink-0 text-center text-xs text-slate-400" x-text="optionIndex + 1"></span>
+
+                                                <input :name="`questions[${index}][options][${optionIndex}][label]`"
+                                                       x-model="option.label"
+                                                       :placeholder="`{{ __('Kata') }} ${optionIndex + 1}`"
+                                                       class="input text-sm">
+
+                                                <div class="flex shrink-0 gap-1">
+                                                    <button type="button" @click="moveOption(question, optionIndex, -1)" class="btn-ghost px-1.5 py-0.5 text-xs">↑</button>
+                                                    <button type="button" @click="moveOption(question, optionIndex, 1)" class="btn-ghost px-1.5 py-0.5 text-xs">↓</button>
+                                                    <button type="button" @click="removeOption(question, optionIndex)" class="btn-ghost px-2 py-1 text-xs text-rose-600">&times;</button>
+                                                </div>
+                                            </div>
+                                        </template>
+
+                                        <button type="button" @click="addOption(question)" class="btn-ghost text-xs">
+                                            + {{ __('Tambah kata') }}
                                         </button>
                                     </div>
                                 </template>
@@ -176,6 +205,15 @@
 
                 <div class="space-y-4">
                     <div>
+                        <label for="category" class="label">{{ __('Jenis') }}</label>
+                        <select id="category" name="category" class="input">
+                            <option value="quiz" @selected(old('category', $quiz->category ?? 'quiz') === 'quiz')>{{ __('Kuis (latihan singkat)') }}</option>
+                            <option value="test" @selected(old('category', $quiz->category ?? 'quiz') === 'test')>{{ __('Tes (ujian panjang berwaktu)') }}</option>
+                        </select>
+                        @error('category') <p class="mt-1 text-xs text-rose-600">{{ $message }}</p> @enderror
+                    </div>
+
+                    <div>
                         <label for="difficulty" class="label">{{ __('Tingkat kesulitan') }}</label>
                         <select id="difficulty" name="difficulty" class="input">
                             @foreach (['easy' => __('Mudah'), 'medium' => __('Sedang'), 'hard' => __('Sulit')] as $value => $label)
@@ -185,8 +223,8 @@
                     </div>
 
                     <div>
-                        <label for="level" class="label">{{ __('Level CEFR/JLPT') }}</label>
-                        <input id="level" name="level" value="{{ old('level', $quiz->level) }}" class="input font-mono" placeholder="N5 / B1">
+                        <label for="level" class="label">{{ __('Level (Beginner..Advanced / N5..N1)') }}</label>
+                        <input id="level" name="level" value="{{ old('level', $quiz->level) }}" class="input font-mono" placeholder="N5 / Intermediate">
                     </div>
 
                     <div>

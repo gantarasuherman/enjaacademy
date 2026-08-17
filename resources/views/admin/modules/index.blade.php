@@ -38,6 +38,7 @@
                         <th>{{ __('Modul') }}</th>
                         <th>{{ __('Bahasa') }}</th>
                         <th>{{ __('Tipe konten') }}</th>
+                        <th>{{ __('Harga') }}</th>
                         <th>{{ __('Prefix permission') }}</th>
                         <th class="text-right">{{ __('Materi') }}</th>
                         <th class="text-right">{{ __('Aksi') }}</th>
@@ -60,6 +61,13 @@
                             </td>
                             <td class="text-slate-500">{{ $module->language?->name }}</td>
                             <td><span class="badge bg-slate-100 text-slate-600 dark:bg-slate-800">{{ $module->content_type }}</span></td>
+                            <td>
+                                @if ($module->is_paid)
+                                    <span class="badge bg-amber-100 text-amber-700 dark:bg-amber-500/15">Rp {{ number_format((int) $module->price, 0, ',', '.') }}</span>
+                                @else
+                                    <span class="badge bg-emerald-100 text-emerald-700 dark:bg-emerald-500/15">{{ __('Gratis') }}</span>
+                                @endif
+                            </td>
                             <td><code class="text-xs text-amber-600 dark:text-amber-400">{{ $module->permission_prefix }}.*</code></td>
                             <td class="text-right font-mono">{{ $module->lessons_count }}</td>
                             <td class="text-right">
@@ -81,7 +89,7 @@
                             </td>
                         </tr>
                     @empty
-                        <tr><td colspan="6" class="py-10 text-center text-sm text-slate-500">{{ __('Belum ada modul.') }}</td></tr>
+                        <tr><td colspan="7" class="py-10 text-center text-sm text-slate-500">{{ __('Belum ada modul.') }}</td></tr>
                     @endforelse
                 </tbody>
             </table>

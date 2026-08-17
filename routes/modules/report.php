@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Admin\EnrollmentController;
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ReportController;
 use Illuminate\Support\Facades\Route;
 
@@ -34,4 +35,14 @@ Route::controller(EnrollmentController::class)
     ->group(function () use ($prefix) {
         Route::get('/', 'index')->name('index')->middleware("permission:$prefix.view");
         Route::delete('/{enrollment}', 'destroy')->name('destroy')->middleware("permission:$prefix.delete");
+    });
+
+// ====================== ORDERS (course checkout / payment) ======================
+// Read-only — financial records aren't editable from the admin UI.
+$prefix = 'orders';
+Route::controller(OrderController::class)
+    ->prefix($prefix)
+    ->name("$prefix.")
+    ->group(function () use ($prefix) {
+        Route::get('/', 'index')->name('index')->middleware("permission:$prefix.view");
     });

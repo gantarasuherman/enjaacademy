@@ -30,6 +30,7 @@ class LearningModule extends Model
     protected $fillable = [
         'language_id', 'name', 'slug', 'icon', 'color', 'content_type',
         'permission_prefix', 'description', 'sort_order', 'is_active', 'is_featured',
+        'is_paid', 'price',
     ];
 
     protected function casts(): array
@@ -37,6 +38,7 @@ class LearningModule extends Model
         return [
             'is_active' => 'boolean',
             'is_featured' => 'boolean',
+            'is_paid' => 'boolean',
         ];
     }
 

@@ -19,6 +19,7 @@ export const ITEM_TYPES = [
     { value: 'kosakata', label: 'Kosakata' },
     { value: 'grammar', label: 'Grammar' },
     { value: 'kalimat', label: 'Kalimat' },
+    { value: 'video_chapter', label: 'Bab Video' },
     { value: 'custom', label: 'Custom' },
 ];
 
@@ -58,6 +59,10 @@ export const TEMPLATE_FIELDS = {
         { key: 'term', label: 'Kalimat', target: 'term', multiline: true },
         { key: 'meaning', label: 'Arti', target: 'meaning', multiline: true },
     ],
+    video_chapter: [
+        { key: 'term', label: 'Judul Bab', target: 'term', placeholder: 'Perkenalan' },
+        { key: 'timestamp', label: 'Waktu mulai (mm:ss)', target: 'extra.timestamp', placeholder: '01:23' },
+    ],
     custom: [
         { key: 'term', label: 'Term (wajib)', target: 'term' },
         { key: 'reading', label: 'Bacaan / furigana', target: 'reading' },
@@ -86,7 +91,7 @@ export function templateFor(type) {
 export function inferType(rawItem, moduleContentType) {
     if (rawItem?.extra?.type) return rawItem.extra.type;
 
-    const fallback = { kana: 'kana', kanji: 'kanji', vocabulary: 'kosakata', grammar: 'grammar' };
+    const fallback = { kana: 'kana', kanji: 'kanji', vocabulary: 'kosakata', grammar: 'grammar', video: 'video_chapter' };
 
     return fallback[moduleContentType] ?? 'custom';
 }

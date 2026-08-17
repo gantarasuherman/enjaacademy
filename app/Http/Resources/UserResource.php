@@ -20,6 +20,12 @@ class UserResource extends JsonResource
             'is_active' => $this->is_active,
             'email_verified' => $this->email_verified_at !== null,
             'locale' => $this->locale,
+            'active_module_id' => $this->active_module_id ? (string) $this->active_module_id : null,
+            'active_module' => $this->whenLoaded('activeModule', fn () => $this->activeModule ? [
+                'id' => (string) $this->activeModule->id,
+                'slug' => $this->activeModule->slug,
+                'name' => $this->activeModule->name,
+            ] : null),
             'roles' => $this->whenLoaded('roles', fn () => $this->roles->pluck('name')),
             'permissions' => $this->when(
                 $request->user()?->is($this->resource) ?? false,

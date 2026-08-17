@@ -4,6 +4,7 @@ import { ArrowRight, CheckCircle2, GraduationCap, Layers } from 'lucide-react';
 import { useAsync } from '@/hooks/useAsync';
 import { learningService } from '@/services/api';
 import { useProgressStore } from '@/store/progressStore';
+import { formatCurrency } from '@/utils/format';
 import type { LearningModule, SkillType } from '@/types';
 import { Card } from '@/components/ui/Card';
 import { Chip } from '@/components/ui/Badge';
@@ -11,8 +12,9 @@ import { ProgressBar } from '@/components/ui/Progress';
 import { Alert, EmptyState, Skeleton } from '@/components/ui/Feedback';
 import { DynamicIcon } from '@/components/ui/DynamicIcon';
 import { PageHeader } from '@/components/feature/shared/PageHeader';
+import { CourseCheckoutModal } from '@/components/feature/learning/CourseCheckoutModal';
 
-const FILTERS: { id: SkillType | 'kana' | 'kanji' | 'exam' | 'all'; label: string }[] = [
+const FILTERS: { id: SkillType | 'kana' | 'kanji' | 'exam' | 'video' | 'all'; label: string }[] = [
     { id: 'all', label: 'Semua' },
     { id: 'kana', label: 'Kana' },
     { id: 'kanji', label: 'Kanji' },
@@ -23,6 +25,7 @@ const FILTERS: { id: SkillType | 'kana' | 'kanji' | 'exam' | 'all'; label: strin
     { id: 'reading', label: 'Reading' },
     { id: 'writing', label: 'Writing' },
     { id: 'conversation', label: 'Conversation' },
+    { id: 'video', label: 'Video' },
     { id: 'exam', label: 'JLPT' },
 ];
 
@@ -44,11 +47,16 @@ export function ModuleCard({
     percent,
     enrolled,
     onToggleEnroll,
+    isActive,
+    onSetActive,
 }: {
     module: LearningModule;
     percent: number;
     enrolled: boolean;
     onToggleEnroll: (moduleSlug: string) => void;
+    /** Only meaningful when `enrolled` — shows an "Aktif"/"Jadikan Aktif" control (used on "Kursus Saya"). */
+    isActive?: boolean;
+    onSetActive?: (moduleSlug: string) => void;
 }) {
     const done = percent === 100;
 
@@ -64,11 +72,23 @@ export function ModuleCard({
                         <DynamicIcon name={module.icon} className="size-5" />
                     </span>
 
-                    {module.language && (
-                        <span className="rounded-full bg-surface-sunken px-2.5 py-1 text-[11px] font-medium text-fg-muted">
-                            {module.language.flag} {module.language.name}
-                        </span>
-                    )}
+                    <div className="flex flex-col items-end gap-1.5">
+                        {module.language && (
+                            <span className="rounded-full bg-surface-sunken px-2.5 py-1 text-[11px] font-medium text-fg-muted">
+                                {module.language.flag} {module.language.name}
+                            </span>
+                        )}
+                        {!enrolled &&
+                            (module.is_paid ? (
+                                <span className="rounded-full bg-amber-100 px-2.5 py-1 text-[11px] font-semibold text-amber-700 dark:bg-amber-500/15 dark:text-amber-400">
+                                    {formatCurrency(module.price ?? 0)}
+                                </span>
+                            ) : (
+                                <span className="rounded-full bg-success/12 px-2.5 py-1 text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">
+                                    Gratis
+                                </span>
+                            ))}
+                    </div>
                 </div>
 
                 <h3 className="mt-4 font-display text-base font-bold">{module.name}</h3>
@@ -122,19 +142,41 @@ export function ModuleCard({
                         </>
                     )}
                 </button>
+
+                {enrolled && onSetActive && (
+                    <button
+                        type="button"
+                        disabled={isActive}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            onSetActive(module.slug);
+                        }}
+                        className={`mt-2 flex items-center justify-center gap-1.5 rounded-sm px-3 py-2 text-xs font-semibold transition ${
+                            isActive
+                                ? 'cursor-default bg-secondary-100 text-secondary-700 dark:bg-secondary/20 dark:text-secondary-300'
+                                : 'border border-[var(--surface-border)] text-fg-muted hover:border-primary-300 hover:text-fg'
+                        }`}
+                    >
+                        {isActive ? 'Kursus Aktif' : 'Jadikan Aktif'}
+                    </button>
+                )}
             </Card>
         </Link>
     );
 }
 
 export default function LearningListPage() {
-    const [skill, setSkill] = useState<SkillType | 'kana' | 'kanji' | 'exam' | 'all'>('all');
+    const [skill, setSkill] = useState<SkillType | 'kana' | 'kanji' | 'exam' | 'video' | 'all'>('all');
     const [lang, setLang] = useState<string>('all');
 
     const { data: modules, loading, error } = useAsync(() => learningService.listModules(), []);
     const modulePercent = useProgressStore((state) => state.modulePercent);
     const isEnrolled = useProgressStore((state) => state.isEnrolled);
     const toggleEnrollment = useProgressStore((state) => state.toggleEnrollment);
+    const markEnrolled = useProgressStore((state) => state.markEnrolled);
+
+    const [checkoutModule, setCheckoutModule] = useState<LearningModule | null>(null);
 
     const filtered = (modules ?? [])
         .filter((module) => skill === 'all' || module.content_type === skill)
@@ -228,7 +270,7 @@ export default function LearningListPage() {
                                         module={module}
                                         percent={modulePercent(String(module.id))}
                                         enrolled={false}
-                                        onToggleEnroll={toggleEnrollment}
+                                        onToggleEnroll={() => setCheckoutModule(module)}
                                     />
                                 ))}
                             </div>
@@ -251,6 +293,16 @@ export default function LearningListPage() {
                     Mulai dari sini <ArrowRight className="size-4" />
                 </Link>
             </Card>
+
+            <CourseCheckoutModal
+                module={checkoutModule}
+                open={checkoutModule !== null}
+                onClose={() => setCheckoutModule(null)}
+                onEnrolled={() => {
+                    if (checkoutModule) markEnrolled(checkoutModule.slug);
+                    setCheckoutModule(null);
+                }}
+            />
         </>
     );
 }

@@ -71,18 +71,38 @@ class QuizService
                 continue;
             }
 
-            /** @var QuizQuestion $question */
-            $question = QuizQuestion::updateOrCreate(
-                ['id' => $payload['id'] ?? null, 'quiz_id' => $quiz->id],
-                [
-                    'question' => $payload['question'],
-                    'type' => $payload['type'] ?? 'multiple_choice',
-                    'explanation' => $payload['explanation'] ?? null,
-                    'correct_text' => $payload['correct_text'] ?? null,
-                    'score' => (int) ($payload['score'] ?? 1),
-                    'sort_order' => $index,
-                ],
-            );
+            $type = $payload['type'] ?? 'multiple_choice';
+
+            // "arrange" has no admin-typed answer key — the row order of its
+            // word options *is* the key, so it's derived here rather than
+            // trusted from the payload, then graded exactly like fill_blank
+            // (see QuizQuestion::isAnswerCorrect()).
+            $correctText = $type === 'arrange'
+                ? collect($payload['options'] ?? [])
+                    ->filter(fn ($o) => filled($o['label'] ?? null))
+                    ->map(fn ($o) => trim((string) $o['label']))
+                    ->implode(' ')
+                : ($payload['correct_text'] ?? null);
+
+            $values = [
+                'question' => $payload['question'],
+                'type' => $type,
+                'explanation' => $payload['explanation'] ?? null,
+                'correct_text' => $correctText,
+                'score' => (int) ($payload['score'] ?? 1),
+                'sort_order' => $index,
+            ];
+
+            // Not updateOrCreate(['id' => $payload['id'] ?? null, ...], $values):
+            // `id` isn't fillable, and Eloquent's strict mode (see
+            // AppServiceProvider::boot()) throws MassAssignmentException the
+            // moment `firstOrNew` has to build a *new* instance from a search
+            // array containing `id => null`.
+            $question = filled($payload['id'] ?? null)
+                ? QuizQuestion::where('id', $payload['id'])->where('quiz_id', $quiz->id)->firstOrFail()
+                : new QuizQuestion(['quiz_id' => $quiz->id]);
+
+            $question->fill($values)->save();
 
             $keptIds[] = $question->id;
 

@@ -152,4 +152,18 @@ export const learningService = {
                           (await http.post(`/learning/modules/${moduleSlug}/enroll`)).data,
                       ),
               ),
+
+    /** Fire-and-forget sync; the store decides the new local state before calling this. */
+    setActiveModule: (moduleSlug: string): Promise<{ module: string; activeModuleId: string }> =>
+        LIVE
+            ? http
+                  .post(`/learning/modules/${moduleSlug}/set-active`)
+                  .then((res) => unwrap<{ module: string; activeModuleId: string }>(res.data))
+            : source(
+                  () => delay({ module: moduleSlug, activeModuleId: moduleSlug }),
+                  async () =>
+                      unwrap<{ module: string; activeModuleId: string }>(
+                          (await http.post(`/learning/modules/${moduleSlug}/set-active`)).data,
+                      ),
+              ),
 };

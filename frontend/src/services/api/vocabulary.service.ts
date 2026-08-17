@@ -1,4 +1,4 @@
-import type { CEFRLevel, Category, LanguageSlug, Lesson, LessonItem, VocabularyItem } from '@/types';
+import type { Category, LanguageSlug, Lesson, LessonItem, VocabularyItem } from '@/types';
 import categoriesData from '@/data/categories.json';
 import vocabularyData from '@/data/vocabulary.json';
 import { learningService } from './learning.service';
@@ -41,7 +41,7 @@ function toVocabularyItem(item: LessonItem, lesson: Lesson, language: LanguageSl
         synonyms: [],
         antonyms: [],
         categoryId: String(lesson.id),
-        cefr: (lesson.level as CEFRLevel | null) ?? 'A1',
+        cefr: lesson.level ?? (language === 'japanese' ? 'N5' : 'Beginner'),
         difficulty: 'beginner',
         language,
     };

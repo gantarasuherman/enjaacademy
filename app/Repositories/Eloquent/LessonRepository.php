@@ -31,6 +31,10 @@ class LessonRepository extends BaseRepository implements LessonRepositoryInterfa
             ->forModule($filters['module'] ?? null)
             ->level($filters['level'] ?? null)
             ->when(isset($filters['is_published']) && $filters['is_published'] !== '', fn (Builder $q) => $q->where('is_published', (bool) $filters['is_published']))
+            ->when(
+                $filters['module_content_type'] ?? null,
+                fn (Builder $q, $type) => $q->whereHas('module', fn (Builder $m) => $m->where('content_type', $type)),
+            )
             ->withCount('items');
     }
 

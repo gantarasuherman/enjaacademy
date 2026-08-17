@@ -8,6 +8,7 @@ use App\Models\Concerns\Auditable;
 use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -30,6 +31,7 @@ class User extends Authenticatable implements MustVerifyEmailContract
     protected $fillable = [
         'name', 'username', 'email', 'password', 'phone', 'avatar', 'bio',
         'birth_date', 'gender', 'locale', 'timezone', 'is_active', 'email_verified_at',
+        'active_module_id',
     ];
 
     protected $hidden = ['password', 'remember_token'];
@@ -94,6 +96,17 @@ class User extends Authenticatable implements MustVerifyEmailContract
     public function enrollments(): HasMany
     {
         return $this->hasMany(Enrollment::class);
+    }
+
+    /** The course currently driving this student's Daily Quiz. Null until they enroll in something. */
+    public function activeModule(): BelongsTo
+    {
+        return $this->belongsTo(LearningModule::class, 'active_module_id');
+    }
+
+    public function certificates(): HasMany
+    {
+        return $this->hasMany(Certificate::class);
     }
 
     public function achievements(): BelongsToMany

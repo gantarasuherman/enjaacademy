@@ -23,7 +23,7 @@ class Quiz extends Model
     protected string $slugSource = 'title';
 
     protected $fillable = [
-        'learning_module_id', 'lesson_id', 'title', 'slug', 'description', 'level',
+        'learning_module_id', 'lesson_id', 'title', 'slug', 'description', 'level', 'category',
         'difficulty', 'time_limit_seconds', 'pass_score', 'xp_reward', 'max_attempts',
         'shuffle_questions', 'shuffle_options', 'show_explanation', 'is_published', 'created_by',
     ];
@@ -75,6 +75,11 @@ class Quiz extends Model
                 ? $q->where('learning_module_id', $module)
                 : $q->whereHas('module', fn ($m) => $m->where('slug', $module));
         });
+    }
+
+    public function scopeForLesson(Builder $query, int|string|null $lesson): Builder
+    {
+        return $query->when($lesson, fn (Builder $q) => $q->where('lesson_id', $lesson));
     }
 
     public function scopeSearch(Builder $query, ?string $term): Builder

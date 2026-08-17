@@ -77,20 +77,24 @@ export default function WritingPage() {
     const withinRange = task ? words >= task.minWords && words <= task.maxWords : false;
     const rangePercent = task ? Math.min(100, Math.round((words / task.maxWords) * 100)) : 0;
 
-    function handleSubmit() {
+    async function handleSubmit() {
         if (!task || !withinRange) return;
 
         saveDraft(task.id, body);
         setSubmitted(true);
         setShowSample(true);
 
-        const { levelUp, level } = awardXp(30);
+        // Server decides the real amount — 0 on a repeat submission of a task
+        // already rewarded once, so the local store never gets out of sync
+        // with what actually persisted.
+        const { earnedXp } = await writingService.submit(task.id, body);
 
-        toast(
-            levelUp ? `+30 XP — naik ke level ${level}!` : '+30 XP — tulisan tersimpan.',
-            'success',
-            'Kerja bagus',
-        );
+        if (earnedXp > 0) {
+            const { levelUp, level } = awardXp(earnedXp);
+            toast(levelUp ? `+${earnedXp} XP — naik ke level ${level}!` : `+${earnedXp} XP — tulisan tersimpan.`, 'success', 'Kerja bagus');
+        } else {
+            toast('Tulisan tersimpan.', 'success', 'Kerja bagus');
+        }
     }
 
     if (loading) {
@@ -190,7 +194,7 @@ export default function WritingPage() {
 
                         <div className="mt-4 flex flex-wrap gap-2">
                             <Button
-                                onClick={handleSubmit}
+                                onClick={() => void handleSubmit()}
                                 disabled={!withinRange}
                                 icon={<CheckCircle2 className="size-4" />}
                             >

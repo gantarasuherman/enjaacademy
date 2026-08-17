@@ -48,7 +48,7 @@ class AuthController extends Controller
 
         return response()->json([
             'token' => $token->plainTextToken,
-            'user' => new UserResource($user->load('roles')),
+            'user' => new UserResource($user->load(['roles', 'activeModule'])),
         ]);
     }
 
@@ -87,13 +87,13 @@ class AuthController extends Controller
 
         return response()->json([
             'token' => $token->plainTextToken,
-            'user' => new UserResource($user->load('roles')),
+            'user' => new UserResource($user->load(['roles', 'activeModule'])),
         ], 201);
     }
 
     public function me(Request $request): UserResource
     {
-        return new UserResource($request->user()->load(['roles', 'stat']));
+        return new UserResource($request->user()->load(['roles', 'stat', 'activeModule']));
     }
 
     public function logout(Request $request): JsonResponse

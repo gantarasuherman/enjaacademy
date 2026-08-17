@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { BookOpen, Clock, Flame, Target, TrendingUp, Zap } from 'lucide-react';
 import { useAsync } from '@/hooks/useAsync';
-import { learningService } from '@/services/api';
+import { learningService, vocabularyBankService } from '@/services/api';
 import { useProgressStore } from '@/store/progressStore';
 import { useAuthStore } from '@/store/authStore';
 import { levelInfo } from '@/utils/gamification';
@@ -28,6 +28,7 @@ export default function ProgressPage() {
     const user = useAuthStore((state) => state.user);
     const { xp, activity, progress, modulePercent, streakDays, lessonsCompleted } = useProgressStore();
     const { data: modules, loading } = useAsync(() => learningService.listModules(), []);
+    const { data: vocabProgress, loading: vocabLoading } = useAsync(() => vocabularyBankService.progress(), []);
 
     const info = levelInfo(xp);
     const streak = streakDays;
@@ -139,6 +140,36 @@ export default function ProgressPage() {
                     </Card>
 
                     <Card>
+                        <CardHeader title="Progres kosakata" subtitle="Kata yang sudah kamu kuasai lewat Kuis Harian, per level" />
+
+                        {vocabLoading ? (
+                            <div className="space-y-4">
+                                {Array.from({ length: 5 }, (_, i) => (
+                                    <Skeleton key={i} className="h-12 w-full" />
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="space-y-4">
+                                {(vocabProgress ?? []).map((row) => {
+                                    const percent = row.total > 0 ? Math.round((row.learned / row.total) * 100) : 0;
+
+                                    return (
+                                        <div key={row.level}>
+                                            <div className="mb-1.5 flex items-center justify-between gap-3">
+                                                <span className="truncate text-sm font-medium">{row.level}</span>
+                                                <span className="shrink-0 font-mono text-xs text-fg-muted">
+                                                    {row.learned}/{row.total}
+                                                </span>
+                                            </div>
+                                            <ProgressBar value={percent} size="sm" tone={percent === 100 ? 'success' : percent > 0 ? 'secondary' : 'primary'} />
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        )}
+                    </Card>
+
+                    <Card>
                         <CardHeader title="Kalender konsistensi" subtitle="12 minggu terakhir" />
                         <StreakCalendar activity={activity} />
                     </Card>
@@ -204,7 +235,7 @@ export default function ProgressPage() {
                             <Target className="size-5 text-secondary" />
                             <div>
                                 <p className="text-sm font-bold">Target level</p>
-                                <p className="text-sm text-fg-muted">{user?.targetLevel ?? 'B2'} — terus jalan.</p>
+                                <p className="text-sm text-fg-muted">{user?.targetLevel ?? 'Upper-Intermediate'} — terus jalan.</p>
                             </div>
                         </div>
                     </Card>

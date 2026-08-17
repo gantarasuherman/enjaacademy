@@ -3,7 +3,7 @@
  * `VITE_DATA_SOURCE` from `mock` to `api` needs no type changes.
  */
 
-export type CEFRLevel = 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2';
+export type CEFRLevel = 'Beginner' | 'Elementary' | 'Intermediate' | 'Upper-Intermediate' | 'Advanced';
 export type Difficulty = 'beginner' | 'intermediate' | 'advanced';
 /** Which language this content teaches — absent on older mock rows that predate the bilingual catalog. */
 export type LanguageSlug = 'japanese' | 'english';
@@ -56,12 +56,30 @@ export interface LearningModule {
     slug: string;
     icon: string;
     color: string;
-    content_type: SkillType | 'kana' | 'kanji' | 'exam';
+    content_type: SkillType | 'kana' | 'kanji' | 'exam' | 'video';
     description: string | null;
     lessons_count?: number;
     /** Whether the current user took this class. A record, not an access gate. */
     is_enrolled?: boolean;
+    is_paid: boolean;
+    /** Rupiah, no decimals — `null` unless `is_paid`. */
+    price: number | null;
     language?: { name: string; slug: string; flag: string };
+}
+
+/** Mirrors `OrderResource` (backend) — a checkout/payment record for a paid course. */
+export interface Order {
+    id: number;
+    reference: string;
+    amount: number;
+    status: 'pending' | 'paid' | 'failed' | 'expired';
+    /** Tripay-hosted checkout page — set only when `payment_mode: 'tripay'`. */
+    checkout_url: string | null;
+    /** QRIS image URL — set only when `payment_mode: 'tripay'`. */
+    qr_url: string | null;
+    paid_at: string | null;
+    created_at: string;
+    module?: { id: number; name: string; slug: string };
 }
 
 /** One row inside a lesson — mirrors the `items` array of `LessonResource`. */
@@ -90,6 +108,7 @@ export interface Lesson {
     summary: string | null;
     content?: string | null;
     translated_content?: string | null;
+    video_url?: string | null;
     estimated_minutes: number;
     xp_reward: number;
     items_count?: number;
@@ -122,7 +141,8 @@ export interface VocabularyItem {
     synonyms: string[];
     antonyms: string[];
     categoryId: string;
-    cefr: CEFRLevel;
+    /** Beginner..Advanced for English words, N5..N1 (JLPT) for Japanese — the two scales don't mix, see `language`. */
+    cefr: string;
     difficulty: Difficulty;
     language?: LanguageSlug;
 }
@@ -181,12 +201,19 @@ export interface JlptGrammarLevel {
 export interface JlptGrammarPattern {
     id: string;
     title: string;
+    titleRomaji: string | null;
     explanation: string;
     formula: string | null;
     level: string | null;
     category: string | null;
-    examples: { sentence: string; translation: string | null }[];
-    mistakes: { wrong: string; right: string | null; why: string | null }[];
+    examples: { sentence: string; romaji: string | null; translation: string | null }[];
+    mistakes: {
+        wrong: string;
+        wrongRomaji: string | null;
+        right: string | null;
+        rightRomaji: string | null;
+        why: string | null;
+    }[];
 }
 
 export interface Tense {
@@ -225,6 +252,8 @@ export interface ListeningTrack {
 
 export interface SpeakingExercise {
     id: string;
+    /** Raw LessonItem id, for POSTing XP back — undefined in mock mode, where there's no backend row to award against. */
+    itemId?: string;
     targetSentence: string;
     ipa: string;
     meaning: string;
@@ -386,13 +415,17 @@ export interface Question {
     points: number;
 }
 
+export type QuizCategory = 'quiz' | 'test';
+
 export interface Quiz {
     id: string;
     lessonId: string | null;
     moduleId: string | null;
     title: string;
     description: string;
-    cefr: CEFRLevel;
+    /** Beginner..Advanced for English, N5..N1 (JLPT) for Japanese — the two scales don't mix. */
+    cefr: string;
+    category: QuizCategory;
     timeLimitSeconds: number | null;
     passScore: number;
     xpReward: number;
@@ -498,6 +531,7 @@ export interface DashboardStats {
         created_at: string;
         source_type: string | null;
     }>;
+    active_module_id: string | null;
 }
 
 /* -------------------------------------------------------- Achievement ---- */
@@ -560,11 +594,110 @@ export interface Bookmark {
 export interface Certificate {
     id: string;
     title: string;
+    /** Actually the module's slug, not its numeric id — matches the `/app/learning/:moduleId` route param, which is slug-keyed. */
     moduleId: string;
-    cefr: CEFRLevel;
+    /** Null when a module's lessons don't share a single level. */
+    cefr: string | null;
     issuedAt: string | null;
     requirement: string;
     progressPercent: number;
+}
+
+/* ---------------------------------------------------- Vocabulary Bank ---- */
+
+export interface VocabularyWordExampleSentence {
+    sentenceEn: string;
+    sentenceId: string | null;
+}
+
+export interface VocabularyBankWord {
+    id: string;
+    word: string;
+    phonetic: string | null;
+    partOfSpeech: string | null;
+    meaningId: string;
+    /** Null for Japanese words — there's no "English meaning" field for those, only the Indonesian one. */
+    meaningEn: string | null;
+    /** CEFR (Beginner..Advanced) for English, JLPT (N5..N1) for Japanese. */
+    level: string;
+    synonyms: string[];
+    antonyms: string[];
+    collocations: string[];
+    examples?: VocabularyWordExampleSentence[];
+}
+
+export interface VocabularyLevelProgress {
+    level: string;
+    total: number;
+    learned: number;
+}
+
+/* ------------------------------------------------------------ Daily Quiz ---- */
+
+export type DailyQuizQuestionType = 'multiple_choice' | 'fill_blank' | 'matching' | 'true_false' | 'context';
+
+export interface DailyQuizQuestionPayload {
+    prompt: string;
+    options?: string[];
+    pairs?: { word: string; meaning: string }[];
+    /** fill_blank only — hangman-style pattern like "p__________e", first/last letter of each word revealed. */
+    hint?: string;
+}
+
+export interface DailyQuizQuestionItem {
+    id: string;
+    type: DailyQuizQuestionType;
+    payload: DailyQuizQuestionPayload;
+}
+
+export interface DailyQuizAttempt {
+    id: string;
+    quizDate: string;
+    totalQuestions: number;
+    correctCount: number;
+    score: number;
+    skipped: boolean;
+    completedAt: string | null;
+    questions: DailyQuizQuestionItem[];
+}
+
+export interface DailyQuizStatus {
+    required: boolean;
+    hasAttemptToday: boolean;
+    completedToday: boolean;
+    skippedToday: boolean;
+    satisfiedToday: boolean;
+}
+
+export interface DailyQuizReviewItem {
+    questionId: string;
+    word: string;
+    type: DailyQuizQuestionType;
+    prompt: string;
+    givenAnswer: string | null;
+    correctAnswer: string | null;
+    isCorrect: boolean;
+}
+
+export interface DailyQuizResult {
+    id: string;
+    score: number;
+    correctCount: number;
+    totalQuestions: number;
+    earnedXp: number;
+    completedAt: string | null;
+    review: DailyQuizReviewItem[];
+}
+
+export interface WeakWord {
+    id: string;
+    word: string;
+    meaningId: string;
+    meaningEn: string;
+    level: string;
+    wrongCount: number;
+    correctStreak: number;
+    lastWrongAt: string | null;
 }
 
 /* -------------------------------------------------------------- Misc ---- */

@@ -298,7 +298,7 @@ class LearningContentSeeder extends Seeder
         return [
             [
                 'title' => 'Salam dan Ungkapan Dasar',
-                'level' => 'A1',
+                'level' => 'Beginner',
                 'summary' => 'Sapaan dan ungkapan paling sering dipakai sehari-hari — titik awal belajar Bahasa Inggris.',
                 'minutes' => 12,
                 'xp' => 20,
@@ -324,12 +324,12 @@ class LearningContentSeeder extends Seeder
                     'meaning' => $w[2],
                     'example' => $w[3],
                     'example_meaning' => $w[4],
-                    'extra' => ['category' => 'greetings', 'cefr' => 'A1'],
+                    'extra' => ['category' => 'greetings', 'cefr' => 'Beginner'],
                 ])->all(),
             ],
             [
                 'title' => 'Angka 1–20',
-                'level' => 'A1',
+                'level' => 'Beginner',
                 'summary' => 'Sepuluh sampai dua puluh angka pertama yang wajib dikuasai sebelum bisa menyebut harga, waktu, atau umur.',
                 'minutes' => 10,
                 'xp' => 20,
@@ -346,12 +346,12 @@ class LearningContentSeeder extends Seeder
                     'meaning' => $w[2],
                     'example' => "I have {$w[0]}.",
                     'example_meaning' => "Saya punya {$w[2]}.",
-                    'extra' => ['category' => 'numbers', 'cefr' => 'A1'],
+                    'extra' => ['category' => 'numbers', 'cefr' => 'Beginner'],
                 ])->all(),
             ],
             [
                 'title' => 'Keluarga',
-                'level' => 'A1',
+                'level' => 'Beginner',
                 'summary' => 'Menyebut anggota keluarga — kosakata dasar yang muncul di hampir semua percakapan perkenalan.',
                 'minutes' => 10,
                 'xp' => 20,
@@ -374,12 +374,12 @@ class LearningContentSeeder extends Seeder
                     'meaning' => $w[2],
                     'example' => $w[3],
                     'example_meaning' => $w[4],
-                    'extra' => ['category' => 'family', 'cefr' => 'A1'],
+                    'extra' => ['category' => 'family', 'cefr' => 'Beginner'],
                 ])->all(),
             ],
             [
                 'title' => 'Hari dan Waktu',
-                'level' => 'A1',
+                'level' => 'Beginner',
                 'summary' => 'Nama hari dalam seminggu dan kata dasar untuk menyatakan waktu.',
                 'minutes' => 12,
                 'xp' => 20,
@@ -396,12 +396,12 @@ class LearningContentSeeder extends Seeder
                     'meaning' => $w[2],
                     'example' => "See you on {$w[0]}.",
                     'example_meaning' => "Sampai jumpa hari {$w[2]}.",
-                    'extra' => ['category' => 'time', 'cefr' => 'A1'],
+                    'extra' => ['category' => 'time', 'cefr' => 'Beginner'],
                 ])->all(),
             ],
             [
                 'title' => 'Kata Kerja Dasar',
-                'level' => 'A1',
+                'level' => 'Beginner',
                 'summary' => 'Sepuluh kata kerja yang paling sering dipakai untuk menyusun kalimat sehari-hari.',
                 'minutes' => 12,
                 'xp' => 25,
@@ -422,12 +422,12 @@ class LearningContentSeeder extends Seeder
                     'meaning' => $w[2],
                     'example' => $w[3],
                     'example_meaning' => $w[4],
-                    'extra' => ['category' => 'verbs', 'cefr' => 'A1'],
+                    'extra' => ['category' => 'verbs', 'cefr' => 'Beginner'],
                 ])->all(),
             ],
             [
                 'title' => 'Kata Sifat Dasar',
-                'level' => 'A1',
+                'level' => 'Beginner',
                 'summary' => 'Kata sifat lawan-berlawanan yang paling sering muncul untuk mendeskripsikan benda dan orang.',
                 'minutes' => 10,
                 'xp' => 20,
@@ -448,7 +448,7 @@ class LearningContentSeeder extends Seeder
                     'meaning' => $w[2],
                     'example' => $w[3],
                     'example_meaning' => $w[4],
-                    'extra' => ['category' => 'adjectives', 'cefr' => 'A1'],
+                    'extra' => ['category' => 'adjectives', 'cefr' => 'Beginner'],
                 ])->all(),
             ],
         ];
@@ -466,7 +466,7 @@ class LearningContentSeeder extends Seeder
         return [
             [
                 'title' => 'Malin Kundang',
-                'level' => 'B1',
+                'level' => 'Intermediate',
                 'summary' => 'Cerita rakyat Sumatera Barat tentang anak durhaka yang dikutuk menjadi batu.',
                 'minutes' => 12,
                 'xp' => 25,
@@ -484,7 +484,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Bawang Merah dan Bawang Putih',
-                'level' => 'A2',
+                'level' => 'Elementary',
                 'summary' => 'Cerita rakyat tentang seorang gadis baik hati dan saudara tirinya yang serakah.',
                 'minutes' => 10,
                 'xp' => 25,
@@ -501,7 +501,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Timun Mas',
-                'level' => 'A2',
+                'level' => 'Elementary',
                 'summary' => 'Cerita rakyat Jawa Tengah tentang gadis yang melarikan diri dari raksasa dengan biji ajaib.',
                 'minutes' => 10,
                 'xp' => 25,
@@ -518,7 +518,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Sangkuriang',
-                'level' => 'B2',
+                'level' => 'Upper-Intermediate',
                 'summary' => 'Seorang pemuda bernama Sangkuriang jatuh cinta dan hendak menikahi wanita yang ternyata adalah ibunya sendiri, dan ketika sang ibu menggagalkan usahanya membangun perahu dalam semalam, ia menendang perahu itu hingga menjadi Gunung Tangkuban Perahu.',
                 'minutes' => 15,
                 'xp' => 35,
@@ -537,7 +537,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'The Legend of Lake Toba',
-                'level' => 'B1',
+                'level' => 'Intermediate',
                 'summary' => 'Seorang petani miskin menikahi wanita jelmaan ikan emas dengan syarat merahasiakan asal-usulnya, namun ketika ia melanggar janji itu karena marah kepada putranya yang rakus, bumi terbelah dan banjir besar membentuk Danau Toba serta Pulau Samosir.',
                 'minutes' => 8,
                 'xp' => 25,
@@ -552,7 +552,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Roro Jonggrang',
-                'level' => 'B1',
+                'level' => 'Intermediate',
                 'summary' => 'Putri Roro Jonggrang menolak dinikahi Bandung Bondowoso, pembunuh ayahnya, lalu menipu para roh bantuannya sehingga hanya 999 dari 1000 candi selesai dibangun, dan sebagai balasannya ia dikutuk menjadi arca candi yang keseribu.',
                 'minutes' => 8,
                 'xp' => 25,
@@ -570,7 +570,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Batu Menangis',
-                'level' => 'A2',
+                'level' => 'Elementary',
                 'summary' => 'Seorang gadis cantik namun sombong berulang kali menyangkal ibunya sendiri yang miskin di depan umum, sehingga sang ibu yang patah hati berdoa memohon hukuman, dan tubuh gadis itu perlahan berubah menjadi batu sambil menangis.',
                 'minutes' => 6,
                 'xp' => 25,
@@ -588,7 +588,7 @@ class LearningContentSeeder extends Seeder
 
             [
                 'title' => 'Legenda Rawa Pening',
-                'level' => 'B1',
+                'level' => 'Intermediate',
                 'summary' => 'Kisah Baru Klinthing, seorang anak ular sakti yang ditolak sebuah desa namun dibela oleh seorang janda miskin, hingga banjir besar mengubah desa itu menjadi Rawa Pening.',
                 'minutes' => 8,
                 'xp' => 25,
@@ -607,7 +607,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Nyi Roro Kidul, Queen of the Southern Sea',
-                'level' => 'B2',
+                'level' => 'Upper-Intermediate',
                 'summary' => 'Kisah Putri Kadita yang dikutuk penyakit kulit oleh seorang permaisuri yang cemburu, diusir dari istana, dan akhirnya disembuhkan serta diangkat menjadi Ratu Laut Selatan yang sakti, Nyi Roro Kidul.',
                 'minutes' => 11,
                 'xp' => 35,
@@ -624,7 +624,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Situ Bagendit',
-                'level' => 'A2',
+                'level' => 'Elementary',
                 'summary' => 'Kisah Nyi Endit, seorang janda kaya namun serakah yang menghina seorang pengemis tua, hingga desanya tenggelam menjadi danau Situ Bagendit sebagai hukuman atas ketamakannya.',
                 'minutes' => 7,
                 'xp' => 25,
@@ -642,7 +642,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Sura and Baya, the Legend of Surabaya',
-                'level' => 'A2',
+                'level' => 'Elementary',
                 'summary' => 'Kisah pertarungan seekor hiu bernama Sura dan seekor buaya bernama Baya yang memperebutkan wilayah, yang akhirnya melahirkan nama kota Surabaya.',
                 'minutes' => 7,
                 'xp' => 25,
@@ -660,7 +660,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Telaga Warna, the Lake of Colors',
-                'level' => 'B1',
+                'level' => 'Intermediate',
                 'summary' => 'Kisah Putri Gilang Rukmini yang dimanjakan dan angkuh, yang menolak kalung persembahan rakyatnya hingga air matanya membentuk danau berwarna-warni, Telaga Warna.',
                 'minutes' => 8,
                 'xp' => 25,
@@ -678,7 +678,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Kancil and the Crocodiles',
-                'level' => 'A1',
+                'level' => 'Beginner',
                 'summary' => 'Kisah Kancil yang cerdik menipu sekawanan buaya agar berbaris di sungai, sehingga ia bisa melompati punggung mereka untuk mencapai kebun buah di seberang.',
                 'minutes' => 6,
                 'xp' => 25,
@@ -695,7 +695,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Kancil Steals the Cucumbers',
-                'level' => 'A1',
+                'level' => 'Beginner',
                 'summary' => 'Kisah Kancil yang mencuri mentimun di ladang petani dan akhirnya terjebak lengket pada boneka getah yang dipasang sang petani sebagai perangkap.',
                 'minutes' => 6,
                 'xp' => 25,
@@ -711,7 +711,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Ande-Ande Lumut',
-                'level' => 'B1',
+                'level' => 'Intermediate',
                 'summary' => 'Kisah Ande-Ande Lumut, seorang pangeran yang menyamar, dan Kleting Kuning, anak tiri yang baik hati dan sederhana, yang akhirnya terpilih menjadi istrinya berkat ketulusan hatinya.',
                 'minutes' => 8,
                 'xp' => 25,
@@ -728,7 +728,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Si Pitung',
-                'level' => 'B2',
+                'level' => 'Upper-Intermediate',
                 'summary' => 'Kisah Si Pitung, jagoan Betawi di masa kolonial yang merampok tuan tanah kaya dan lintah darat untuk membantu rakyat miskin, dan menjadi simbol perlawanan terhadap penjajahan.',
                 'minutes' => 9,
                 'xp' => 25,
@@ -746,7 +746,7 @@ class LearningContentSeeder extends Seeder
 
             [
                 'title' => 'The Legend of Mount Kelud (Lembu Suro)',
-                'level' => 'B1',
+                'level' => 'Intermediate',
                 'summary' => 'Kisah asal-usul Gunung Kelud tentang raja berkepala kerbau bernama Lembu Suro yang dikubur hidup-hidup oleh pengikut Dewi Kilisuci setelah gagal memenuhi syarat pernikahan, dan sumpahnya untuk membalas dendam lewat letusan gunung.',
                 'minutes' => 7,
                 'xp' => 25,
@@ -764,7 +764,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Putri Tangguk',
-                'level' => 'A2',
+                'level' => 'Elementary',
                 'summary' => 'Cerita tentang Putri Tangguk yang menjadi sombong dan boros setelah keluarganya mendapat panen padi berlimpah, hingga akhirnya Dewi Sri menghukum keluarganya dengan melenyapkan seluruh beras mereka dalam semalam.',
                 'minutes' => 7,
                 'xp' => 25,
@@ -782,7 +782,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Joko Kendil',
-                'level' => 'A2',
+                'level' => 'Elementary',
                 'summary' => 'Kisah Joko Kendil, anak laki-laki berwujud kendil tanah liat yang meski diejek karena rupanya, berhasil menyembuhkan seorang putri berkat kecerdikan dan hatinya yang baik, lalu berubah menjadi pemuda tampan.',
                 'minutes' => 7,
                 'xp' => 25,
@@ -800,7 +800,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'The Legend of Reog Ponorogo',
-                'level' => 'B2',
+                'level' => 'Upper-Intermediate',
                 'summary' => 'Asal-usul seni Reog Ponorogo, tentang Raja Kelono Sewandono yang menciptakan makhluk harimau berkepala merak untuk melamar Putri Songgolangit, hingga meletus pertempuran dahsyat melawan Singo Barong di tengah perjalanan.',
                 'minutes' => 9,
                 'xp' => 35,
@@ -819,7 +819,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'The Legend of Kemaro Island',
-                'level' => 'B1',
+                'level' => 'Intermediate',
                 'summary' => 'Kisah cinta tragis pedagang Tionghoa Tan Bun An dan Putri Siti Fatimah dari Palembang, yang salah paham tentang guci berisi emas hingga keduanya tenggelam di Sungai Musi dan melahirkan Pulau Kemaro sebagai simbol cinta abadi.',
                 'minutes' => 7,
                 'xp' => 25,
@@ -838,7 +838,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'The Legend of Lake Singkarak',
-                'level' => 'A2',
+                'level' => 'Elementary',
                 'summary' => 'Kisah pasangan tua yang memelihara seekor belut ajaib yang terus tumbuh besar, lalu melanggar larangan dengan memakannya, sehingga air menyembur dari bekas kolamnya dan membanjiri lembah hingga terbentuklah Danau Singkarak.',
                 'minutes' => 7,
                 'xp' => 25,
@@ -857,7 +857,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Malin Deman and Putri Bungsu',
-                'level' => 'B1',
+                'level' => 'Intermediate',
                 'summary' => 'Kisah Malin Deman yang mencuri selendang bidadari Putri Bungsu agar tidak bisa terbang pulang ke kayangan, hingga akhirnya sang putri menemukan kembali selendangnya dan terbang pulang, meninggalkan kenang-kenangan bagi putranya sebelum keluarga itu bersatu kembali.',
                 'minutes' => 7,
                 'xp' => 25,
@@ -876,7 +876,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Batu Belah Batu Bertangkup',
-                'level' => 'A2',
+                'level' => 'Elementary',
                 'summary' => 'Kisah seorang janda miskin yang lelah diperlakukan kejam oleh anak-anaknya sendiri, hingga ia memohon kepada batu ajaib untuk menelannya, dan anak-anaknya baru menyesal setelah batu itu tertutup rapat selamanya.',
                 'minutes' => 7,
                 'xp' => 25,
@@ -895,7 +895,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Manik Angkeran and the Origin of the Bali Strait',
-                'level' => 'B2',
+                'level' => 'Upper-Intermediate',
                 'summary' => 'Kisah Manik Angkeran, putra pendeta Sidhimantra yang gemar berjudi, yang melanggar larangan naga Besukih dengan membunyikan lonceng emas berulang kali hingga kepalanya digigit putus, dan bagaimana ayahnya menciptakan Selat Bali untuk memisahkan mereka selamanya.',
                 'minutes' => 9,
                 'xp' => 35,
@@ -915,7 +915,7 @@ class LearningContentSeeder extends Seeder
 
             [
                 'title' => 'Lutung Kasarung',
-                'level' => 'B1',
+                'level' => 'Intermediate',
                 'summary' => 'Putri Purbasari yang baik hati dikutuk bintik-bintik hitam oleh kakaknya yang iri, diasingkan ke hutan, dan ditolong oleh seekor lutung ajaib yang ternyata pangeran dari kahyangan.',
                 'minutes' => 8,
                 'xp' => 25,
@@ -932,7 +932,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Keong Mas',
-                'level' => 'B2',
+                'level' => 'Upper-Intermediate',
                 'summary' => 'Putri Candra Kirana dikutuk menjadi keong emas oleh perempuan yang cemburu, dirawat oleh seorang nenek nelayan, hingga akhirnya bertemu kembali dengan tunangannya, Pangeran Panji.',
                 'minutes' => 10,
                 'xp' => 35,
@@ -949,7 +949,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Jaka Tarub and the Seven Fairies',
-                'level' => 'B1',
+                'level' => 'Intermediate',
                 'summary' => 'Jaka Tarub mencuri selendang seorang bidadari bernama Nawang Wulan agar tidak bisa terbang pulang ke kahyangan, hingga sang bidadari menemukan kembali selendangnya dan terbang pulang meninggalkan suami dan putrinya.',
                 'minutes' => 8,
                 'xp' => 25,
@@ -965,7 +965,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Cindelaras',
-                'level' => 'A2',
+                'level' => 'Elementary',
                 'summary' => 'Seorang anak laki-laki yang dibesarkan di hutan oleh ibunya yang difitnah, dipertemukan kembali dengan ayahnya sang raja berkat ayam jantan ajaib yang bisa berbicara.',
                 'minutes' => 7,
                 'xp' => 25,
@@ -980,7 +980,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'The Legend of Banyuwangi',
-                'level' => 'B1',
+                'level' => 'Intermediate',
                 'summary' => 'Seorang bangsawan yang termakan fitnah membuang istrinya yang setia ke sungai, dan air sungai itu menjadi harum sebagai bukti kesucian sang istri, melahirkan nama Banyuwangi.',
                 'minutes' => 8,
                 'xp' => 25,
@@ -1001,7 +1001,7 @@ class LearningContentSeeder extends Seeder
     {
         return [[
             'title' => 'Travel & Transportation',
-            'level' => 'A2',
+            'level' => 'Elementary',
             'summary' => 'Kosakata penting saat bepergian.',
             'minutes' => 10,
             'xp' => 20,
@@ -1116,7 +1116,7 @@ class LearningContentSeeder extends Seeder
             ])->all(),
         ], [
             'title' => 'Business English',
-            'level' => 'B1',
+            'level' => 'Intermediate',
             'summary' => 'Kosakata untuk lingkungan kerja profesional.',
             'minutes' => 12,
             'xp' => 25,
@@ -1237,7 +1237,7 @@ class LearningContentSeeder extends Seeder
         return [
             [
                 'title' => 'Simple Present Tense',
-                'level' => 'A1',
+                'level' => 'Beginner',
                 'summary' => 'Simple Present dipakai untuk kebiasaan (*habits*), fakta umum (*general truths*), dan jadwal tetap. Kata kerja memakai bentuk dasar (V1), tetapi untuk subjek orang ketiga tunggal (*he/she/it*) wajib ditambah *-s* atau *-es*.',
                 'minutes' => 10,
                 'xp' => 20,
@@ -1276,7 +1276,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Present Continuous Tense',
-                'level' => 'A1',
+                'level' => 'Beginner',
                 'summary' => 'Present Continuous digunakan untuk menyatakan tindakan yang sedang berlangsung *right now* (saat ini) atau tindakan sementara (*temporary action*) di sekitar waktu sekarang. Tenses ini juga sering dipakai untuk rencana yang sudah pasti di masa depan dekat (*future arrangement*). Kata kerja utama ditambah *-ing* dan didahului oleh to be (am/is/are) yang disesuaikan dengan subjek.',
                 'minutes' => 10,
                 'xp' => 20,
@@ -1315,7 +1315,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Simple Past Tense',
-                'level' => 'A1',
+                'level' => 'Beginner',
                 'summary' => 'Simple Past digunakan untuk menceritakan tindakan atau kejadian yang sudah *selesai* (*completed action*) pada waktu tertentu di masa lalu (*specific time in the past*). Kata kerja berubah ke bentuk kedua (V2), baik beraturan (*regular verb* + -ed) maupun tidak beraturan (*irregular verb*).',
                 'minutes' => 10,
                 'xp' => 20,
@@ -1354,7 +1354,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Past Continuous Tense',
-                'level' => 'A2',
+                'level' => 'Elementary',
                 'summary' => "Past Continuous digunakan untuk menggambarkan tindakan yang sedang berlangsung pada *momen tertentu di masa lalu* (*a specific moment in the past*), sering kali disela oleh kejadian lain (*interrupted action*). Tenses ini juga dipakai untuk dua tindakan yang berlangsung bersamaan (*simultaneous actions*) dengan kata penghubung 'while'.",
                 'minutes' => 12,
                 'xp' => 25,
@@ -1393,7 +1393,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Present Perfect Tense',
-                'level' => 'B1',
+                'level' => 'Intermediate',
                 'summary' => 'Present Perfect digunakan untuk tindakan yang terjadi di masa lalu tetapi masih memiliki *hubungan dengan masa sekarang* (*connection to the present*), baik karena hasilnya masih terasa maupun karena periode waktunya *belum selesai* (*unfinished time*). Konsep ini tidak memiliki padanan langsung dalam bahasa Indonesia karena kita tidak membedakan waktu yang benar-benar lampau dengan yang masih berdampak sekarang. Tenses ini dibentuk dengan have/has + kata kerja bentuk ketiga (*past participle*).',
                 'minutes' => 15,
                 'xp' => 30,
@@ -1432,7 +1432,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Present Perfect Continuous Tense',
-                'level' => 'B1',
+                'level' => 'Intermediate',
                 'summary' => 'Present Perfect Continuous digunakan untuk menekankan *duration* suatu aksi yang dimulai di masa lalu dan masih berlangsung hingga sekarang, atau baru saja berhenti namun akibatnya masih terasa. Tense ini menyoroti proses yang sedang berlangsung, bukan hasil akhirnya. Biasanya dipakai bersama keterangan waktu seperti *since* dan *for* untuk menjawab pertanyaan *how long*.',
                 'minutes' => 12,
                 'xp' => 25,
@@ -1471,7 +1471,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Simple Future Tense',
-                'level' => 'A2',
+                'level' => 'Elementary',
                 'summary' => 'Simple Future dengan will digunakan untuk menyatakan *prediction*, keputusan spontan (*spontaneous decision*) yang dibuat saat berbicara, janji, atau tawaran mengenai masa depan. Berbeda dengan *going to*, tense ini tidak memerlukan rencana yang sudah diatur sebelumnya sejak awal.',
                 'minutes' => 10,
                 'xp' => 20,
@@ -1510,7 +1510,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Future Continuous Tense',
-                'level' => 'B1',
+                'level' => 'Intermediate',
                 'summary' => 'Future Continuous digunakan untuk menggambarkan aksi yang *in progress* pada suatu titik waktu tertentu di masa depan. Tense ini juga dipakai untuk menyatakan rencana atau jadwal yang sudah pasti akan terjadi (*definite arrangement*), serta untuk menanyakan rencana orang lain secara sopan (*polite question*).',
                 'minutes' => 12,
                 'xp' => 25,
@@ -1549,7 +1549,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Noun (Kata Benda)',
-                'level' => 'A1',
+                'level' => 'Beginner',
                 'summary' => '*Noun* adalah kata yang menyebutkan nama orang, tempat, benda, hewan, atau gagasan. Noun bisa berupa *countable noun* (bisa dihitung, punya bentuk jamak) atau *uncountable noun* (tidak bisa dihitung langsung). Dalam kalimat, noun biasanya berfungsi sebagai subjek atau objek, dan sering didahului artikel seperti *a*, *an*, atau *the*.',
                 'minutes' => 8,
                 'xp' => 15,
@@ -1588,7 +1588,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Pronoun (Kata Ganti)',
-                'level' => 'A1',
+                'level' => 'Beginner',
                 'summary' => '*Pronoun* adalah kata yang menggantikan *noun* agar kalimat tidak diulang-ulang dan terdengar lebih alami. Bentuknya berubah sesuai fungsinya: *subject pronoun* (I, she, they) untuk subjek, *object pronoun* (me, her, them) untuk objek, dan *possessive pronoun* (mine, hers) untuk kepemilikan.',
                 'minutes' => 9,
                 'xp' => 15,
@@ -1627,7 +1627,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Verb (Kata Kerja)',
-                'level' => 'A1',
+                'level' => 'Beginner',
                 'summary' => '*Verb* adalah kata yang menyatakan tindakan (*action verb*) atau keadaan (*linking verb*) dalam kalimat. Ada juga *auxiliary verb* seperti *is/have/do* yang membantu verb utama membentuk tense, pertanyaan, atau kalimat negatif. Bentuk verb berubah sesuai subjek dan waktu kejadian.',
                 'minutes' => 10,
                 'xp' => 20,
@@ -1666,7 +1666,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Adjective (Kata Sifat)',
-                'level' => 'A1',
+                'level' => 'Beginner',
                 'summary' => '*Adjective* adalah kata yang menerangkan sifat atau ciri dari *noun* atau *pronoun*, biasanya diletakkan sebelum noun. Untuk membandingkan dua hal digunakan bentuk *comparative* (+er/more), dan untuk membandingkan tiga hal atau lebih digunakan bentuk *superlative* (+est/the most).',
                 'minutes' => 10,
                 'xp' => 20,
@@ -1705,7 +1705,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Adverb (Kata Keterangan)',
-                'level' => 'A2',
+                'level' => 'Elementary',
                 'summary' => '*Adverb* adalah kata yang menerangkan *verb*, *adjective*, atau adverb lain, dan sering dibentuk dengan menambahkan *-ly* pada adjective. Adverb menjawab pertanyaan bagaimana (*manner*), di mana (*place*), kapan (*time*), atau seberapa sering (*frequency*) sesuatu terjadi.',
                 'minutes' => 10,
                 'xp' => 20,
@@ -1744,7 +1744,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Preposition (Kata Depan)',
-                'level' => 'A2',
+                'level' => 'Elementary',
                 'summary' => '*Preposition* adalah kata yang menunjukkan hubungan antara *noun*/*pronoun* dengan kata lain dalam kalimat, biasanya menyatakan waktu, tempat, atau arah. Preposition selalu diikuti oleh noun atau pronoun sebagai objeknya (*object of preposition*), tidak pernah diikuti verb dalam bentuk dasar.',
                 'minutes' => 12,
                 'xp' => 25,
@@ -1783,7 +1783,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Conjunction (Kata Sambung)',
-                'level' => 'A2',
+                'level' => 'Elementary',
                 'summary' => '*Conjunction* adalah kata yang menghubungkan kata, frasa, atau klausa dalam kalimat. *Coordinating conjunction* (FANBOYS: for, and, nor, but, or, yet, so) menghubungkan dua unsur yang setara, sedangkan *subordinating conjunction* (because, although, if, when) menghubungkan klausa utama dengan klausa anak.',
                 'minutes' => 12,
                 'xp' => 25,
@@ -1822,7 +1822,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Interjection (Kata Seru)',
-                'level' => 'A2',
+                'level' => 'Elementary',
                 'summary' => '*Interjection* adalah kata atau ungkapan pendek yang mengekspresikan emosi atau reaksi spontan, seperti terkejut, senang, sakit, atau jijik. Interjection berdiri sendiri di luar struktur tata bahasa kalimat, dan biasanya diikuti tanda seru (!) untuk ekspresi kuat atau koma (,) untuk ekspresi ringan.',
                 'minutes' => 8,
                 'xp' => 15,
@@ -1861,7 +1861,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Kalimat SVO (Subject-Verb-Object)',
-                'level' => 'A2',
+                'level' => 'Elementary',
                 'summary' => 'Pola *SVO* adalah struktur kalimat paling dasar dalam bahasa Inggris, terdiri dari *subject* (pelaku), *verb* (kata kerja), dan *object* (penerima aksi). Urutan ini bersifat wajib dan tidak bisa diacak seperti dalam bahasa Indonesia, karena bahasa Inggris sangat bergantung pada urutan kata (*word order*) untuk menentukan makna kalimat.',
                 'minutes' => 10,
                 'xp' => 20,
@@ -1900,7 +1900,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Kalimat SVC (Subject-Verb-Complement)',
-                'level' => 'A2',
+                'level' => 'Elementary',
                 'summary' => 'Pola *SVC* digunakan ketika kata kerja bukan kata kerja aksi, melainkan *linking verb* (kata kerja penghubung) seperti be, become, seem, atau look. Kata kerja ini tidak menunjukkan aksi, tetapi menghubungkan subjek dengan *complement* yang menjelaskan atau mengganti subjek tersebut, berupa kata sifat atau kata benda.',
                 'minutes' => 10,
                 'xp' => 20,
@@ -1939,7 +1939,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Kalimat SVOO (Objek Ganda)',
-                'level' => 'B1',
+                'level' => 'Intermediate',
                 'summary' => 'Pola *SVOO* muncul pada kata kerja yang bisa memiliki dua objek sekaligus: *indirect object* (penerima) dan *direct object* (benda yang diberikan/dikirim). Pola ini umum dipakai dengan kata kerja seperti give, send, buy, tell, dan show, di mana urutannya adalah subjek, kata kerja, penerima, lalu barangnya.',
                 'minutes' => 12,
                 'xp' => 25,
@@ -1978,7 +1978,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Adverbial Phrase & Clause',
-                'level' => 'B1',
+                'level' => 'Intermediate',
                 'summary' => '*Adverbial phrase* dan *adverbial clause* adalah keterangan tambahan yang menjelaskan waktu, tempat, cara, alasan, atau syarat terjadinya suatu aksi. Bedanya, adverbial phrase tidak memiliki subjek dan kata kerja sendiri, sedangkan *adverbial clause* memiliki subjek dan kata kerja lengkap serta diawali kata sambung seperti because, when, atau although.',
                 'minutes' => 12,
                 'xp' => 25,
@@ -2017,7 +2017,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Compound Sentence (Kalimat Majemuk)',
-                'level' => 'B1',
+                'level' => 'Intermediate',
                 'summary' => '*Compound sentence* menggabungkan dua *independent clause* (klausa yang bisa berdiri sendiri sebagai kalimat) menggunakan *coordinating conjunction*, yang disingkat FANBOYS (For, And, Nor, But, Or, Yet, So). Kedua klausa memiliki kedudukan setara, berbeda dengan complex sentence di mana salah satu klausa bergantung pada yang lain.',
                 'minutes' => 12,
                 'xp' => 25,
@@ -2056,7 +2056,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Complex Sentence (Kalimat Kompleks)',
-                'level' => 'B2',
+                'level' => 'Upper-Intermediate',
                 'summary' => '*Complex sentence* terdiri dari satu *independent clause* dan satu atau lebih *dependent clause* yang dihubungkan dengan *subordinating conjunction* seperti because, although, when, if, atau since. Berbeda dari compound sentence, dependent clause tidak bisa berdiri sendiri karena maknanya bergantung pada klausa utama.',
                 'minutes' => 15,
                 'xp' => 30,
@@ -2095,7 +2095,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Conditional Sentence Type 0, 1, dan 2',
-                'level' => 'B2',
+                'level' => 'Upper-Intermediate',
                 'summary' => '*Conditional sentence* menyatakan hubungan sebab-akibat antara syarat (*if-clause*) dan hasilnya (*main clause*). Type 0 dipakai untuk fakta umum, Type 1 untuk kondisi nyata yang mungkin terjadi di masa depan, dan Type 2 untuk kondisi *hypothetical* (khayalan) yang bertentangan dengan kenyataan saat ini.',
                 'minutes' => 18,
                 'xp' => 35,
@@ -2135,7 +2135,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Passive Voice',
-                'level' => 'B2',
+                'level' => 'Upper-Intermediate',
                 'summary' => '*Passive voice* dipakai ketika fokus kalimat ada pada penerima aksi (objek), bukan pelakunya, atau ketika pelaku aksi tidak diketahui atau tidak penting. Objek pada kalimat aktif berubah menjadi subjek, dan kata kerja diubah menjadi bentuk *past participle* (V3) yang didahului *auxiliary verb* "be" sesuai tense-nya.',
                 'minutes' => 18,
                 'xp' => 35,
@@ -2181,7 +2181,7 @@ class LearningContentSeeder extends Seeder
         return [
             [
                 'title' => 'Pengumuman di Bandara',
-                'level' => 'A2',
+                'level' => 'Elementary',
                 'summary' => 'Memahami pengumuman keberangkatan penerbangan.',
                 'minutes' => 10,
                 'xp' => 20,
@@ -2196,7 +2196,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Ramalan Cuaca',
-                'level' => 'A2',
+                'level' => 'Elementary',
                 'summary' => 'Menangkap detail dalam siaran ramalan cuaca.',
                 'minutes' => 10,
                 'xp' => 20,
@@ -2211,7 +2211,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Memesan di Restoran',
-                'level' => 'B1',
+                'level' => 'Intermediate',
                 'summary' => 'Dialog memesan makanan yang lazim didengar di restoran.',
                 'minutes' => 12,
                 'xp' => 25,
@@ -2226,7 +2226,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Pesan Suara',
-                'level' => 'B1',
+                'level' => 'Intermediate',
                 'summary' => 'Menangkap informasi penting dari pesan telepon.',
                 'minutes' => 10,
                 'xp' => 25,
@@ -2241,7 +2241,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Wawancara Kerja Singkat',
-                'level' => 'B2',
+                'level' => 'Upper-Intermediate',
                 'summary' => 'Menyimak jawaban kandidat dalam sesi wawancara kerja.',
                 'minutes' => 12,
                 'xp' => 30,
@@ -2262,7 +2262,7 @@ class LearningContentSeeder extends Seeder
         return [
             [
                 'title' => 'Salam dan Perkenalan',
-                'level' => 'A1',
+                'level' => 'Beginner',
                 'summary' => 'Frasa dasar untuk menyapa dan memperkenalkan diri.',
                 'minutes' => 8,
                 'xp' => 15,
@@ -2276,7 +2276,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Latihan Bunyi yang Sulit',
-                'level' => 'A2',
+                'level' => 'Elementary',
                 'summary' => 'Bunyi bahasa Inggris yang sering menantang penutur bahasa Indonesia.',
                 'minutes' => 10,
                 'xp' => 20,
@@ -2290,7 +2290,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Obrolan Ringan Sehari-hari',
-                'level' => 'B1',
+                'level' => 'Intermediate',
                 'summary' => 'Frasa small talk untuk percakapan santai.',
                 'minutes' => 10,
                 'xp' => 20,
@@ -2304,7 +2304,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Presentasi dan Rapat',
-                'level' => 'B1',
+                'level' => 'Intermediate',
                 'summary' => 'Frasa umum saat membuka dan menutup presentasi kerja.',
                 'minutes' => 12,
                 'xp' => 25,
@@ -2318,7 +2318,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Wawancara Kerja',
-                'level' => 'B2',
+                'level' => 'Upper-Intermediate',
                 'summary' => 'Latihan menjawab pertanyaan wawancara kerja umum.',
                 'minutes' => 12,
                 'xp' => 25,
@@ -2332,7 +2332,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Angka dan Harga',
-                'level' => 'A2',
+                'level' => 'Elementary',
                 'summary' => 'Melafalkan angka, harga, dan waktu dengan jelas.',
                 'minutes' => 10,
                 'xp' => 20,
@@ -2351,7 +2351,7 @@ class LearningContentSeeder extends Seeder
         return [
             [
                 'title' => 'Menulis Kalimat Sederhana',
-                'level' => 'A1',
+                'level' => 'Beginner',
                 'summary' => 'Membangun kalimat dasar Subject + Verb + Object.',
                 'minutes' => 12,
                 'xp' => 20,
@@ -2366,7 +2366,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Menulis Paragraf',
-                'level' => 'A2',
+                'level' => 'Elementary',
                 'summary' => 'Menyusun paragraf dengan kalimat topik dan pendukung.',
                 'minutes' => 15,
                 'xp' => 25,
@@ -2381,7 +2381,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Menulis Email',
-                'level' => 'B1',
+                'level' => 'Intermediate',
                 'summary' => 'Format email formal untuk keperluan kerja.',
                 'minutes' => 15,
                 'xp' => 25,
@@ -2397,7 +2397,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Tulisan Deskriptif',
-                'level' => 'B1',
+                'level' => 'Intermediate',
                 'summary' => 'Mendeskripsikan tempat dengan kata sifat dan panca indera.',
                 'minutes' => 15,
                 'xp' => 25,
@@ -2411,7 +2411,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Esai Opini',
-                'level' => 'B2',
+                'level' => 'Upper-Intermediate',
                 'summary' => 'Menyusun esai singkat dengan argumen dan argumen tandingan.',
                 'minutes' => 18,
                 'xp' => 30,
@@ -2425,7 +2425,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Menulis Naratif',
-                'level' => 'B2',
+                'level' => 'Upper-Intermediate',
                 'summary' => 'Menyusun cerita pendek dengan alur yang jelas.',
                 'minutes' => 18,
                 'xp' => 30,
@@ -2445,7 +2445,7 @@ class LearningContentSeeder extends Seeder
         return [
             [
                 'title' => 'Structure — Melengkapi Kalimat',
-                'level' => 'B1',
+                'level' => 'Intermediate',
                 'summary' => 'Latihan gaya TOEFL Structure: memilih kata penghubung dan bentuk kata yang tepat.',
                 'minutes' => 15,
                 'xp' => 25,
@@ -2460,7 +2460,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Written Expression — Menemukan Kesalahan',
-                'level' => 'B1',
+                'level' => 'Intermediate',
                 'summary' => 'Mengenali kesalahan tata bahasa umum dalam kalimat.',
                 'minutes' => 15,
                 'xp' => 25,
@@ -2475,7 +2475,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Reading Comprehension',
-                'level' => 'B2',
+                'level' => 'Upper-Intermediate',
                 'summary' => 'Membaca dan memahami detail dari satu bacaan akademik pendek.',
                 'minutes' => 18,
                 'xp' => 30,
@@ -2490,7 +2490,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Vocabulary in Context',
-                'level' => 'B1',
+                'level' => 'Intermediate',
                 'summary' => 'Kosakata akademik yang sering muncul di soal TOEFL.',
                 'minutes' => 12,
                 'xp' => 20,
@@ -2510,7 +2510,7 @@ class LearningContentSeeder extends Seeder
         return [
             [
                 'title' => 'Reading — True/False/Not Given',
-                'level' => 'B2',
+                'level' => 'Upper-Intermediate',
                 'summary' => 'Latihan tipe soal khas IELTS Reading.',
                 'minutes' => 15,
                 'xp' => 25,
@@ -2525,7 +2525,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Writing Task 1 — Mendeskripsikan Grafik',
-                'level' => 'B2',
+                'level' => 'Upper-Intermediate',
                 'summary' => 'Frasa baku untuk mendeskripsikan data visual (grafik, diagram, tabel).',
                 'minutes' => 15,
                 'xp' => 25,
@@ -2539,7 +2539,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Writing Task 2 — Esai Argumentatif',
-                'level' => 'C1',
+                'level' => 'Advanced',
                 'summary' => 'Struktur esai opini akademik gaya IELTS.',
                 'minutes' => 18,
                 'xp' => 30,
@@ -2554,7 +2554,7 @@ class LearningContentSeeder extends Seeder
             ],
             [
                 'title' => 'Speaking Part 1 — Pertanyaan Personal',
-                'level' => 'B1',
+                'level' => 'Intermediate',
                 'summary' => 'Latihan menjawab pertanyaan pemanasan tentang topik keseharian.',
                 'minutes' => 12,
                 'xp' => 20,
@@ -2637,7 +2637,7 @@ class LearningContentSeeder extends Seeder
     {
         return [[
             'title' => "Pengantar {$module->name}",
-            'level' => $module->language->code === 'ja' ? 'N5' : 'A1',
+            'level' => $module->language->code === 'ja' ? 'N5' : 'Beginner',
             'summary' => "Materi pembuka untuk modul {$module->name}.",
             'content' => "<p>Materi pembuka modul <strong>{$module->name}</strong>. Tambahkan materi dari panel admin.</p>",
             'minutes' => 10,

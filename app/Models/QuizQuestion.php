@@ -37,7 +37,12 @@ class QuizQuestion extends Model
     public function isAnswerCorrect(?int $optionId, ?string $text): bool
     {
         return match ($this->type) {
-            'fill_blank' => filled($text)
+            // "arrange" submits the student's word order pre-joined into one
+            // string (see Api\QuizController::submit()) and compares it
+            // against `correct_text` (the words in their correct order,
+            // space-joined by QuizService::syncQuestions()) — identical
+            // mechanism to fill_blank, just a different source for both sides.
+            'fill_blank', 'arrange' => filled($text)
                 && mb_strtolower(trim($text)) === mb_strtolower(trim((string) $this->correct_text)),
             default => $optionId !== null
                 && $this->options->firstWhere('id', $optionId)?->is_correct === true,

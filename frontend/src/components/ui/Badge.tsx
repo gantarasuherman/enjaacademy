@@ -45,14 +45,18 @@ export function Badge({
     );
 }
 
-/** CEFR levels get a fixed colour so learners recognise them at a glance. */
+/** Proficiency levels get a fixed colour so learners recognise them at a glance — same 5-position ramp for both scales. */
 const CEFR_TONE: Record<string, BadgeTone> = {
-    A1: 'success',
-    A2: 'success',
-    B1: 'info',
-    B2: 'info',
-    C1: 'danger',
-    C2: 'danger',
+    Beginner: 'success',
+    Elementary: 'info',
+    Intermediate: 'warning',
+    'Upper-Intermediate': 'secondary',
+    Advanced: 'danger',
+    N5: 'success',
+    N4: 'info',
+    N3: 'warning',
+    N2: 'secondary',
+    N1: 'danger',
 };
 
 export function CefrBadge({ level, className }: { level: string; className?: string }) {

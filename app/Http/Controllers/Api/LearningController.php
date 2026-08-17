@@ -12,6 +12,7 @@ use App\Repositories\Contracts\EnrollmentRepositoryInterface;
 use App\Repositories\Contracts\LearningModuleRepositoryInterface;
 use App\Repositories\Contracts\LessonRepositoryInterface;
 use App\Services\Gamification\ProgressService;
+use App\Services\Payment\CheckoutService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -23,6 +24,7 @@ class LearningController extends Controller
         private readonly LessonRepositoryInterface $lessons,
         private readonly ProgressService $progress,
         private readonly EnrollmentRepositoryInterface $enrollments,
+        private readonly CheckoutService $checkout,
     ) {}
 
     public function modules(Request $request): JsonResponse
@@ -73,7 +75,10 @@ class LearningController extends Controller
     /**
      * Enrolls the user if not already enrolled, otherwise unenrolls them.
      * This only records that the student took the class — it does not gate
-     * access, which is still `study`/`{permission_prefix}.view`.
+     * access, which is still `study`/`{permission_prefix}.view`. The ENROLL
+     * direction additionally requires paid access for paid modules — use
+     * `OrderController::checkout()` first for those (unenrolling is always
+     * allowed, no payment involved).
      */
     public function toggleEnrollment(Request $request, string $moduleSlug): JsonResponse
     {
@@ -82,10 +87,32 @@ class LearningController extends Controller
         abort_if($module === null, 404);
         $this->authorize('study', $module);
 
+        $alreadyEnrolled = $this->enrollments->isEnrolled($request->user(), $module);
+
+        if (! $alreadyEnrolled && ! $this->checkout->hasPaidAccess($request->user(), $module)) {
+            abort(402, __('This course requires payment — checkout first.'));
+        }
+
         $enrolled = $this->enrollments->toggle($request->user(), $module);
 
         return response()->json([
             'data' => ['module' => $module->slug, 'enrolled' => $enrolled],
+        ]);
+    }
+
+    /** Switches which enrolled course drives the student's Daily Quiz. */
+    public function setActiveModule(Request $request, string $moduleSlug): JsonResponse
+    {
+        $module = $this->modules->findBySlug($moduleSlug);
+
+        abort_if($module === null, 404);
+        $this->authorize('study', $module);
+        abort_unless($this->enrollments->isEnrolled($request->user(), $module), 422, __('You must take this course before making it active.'));
+
+        $request->user()->update(['active_module_id' => $module->id]);
+
+        return response()->json([
+            'data' => ['module' => $module->slug, 'activeModuleId' => (string) $module->id],
         ]);
     }
 }

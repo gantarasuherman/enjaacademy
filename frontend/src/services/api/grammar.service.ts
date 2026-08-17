@@ -52,7 +52,7 @@ function toGrammarTopic(lesson: Lesson, language: LanguageSlug): GrammarTopic {
         id: String(lesson.id),
         title: lesson.title,
         kind: formulaExtra?.kind ?? 'structure',
-        cefr: (lesson.level as CEFRLevel | null) ?? 'A1',
+        cefr: (lesson.level as CEFRLevel | null) ?? 'Beginner',
         explanation: lesson.summary ?? '',
         formula: formulaItem?.meaning ?? null,
         timeline: null,

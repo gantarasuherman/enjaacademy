@@ -12,7 +12,7 @@
         "synonyms": ["resident"],
         "antonyms": [],
         "categoryId": "cat-daily",
-        "cefr": "A2",
+        "cefr": "Elementary",
         "difficulty": "beginner"
     },
     {
@@ -28,7 +28,7 @@
         "synonyms": ["task", "duty"],
         "antonyms": ["leisure"],
         "categoryId": "cat-daily",
-        "cefr": "B1",
+        "cefr": "Intermediate",
         "difficulty": "intermediate"
     },
     {
@@ -44,7 +44,7 @@
         "synonyms": ["task"],
         "antonyms": [],
         "categoryId": "cat-daily",
-        "cefr": "B1",
+        "cefr": "Intermediate",
         "difficulty": "intermediate"
     },
     {
@@ -60,7 +60,7 @@
         "synonyms": ["travel"],
         "antonyms": [],
         "categoryId": "cat-daily",
-        "cefr": "B1",
+        "cefr": "Intermediate",
         "difficulty": "intermediate"
     },
     {
@@ -76,7 +76,7 @@
         "synonyms": ["neat", "orderly"],
         "antonyms": ["messy"],
         "categoryId": "cat-daily",
-        "cefr": "A2",
+        "cefr": "Elementary",
         "difficulty": "beginner"
     },
     {
@@ -92,7 +92,7 @@
         "synonyms": ["remains"],
         "antonyms": [],
         "categoryId": "cat-daily",
-        "cefr": "A2",
+        "cefr": "Elementary",
         "difficulty": "beginner"
     },
 
@@ -109,7 +109,7 @@
         "synonyms": ["baggage"],
         "antonyms": [],
         "categoryId": "cat-travel",
-        "cefr": "A2",
+        "cefr": "Elementary",
         "difficulty": "beginner"
     },
     {
@@ -125,7 +125,7 @@
         "synonyms": ["takeoff"],
         "antonyms": ["arrival"],
         "categoryId": "cat-travel",
-        "cefr": "A2",
+        "cefr": "Elementary",
         "difficulty": "beginner"
     },
     {
@@ -141,7 +141,7 @@
         "synonyms": ["schedule", "plan"],
         "antonyms": [],
         "categoryId": "cat-travel",
-        "cefr": "B2",
+        "cefr": "Upper-Intermediate",
         "difficulty": "advanced"
     },
     {
@@ -157,7 +157,7 @@
         "synonyms": ["postponement"],
         "antonyms": [],
         "categoryId": "cat-travel",
-        "cefr": "A2",
+        "cefr": "Elementary",
         "difficulty": "beginner"
     },
     {
@@ -173,7 +173,7 @@
         "synonyms": [],
         "antonyms": [],
         "categoryId": "cat-travel",
-        "cefr": "A2",
+        "cefr": "Elementary",
         "difficulty": "beginner"
     },
     {
@@ -189,7 +189,7 @@
         "synonyms": ["lodging"],
         "antonyms": [],
         "categoryId": "cat-travel",
-        "cefr": "B1",
+        "cefr": "Intermediate",
         "difficulty": "intermediate"
     },
 
@@ -206,7 +206,7 @@
         "synonyms": ["due date"],
         "antonyms": [],
         "categoryId": "cat-business",
-        "cefr": "B1",
+        "cefr": "Intermediate",
         "difficulty": "intermediate"
     },
     {
@@ -222,7 +222,7 @@
         "synonyms": ["party"],
         "antonyms": [],
         "categoryId": "cat-business",
-        "cefr": "B2",
+        "cefr": "Upper-Intermediate",
         "difficulty": "advanced"
     },
     {
@@ -238,7 +238,7 @@
         "synonyms": ["income", "turnover"],
         "antonyms": ["expense"],
         "categoryId": "cat-business",
-        "cefr": "B2",
+        "cefr": "Upper-Intermediate",
         "difficulty": "advanced"
     },
     {
@@ -254,7 +254,7 @@
         "synonyms": ["bill"],
         "antonyms": [],
         "categoryId": "cat-business",
-        "cefr": "B1",
+        "cefr": "Intermediate",
         "difficulty": "intermediate"
     },
     {
@@ -270,7 +270,7 @@
         "synonyms": ["utilise"],
         "antonyms": [],
         "categoryId": "cat-business",
-        "cefr": "C1",
+        "cefr": "Advanced",
         "difficulty": "advanced"
     },
     {
@@ -286,7 +286,7 @@
         "synonyms": ["induction"],
         "antonyms": ["offboarding"],
         "categoryId": "cat-business",
-        "cefr": "B2",
+        "cefr": "Upper-Intermediate",
         "difficulty": "advanced"
     },
 
@@ -303,7 +303,7 @@
         "synonyms": ["obsolete"],
         "antonyms": ["current"],
         "categoryId": "cat-programming",
-        "cefr": "C1",
+        "cefr": "Advanced",
         "difficulty": "advanced"
     },
     {
@@ -319,7 +319,7 @@
         "synonyms": ["limit"],
         "antonyms": [],
         "categoryId": "cat-programming",
-        "cefr": "C1",
+        "cefr": "Advanced",
         "difficulty": "advanced"
     },
     {
@@ -335,7 +335,7 @@
         "synonyms": [],
         "antonyms": [],
         "categoryId": "cat-programming",
-        "cefr": "C2",
+        "cefr": "Advanced",
         "difficulty": "advanced"
     },
     {
@@ -351,7 +351,7 @@
         "synonyms": ["template"],
         "antonyms": [],
         "categoryId": "cat-programming",
-        "cefr": "B2",
+        "cefr": "Upper-Intermediate",
         "difficulty": "advanced"
     },
     {
@@ -367,7 +367,7 @@
         "synonyms": ["revert"],
         "antonyms": ["deploy"],
         "categoryId": "cat-programming",
-        "cefr": "B2",
+        "cefr": "Upper-Intermediate",
         "difficulty": "advanced"
     },
     {
@@ -383,7 +383,7 @@
         "synonyms": ["parallelism"],
         "antonyms": [],
         "categoryId": "cat-programming",
-        "cefr": "C1",
+        "cefr": "Advanced",
         "difficulty": "advanced"
     },
 
@@ -400,7 +400,7 @@
         "synonyms": ["theory"],
         "antonyms": [],
         "categoryId": "cat-academic",
-        "cefr": "C1",
+        "cefr": "Advanced",
         "difficulty": "advanced"
     },
     {
@@ -416,7 +416,7 @@
         "synonyms": ["notable"],
         "antonyms": ["negligible"],
         "categoryId": "cat-academic",
-        "cefr": "B2",
+        "cefr": "Upper-Intermediate",
         "difficulty": "advanced"
     },
     {
@@ -432,7 +432,7 @@
         "synonyms": ["moreover"],
         "antonyms": [],
         "categoryId": "cat-academic",
-        "cefr": "B2",
+        "cefr": "Upper-Intermediate",
         "difficulty": "advanced"
     },
     {
@@ -448,7 +448,7 @@
         "synonyms": ["on the other hand"],
         "antonyms": ["similarly"],
         "categoryId": "cat-academic",
-        "cefr": "C1",
+        "cefr": "Advanced",
         "difficulty": "advanced"
     },
 
@@ -465,7 +465,7 @@
         "synonyms": ["salty"],
         "antonyms": ["sweet"],
         "categoryId": "cat-food",
-        "cefr": "B1",
+        "cefr": "Intermediate",
         "difficulty": "intermediate"
     },
     {
@@ -481,7 +481,7 @@
         "synonyms": ["drink"],
         "antonyms": [],
         "categoryId": "cat-food",
-        "cefr": "B1",
+        "cefr": "Intermediate",
         "difficulty": "intermediate"
     },
     {
@@ -497,7 +497,7 @@
         "synonyms": ["starter"],
         "antonyms": ["dessert"],
         "categoryId": "cat-food",
-        "cefr": "B1",
+        "cefr": "Intermediate",
         "difficulty": "intermediate"
     },
     {
@@ -513,7 +513,7 @@
         "synonyms": ["tasteless"],
         "antonyms": ["flavourful"],
         "categoryId": "cat-food",
-        "cefr": "B2",
+        "cefr": "Upper-Intermediate",
         "difficulty": "advanced"
     }
 ]

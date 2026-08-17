@@ -11,7 +11,7 @@ use RuntimeException;
  * Thin wrapper around Google's Gemini REST API (generativelanguage.googleapis.com).
  * Free tier via https://aistudio.google.com/apikey — no billing account required.
  */
-class GeminiClient
+class GeminiClient implements AiClientInterface
 {
     public function __construct(
         private readonly ?string $apiKey,

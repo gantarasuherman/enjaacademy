@@ -4,7 +4,7 @@
         "title": "At the Restaurant",
         "context": "Kamu memesan makan malam di restoran untuk dua orang.",
         "situation": "restaurant",
-        "cefr": "A2",
+        "cefr": "Elementary",
         "icon": "UtensilsCrossed",
         "keyPhrases": [
             { "phrase": "Do you have a reservation?", "meaning": "Apakah Anda punya reservasi?" },
@@ -28,7 +28,7 @@
         "title": "Job Interview",
         "context": "Wawancara kerja untuk posisi frontend developer.",
         "situation": "interview",
-        "cefr": "B2",
+        "cefr": "Upper-Intermediate",
         "icon": "Briefcase",
         "keyPhrases": [
             { "phrase": "Tell me about yourself.", "meaning": "Ceritakan tentang diri Anda." },
@@ -52,7 +52,7 @@
         "title": "Hotel Check-in",
         "context": "Kamu tiba di hotel dan melakukan check-in.",
         "situation": "hotel",
-        "cefr": "A2",
+        "cefr": "Elementary",
         "icon": "BedDouble",
         "keyPhrases": [
             { "phrase": "I have a reservation under...", "meaning": "Saya punya reservasi atas nama..." },
@@ -74,7 +74,7 @@
         "title": "Daily Stand-up",
         "context": "Melaporkan progres di rapat harian tim.",
         "situation": "workplace",
-        "cefr": "B1",
+        "cefr": "Intermediate",
         "icon": "Users",
         "keyPhrases": [
             { "phrase": "Yesterday I worked on...", "meaning": "Kemarin saya mengerjakan..." },

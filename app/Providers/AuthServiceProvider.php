@@ -16,8 +16,10 @@ use App\Models\LearningModule;
 use App\Models\Lesson;
 use App\Models\LessonItem;
 use App\Models\Menu;
+use App\Models\Order;
 use App\Models\Quiz;
 use App\Models\User;
+use App\Models\VocabularyWord;
 use App\Policies\AchievementPolicy;
 use App\Policies\EnrollmentPolicy;
 use App\Policies\FlashcardDeckPolicy;
@@ -30,10 +32,12 @@ use App\Policies\LearningModulePolicy;
 use App\Policies\LessonItemPolicy;
 use App\Policies\LessonPolicy;
 use App\Policies\MenuPolicy;
+use App\Policies\OrderPolicy;
 use App\Policies\PermissionPolicy;
 use App\Policies\QuizPolicy;
 use App\Policies\RolePolicy;
 use App\Policies\UserPolicy;
+use App\Policies\VocabularyWordPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use Spatie\Permission\Models\Permission;
@@ -55,9 +59,11 @@ class AuthServiceProvider extends ServiceProvider
         Flashcard::class => FlashcardPolicy::class,
         Achievement::class => AchievementPolicy::class,
         Enrollment::class => EnrollmentPolicy::class,
+        Order::class => OrderPolicy::class,
         GrammarLevel::class => GrammarLevelPolicy::class,
         GrammarCategory::class => GrammarCategoryPolicy::class,
         GrammarPattern::class => GrammarPatternPolicy::class,
+        VocabularyWord::class => VocabularyWordPolicy::class,
     ];
 
     public function boot(): void

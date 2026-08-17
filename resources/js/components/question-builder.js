@@ -77,6 +77,15 @@ export default function questionBuilder({ initial = [] } = {}) {
             question.options.splice(index, 1);
         },
 
+        /** "arrange" has no is_correct flag — row order IS the answer key, so it needs reordering instead. */
+        moveOption(question, index, delta) {
+            const target = index + delta;
+
+            if (target < 0 || target >= question.options.length) return;
+
+            [question.options[index], question.options[target]] = [question.options[target], question.options[index]];
+        },
+
         /** Only one option may be correct, so selecting one clears the rest. */
         markCorrect(question, index) {
             question.options.forEach((option, i) => {
@@ -96,6 +105,11 @@ export default function questionBuilder({ initial = [] } = {}) {
             }
 
             const filled = question.options.filter((option) => option.label.trim() !== '');
+
+            if (question.type === 'arrange') {
+                if (filled.length < 2) issues.push('Butuh minimal dua kata untuk disusun.');
+                return issues;
+            }
 
             if (filled.length < 2) issues.push('Butuh minimal dua pilihan.');
             if (!filled.some((option) => option.is_correct)) issues.push('Tandai satu jawaban benar.');

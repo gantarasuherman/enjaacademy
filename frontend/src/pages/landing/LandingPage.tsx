@@ -1,9 +1,11 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
     ArrowRight,
     BookMarked,
     BookOpen,
     CheckCircle2,
+    GraduationCap,
     Headphones,
     Layers,
     MessagesSquare,
@@ -15,9 +17,18 @@ import {
     TrendingUp,
     Zap,
 } from 'lucide-react';
+import { useAsync } from '@/hooks/useAsync';
+import { catalogService } from '@/services/api';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
-import { Badge, CefrBadge } from '@/components/ui/Badge';
+import { Badge, CefrBadge, Chip } from '@/components/ui/Badge';
+import { Skeleton } from '@/components/ui/Feedback';
+
+const CATALOG_LANGUAGES: { id: string; label: string }[] = [
+    { id: '', label: 'Semua Bahasa' },
+    { id: 'japanese', label: '🇯🇵 Jepang' },
+    { id: 'english', label: '🇬🇧 Inggris' },
+];
 
 const SKILLS = [
     { icon: BookMarked, label: 'Vocabulary', desc: '1.000+ kata per tema, lengkap dengan IPA dan contoh.', color: 'text-secondary' },
@@ -34,25 +45,25 @@ const PERSONAS = [
     {
         title: 'Pemula',
         need: 'Struktur bertahap, umpan balik instan, visual yang jelas.',
-        level: 'A1',
+        level: 'Beginner',
         icon: Sparkles,
     },
     {
         title: 'Profesional',
         need: 'Business English, sesi singkat, nyaman dipakai di ponsel.',
-        level: 'B1',
+        level: 'Intermediate',
         icon: TrendingUp,
     },
     {
         title: 'Programmer',
         need: 'Istilah teknis dan latihan membaca dokumentasi API.',
-        level: 'B2',
+        level: 'Upper-Intermediate',
         icon: Zap,
     },
     {
         title: 'Persiapan Ujian',
         need: 'Drilling soal TOEFL/IELTS dengan statistik progres.',
-        level: 'C1',
+        level: 'Advanced',
         icon: Target,
     },
 ];
@@ -65,6 +76,12 @@ const STATS = [
 ];
 
 export default function LandingPage() {
+    const [catalogLang, setCatalogLang] = useState('');
+    const { data: catalogModules, loading: catalogLoading } = useAsync(
+        () => catalogService.listModules({ language: catalogLang || undefined }),
+        [catalogLang],
+    );
+
     return (
         <>
             {/* ---------------------------------------------------------- Hero */}
@@ -218,6 +235,70 @@ export default function LandingPage() {
                             );
                         })}
                     </div>
+                </div>
+            </section>
+
+            {/* ------------------------------------------------- Course catalog */}
+            <section id="kursus" className="scroll-mt-20 border-t border-[var(--surface-border)] py-20">
+                <div className="mx-auto max-w-6xl px-4 lg:px-6">
+                    <div className="flex flex-wrap items-end justify-between gap-4">
+                        <div className="max-w-2xl">
+                            <Badge tone="secondary">Katalog</Badge>
+                            <h2 className="mt-3 font-display text-3xl font-extrabold">Jelajahi kursus yang tersedia</h2>
+                            <p className="mt-3 text-fg-muted">
+                                Lihat silabus lengkap sebelum mendaftar — setiap kursus berisi rangkaian materi
+                                terstruktur per level.
+                            </p>
+                        </div>
+
+                        <div className="flex flex-wrap gap-2">
+                            {CATALOG_LANGUAGES.map((item) => (
+                                <Chip key={item.id} active={catalogLang === item.id} onClick={() => setCatalogLang(item.id)}>
+                                    {item.label}
+                                </Chip>
+                            ))}
+                        </div>
+                    </div>
+
+                    {catalogLoading ? (
+                        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                            {Array.from({ length: 6 }, (_, i) => (
+                                <Skeleton key={i} className="h-40 w-full" />
+                            ))}
+                        </div>
+                    ) : !catalogModules || catalogModules.length === 0 ? (
+                        <p className="mt-10 text-sm text-fg-muted">Belum ada kursus untuk filter ini.</p>
+                    ) : (
+                        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                            {catalogModules.map((module) => (
+                                <Card key={module.id} interactive className="flex h-full flex-col">
+                                    <div className="flex items-start justify-between gap-3">
+                                        <span className="grid size-10 shrink-0 place-items-center rounded-sm bg-primary-100 text-primary dark:bg-primary/20">
+                                            <GraduationCap className="size-5" />
+                                        </span>
+                                        {module.language && (
+                                            <span className="rounded-full bg-surface-sunken px-2.5 py-1 text-[11px] font-medium text-fg-muted">
+                                                {module.language.flag} {module.language.name}
+                                            </span>
+                                        )}
+                                    </div>
+
+                                    <h3 className="mt-4 font-display text-base font-bold">{module.name}</h3>
+                                    <p className="mt-1 line-clamp-2 flex-1 text-sm text-fg-muted">{module.description}</p>
+
+                                    <div className="mt-4 flex items-center justify-between">
+                                        <span className="flex items-center gap-1 text-xs text-fg-muted">
+                                            <Layers className="size-3.5" />
+                                            {module.lessons_count ?? 0} materi
+                                        </span>
+                                        <Button to={`/kursus/${module.slug}`} variant="ghost" size="sm" iconRight={<ArrowRight className="size-3.5" />}>
+                                            Lihat silabus
+                                        </Button>
+                                    </div>
+                                </Card>
+                            ))}
+                        </div>
+                    )}
                 </div>
             </section>
 

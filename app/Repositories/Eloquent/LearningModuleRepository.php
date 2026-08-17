@@ -64,6 +64,27 @@ class LearningModuleRepository extends BaseRepository implements LearningModuleR
             ->groupBy(fn (LearningModule $module) => $module->language->name);
     }
 
+    /**
+     * Deliberately no `User`/permission check — this feeds the pre-login
+     * catalog on the landing page, so only publicly-safe fields matter
+     * (`ModuleResource` never exposes lesson content, just metadata/counts).
+     */
+    public function publicCatalog(array $filters = []): Collection
+    {
+        return LearningModule::query()
+            ->active()
+            ->forLanguage($filters['language'] ?? null)
+            ->when($filters['content_type'] ?? null, fn (Builder $q, $t) => $q->where('content_type', $t))
+            ->when(
+                $filters['level'] ?? null,
+                fn (Builder $q, $level) => $q->whereHas('lessons', fn (Builder $l) => $l->where('level', $level)),
+            )
+            ->with('language')
+            ->withCount(['lessons' => fn (Builder $q) => $q->where('is_published', true)])
+            ->orderBy('sort_order')
+            ->get();
+    }
+
     public function featured(int $limit = 6): Collection
     {
         return LearningModule::query()
@@ -85,11 +106,12 @@ class LearningModuleRepository extends BaseRepository implements LearningModuleR
             ->get();
     }
 
-    public function forSelect(): Collection
+    public function forSelect(?string $contentType = null): Collection
     {
         return LearningModule::query()
-            ->with('language:id,name')
+            ->when($contentType, fn (Builder $q) => $q->where('content_type', $contentType))
+            ->with('language:id,name,slug')
             ->orderBy('sort_order')
-            ->get(['id', 'name', 'language_id']);
+            ->get(['id', 'name', 'language_id', 'content_type']);
     }
 }

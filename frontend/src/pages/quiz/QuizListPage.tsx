@@ -9,11 +9,11 @@ import { CefrBadge, Chip, Badge } from '@/components/ui/Badge';
 import { EmptyState, Skeleton } from '@/components/ui/Feedback';
 import { PageHeader } from '@/components/feature/shared/PageHeader';
 
-const LEVELS = ['all', 'A1', 'A2', 'B1', 'B2', 'C1'];
+const LEVELS = ['all', 'Beginner', 'Elementary', 'Intermediate', 'Upper-Intermediate', 'Advanced'];
 
 export default function QuizListPage() {
     const [cefr, setCefr] = useState('all');
-    const { data: quizzes, loading } = useAsync(() => quizService.list(), []);
+    const { data: quizzes, loading } = useAsync(() => quizService.list({ category: 'quiz' }), []);
 
     const filtered = (quizzes ?? []).filter((quiz) => cefr === 'all' || quiz.cefr === cefr);
 

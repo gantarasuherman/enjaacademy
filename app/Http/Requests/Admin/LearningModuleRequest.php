@@ -31,13 +31,15 @@ class LearningModuleRequest extends FormRequest
             'color' => ['nullable', 'string', 'max:30'],
             'content_type' => ['required', Rule::in([
                 'kana', 'kanji', 'vocabulary', 'grammar', 'conversation',
-                'listening', 'speaking', 'reading', 'writing', 'exam',
+                'listening', 'speaking', 'reading', 'writing', 'exam', 'video',
             ])],
             'permission_prefix' => ['nullable', 'string', 'max:100', 'regex:/^[a-z0-9_\-]+$/'],
             'description' => ['nullable', 'string', 'max:2000'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
             'is_active' => ['boolean'],
             'is_featured' => ['boolean'],
+            'is_paid' => ['boolean'],
+            'price' => ['nullable', 'required_if:is_paid,1', 'integer', 'min:0'],
             'generate_permissions' => ['boolean'],
         ];
     }

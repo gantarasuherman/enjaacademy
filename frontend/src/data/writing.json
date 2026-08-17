@@ -3,7 +3,7 @@
         "id": "wr-001",
         "prompt": "Write a paragraph (80–120 words) describing your ideal weekend. Use at least three time expressions and one conditional sentence.",
         "type": "paragraph",
-        "cefr": "B1",
+        "cefr": "Intermediate",
         "minWords": 80,
         "maxWords": 120,
         "hints": [
@@ -24,7 +24,7 @@
         "id": "wr-002",
         "prompt": "Write a professional email (100–150 words) to a client explaining that a project deliverable will be delayed by one week. Apologise, give a reason, and propose a new date.",
         "type": "paragraph",
-        "cefr": "B2",
+        "cefr": "Upper-Intermediate",
         "minWords": 100,
         "maxWords": 150,
         "hints": [
@@ -46,7 +46,7 @@
         "id": "wr-003",
         "prompt": "Write five sentences about your daily routine using the simple present tense. Include at least two adverbs of frequency.",
         "type": "sentence",
-        "cefr": "A2",
+        "cefr": "Elementary",
         "minWords": 40,
         "maxWords": 80,
         "hints": [
@@ -65,7 +65,7 @@
         "id": "wr-004",
         "prompt": "Write a short essay (200–250 words) arguing for or against the statement: \"Remote work is better than working in an office.\" Give two supporting reasons and acknowledge one counter-argument.",
         "type": "essay",
-        "cefr": "C1",
+        "cefr": "Advanced",
         "minWords": 200,
         "maxWords": 250,
         "hints": [

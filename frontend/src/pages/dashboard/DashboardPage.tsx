@@ -15,7 +15,7 @@ import { useAuthStore } from '@/store/authStore';
 import { useProgressStore } from '@/store/progressStore';
 import { useFlashcardStore } from '@/store/flashcardStore';
 import { useAsync } from '@/hooks/useAsync';
-import { learningService, userService } from '@/services/api';
+import { learningService, userService, weakWordService } from '@/services/api';
 import { levelInfo, achievementPercent } from '@/utils/gamification';
 import { formatCompact, formatNumber } from '@/utils/format';
 import { Card, CardHeader } from '@/components/ui/Card';
@@ -23,7 +23,7 @@ import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { ProgressBar, ProgressRing } from '@/components/ui/Progress';
 import { Avatar } from '@/components/ui/Avatar';
-import { Skeleton } from '@/components/ui/Feedback';
+import { Alert, Skeleton } from '@/components/ui/Feedback';
 import { StatCard } from '@/components/feature/shared/StatCard';
 import { StreakCalendar } from '@/components/feature/shared/StreakCalendar';
 import { ActivityAreaChart } from '@/components/feature/shared/charts';
@@ -36,6 +36,8 @@ export default function DashboardPage() {
     const { data: modules, loading: modulesLoading } = useAsync(() => learningService.listModules(), []);
     const { data: achievements } = useAsync(() => userService.listAchievements(), []);
     const { data: leaderboard } = useAsync(() => userService.getLeaderboard(), []);
+    const { data: weakWords } = useAsync(() => weakWordService.list(), []);
+    const weakCount = weakWords?.length ?? 0;
 
     const info = levelInfo(xp);
     const streak = streakDays;
@@ -94,6 +96,20 @@ export default function DashboardPage() {
                     Streak {streak} hari
                 </Badge>
             </div>
+
+            {/* --------------------------------------------- Weak words callout */}
+            {weakCount > 0 && (
+                <Alert tone="warning" className="mb-6">
+                    <span className="flex flex-wrap items-center justify-between gap-3">
+                        <span>
+                            <strong>{weakCount}</strong> kata butuh direview — sering salah di Kuis Harian.
+                        </span>
+                        <Link to="/app/weak-words" className="font-semibold text-primary hover:underline">
+                            Review sekarang →
+                        </Link>
+                    </span>
+                </Alert>
+            )}
 
             {/* -------------------------------------------------------- Stats */}
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -347,6 +363,9 @@ export default function DashboardPage() {
                         </Button>
                         <Button to="/app/progress" variant="outline" icon={<TrendingUp className="size-4" />}>
                             Progres
+                        </Button>
+                        <Button to="/app/weak-words" variant="outline" icon={<Flame className="size-4" />} className="col-span-2">
+                            Review Kata Lemah
                         </Button>
                     </div>
                 </div>

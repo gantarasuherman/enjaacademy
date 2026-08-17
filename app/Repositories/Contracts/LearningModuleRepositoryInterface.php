@@ -15,9 +15,12 @@ interface LearningModuleRepositoryInterface extends RepositoryInterface
     /** Active modules the user is allowed to open, grouped by language. */
     public function accessibleFor(User $user): Collection;
 
+    /** Active modules, no auth/permission check — for the pre-login catalog. */
+    public function publicCatalog(array $filters = []): Collection;
+
     public function featured(int $limit = 6): Collection;
 
     public function withLessonCounts(): Collection;
 
-    public function forSelect(): Collection;
+    public function forSelect(?string $contentType = null): Collection;
 }

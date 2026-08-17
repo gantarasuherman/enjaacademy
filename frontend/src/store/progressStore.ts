@@ -10,6 +10,8 @@ interface ProgressState {
     unlocked: UnlockedAchievement[];
     bookmarks: Bookmark[];
     enrolledModuleIds: string[];
+    /** The course currently driving the student's Daily Quiz — null until hydrated or set. */
+    activeModuleId: string | null;
     xp: number;
     /** Real values from `GET /learning/dashboard` — 0 until the first successful `hydrate()`. */
     streakDays: number;
@@ -29,6 +31,11 @@ interface ProgressState {
 
     toggleEnrollment: (moduleId: string) => void;
     isEnrolled: (moduleId: string) => boolean;
+    /** Syncs local state after a real server-side enroll (checkout/payment) — no API call, unlike `toggleEnrollment`. */
+    markEnrolled: (moduleId: string) => void;
+
+    setActiveModule: (moduleSlug: string, moduleId: string) => void;
+    isActiveModule: (moduleId: string) => boolean;
 
     lessonStatus: (lessonId: string) => Progress['status'];
     modulePercent: (moduleId: string) => number;
@@ -45,6 +52,7 @@ export const useProgressStore = create<ProgressState>()(
             unlocked: [],
             bookmarks: [],
             enrolledModuleIds: [],
+            activeModuleId: null,
             xp: 0,
             streakDays: 0,
             longestStreak: 0,
@@ -103,6 +111,7 @@ export const useProgressStore = create<ProgressState>()(
                         }
 
                         next.activity = [...byDate.values()].sort((a, b) => a.date.localeCompare(b.date));
+                        next.activeModuleId = dashboard.active_module_id;
                     }
 
                     return next;
@@ -224,6 +233,23 @@ export const useProgressStore = create<ProgressState>()(
 
             isEnrolled: (moduleId) => get().enrolledModuleIds.includes(moduleId),
 
+            markEnrolled: (moduleId) => {
+                set((state) =>
+                    state.enrolledModuleIds.includes(moduleId)
+                        ? state
+                        : { enrolledModuleIds: [...state.enrolledModuleIds, moduleId] },
+                );
+            },
+
+            setActiveModule: (moduleSlug, moduleId) => {
+                set({ activeModuleId: moduleId });
+
+                // Fire-and-forget sync, same pattern as toggleEnrollment above.
+                void learningService.setActiveModule(moduleSlug).catch(() => undefined);
+            },
+
+            isActiveModule: (moduleId) => get().activeModuleId === moduleId,
+
             lessonStatus: (lessonId) =>
                 get().progress.find((p) => p.lessonId === lessonId)?.status ?? 'not-started',
 
@@ -253,6 +279,7 @@ export const useProgressStore = create<ProgressState>()(
                 unlocked: state.unlocked,
                 bookmarks: state.bookmarks,
                 enrolledModuleIds: state.enrolledModuleIds,
+                activeModuleId: state.activeModuleId,
                 xp: state.xp,
                 streakDays: state.streakDays,
                 longestStreak: state.longestStreak,

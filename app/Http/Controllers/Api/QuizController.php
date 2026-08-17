@@ -33,7 +33,9 @@ class QuizController extends Controller
             ->published()
             ->with('questions:id,quiz_id')
             ->forModule($request->query('moduleId'))
+            ->forLesson($request->query('lessonId'))
             ->when($request->query('cefr'), fn (Builder $q, $level) => $q->where('level', $level))
+            ->when($request->query('category'), fn (Builder $q, $category) => $q->where('category', $category))
             ->orderBy('title')
             ->get();
 
@@ -120,23 +122,34 @@ class QuizController extends Controller
                 $questionId = (int) $record['questionId'];
                 $question = $questions->get($questionId);
                 $isFillBlank = $question?->type === 'fill_blank';
+                // "arrange": the client sends the arranged word order as an
+                // array (see frontend DragDrop/AnswerRecord.given) — joined
+                // into one string so grading can reuse the fill_blank compare
+                // path (QuizQuestion::isAnswerCorrect()).
+                $isArrange = $question?->type === 'arrange';
                 $given = $record['given'] ?? null;
 
                 // A submitted option id must actually belong to this question, or the
                 // FK on quiz_answers.quiz_option_id rejects the insert outright instead
                 // of just scoring it wrong.
                 $optionId = null;
-                if (! $isFillBlank && is_numeric($given)) {
+                if (! $isFillBlank && ! $isArrange && is_numeric($given)) {
                     $candidate = (int) $given;
                     if ($question?->options->contains('id', $candidate)) {
                         $optionId = $candidate;
                     }
                 }
 
+                $answerText = match (true) {
+                    $isFillBlank && is_string($given) => $given,
+                    $isArrange && is_array($given) => implode(' ', array_map('strval', $given)),
+                    default => null,
+                };
+
                 return [
                     'question_id' => $questionId,
                     'option_id' => $optionId,
-                    'answer_text' => ($isFillBlank && is_string($given)) ? $given : null,
+                    'answer_text' => $answerText,
                 ];
             })->values()->all();
 

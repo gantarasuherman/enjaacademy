@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\GrammarLevelController;
 use App\Http\Controllers\Admin\GrammarPatternController;
 use App\Http\Controllers\Admin\LessonController;
 use App\Http\Controllers\Admin\QuizController;
+use App\Http\Controllers\Admin\VideoLessonController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,11 +29,29 @@ Route::controller(LessonController::class)
         Route::post('/reorder', 'reorder')->name('reorder')->middleware("permission:$prefix.update");
         Route::post('/ai/generate-items', 'generateItems')->name('ai.generate-items')->middleware("permission:$prefix.create");
         Route::post('/ai/generate-translation', 'generateTranslation')->name('ai.generate-translation')->middleware("permission:$prefix.create");
+        Route::post('/ai/generate-content', 'generateContent')->name('ai.generate-content')->middleware("permission:$prefix.create");
         Route::get('/{lesson}/edit', 'edit')->name('edit')->middleware("permission:$prefix.update");
         Route::put('/{lesson}', 'update')->name('update')->middleware("permission:$prefix.update");
         Route::delete('/{lesson}', 'destroy')->name('destroy')->middleware("permission:$prefix.delete");
         Route::post('/{lesson}/import', 'import')->name('import')->middleware("permission:$prefix.create");
         Route::get('/{lesson}/export', 'export')->name('export')->middleware("permission:$prefix.view");
+    });
+
+// ====================== VIDEO LESSONS ======================
+// Same `Lesson` resource as above, scoped to content_type=video modules with
+// a decluttered form — reuses the `lessons.*` permissions (see
+// VideoLessonController's docblock for why this isn't a separate resource).
+$prefix = 'video-lessons';
+Route::controller(VideoLessonController::class)
+    ->prefix($prefix)
+    ->name("$prefix.")
+    ->group(function () {
+        Route::get('/', 'index')->name('index')->middleware('permission:lessons.view');
+        Route::get('/create', 'create')->name('create')->middleware('permission:lessons.create');
+        Route::post('/', 'store')->name('store')->middleware('permission:lessons.create');
+        Route::get('/{lesson}/edit', 'edit')->name('edit')->middleware('permission:lessons.update');
+        Route::put('/{lesson}', 'update')->name('update')->middleware('permission:lessons.update');
+        Route::delete('/{lesson}', 'destroy')->name('destroy')->middleware('permission:lessons.delete');
     });
 
 // ====================== QUIZZES ======================

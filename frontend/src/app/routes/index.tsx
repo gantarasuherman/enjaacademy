@@ -4,17 +4,20 @@ import { AppLayout } from '../layouts/AppLayout';
 import { AuthLayout } from '../layouts/AuthLayout';
 import { PublicLayout } from '../layouts/PublicLayout';
 import { ProtectedRoute } from './ProtectedRoute';
+import { DailyQuizGate } from './DailyQuizGate';
 import { ErrorBoundaryPage, NotFoundPage } from '@/pages/error/ErrorPages';
 
 /* Every page is code-split; the layouts render a Suspense fallback. */
 
 const LandingPage = lazy(() => import('@/pages/landing/LandingPage'));
+const CourseDetailPage = lazy(() => import('@/pages/landing/CourseDetailPage'));
 const LoginPage = lazy(() => import('@/pages/auth/LoginPage'));
 const RegisterPage = lazy(() => import('@/pages/auth/RegisterPage'));
 
 const DashboardPage = lazy(() => import('@/pages/dashboard/DashboardPage'));
 
 const LearningListPage = lazy(() => import('@/pages/learning/LearningListPage'));
+const MyCoursesPage = lazy(() => import('@/pages/learning/MyCoursesPage'));
 const LearningModulePage = lazy(() => import('@/pages/learning/LearningModulePage'));
 const LessonPage = lazy(() => import('@/pages/learning/LessonPage'));
 
@@ -38,9 +41,12 @@ const FlashcardPage = lazy(() => import('@/pages/flashcard/FlashcardPage'));
 const FlashcardStudyPage = lazy(() => import('@/pages/flashcard/FlashcardStudyPage'));
 
 const QuizListPage = lazy(() => import('@/pages/quiz/QuizListPage'));
+const TestListPage = lazy(() => import('@/pages/quiz/TestListPage'));
 const QuizStartPage = lazy(() => import('@/pages/quiz/QuizStartPage'));
 const QuizPlayPage = lazy(() => import('@/pages/quiz/QuizPlayPage'));
 const QuizResultPage = lazy(() => import('@/pages/quiz/QuizResultPage'));
+
+const WeakWordsPage = lazy(() => import('@/pages/daily-quiz/WeakWordsPage'));
 
 const ProgressPage = lazy(() => import('@/pages/progress/ProgressPage'));
 const AchievementPage = lazy(() => import('@/pages/achievement/AchievementPage'));
@@ -54,7 +60,10 @@ const routes: RouteObject[] = [
     {
         element: <PublicLayout />,
         errorElement: <ErrorBoundaryPage />,
-        children: [{ index: true, element: <LandingPage /> }],
+        children: [
+            { index: true, element: <LandingPage /> },
+            { path: 'kursus/:moduleSlug', element: <CourseDetailPage /> },
+        ],
     },
     {
         element: <AuthLayout />,
@@ -68,7 +77,9 @@ const routes: RouteObject[] = [
         path: 'app',
         element: (
             <ProtectedRoute>
-                <AppLayout />
+                <DailyQuizGate>
+                    <AppLayout />
+                </DailyQuizGate>
             </ProtectedRoute>
         ),
         errorElement: <ErrorBoundaryPage />,
@@ -77,6 +88,7 @@ const routes: RouteObject[] = [
             { path: 'dashboard', element: <DashboardPage /> },
 
             { path: 'learning', element: <LearningListPage /> },
+            { path: 'learning/my', element: <MyCoursesPage /> },
             { path: 'learning/:moduleId', element: <LearningModulePage /> },
             { path: 'learning/lesson/:lessonId', element: <LessonPage /> },
 
@@ -107,7 +119,10 @@ const routes: RouteObject[] = [
             { path: 'flashcard', element: <FlashcardPage /> },
             { path: 'flashcard/:deckId', element: <FlashcardStudyPage /> },
 
+            { path: 'weak-words', element: <WeakWordsPage /> },
+
             { path: 'quiz', element: <QuizListPage /> },
+            { path: 'test', element: <TestListPage /> },
             { path: 'quiz/:quizId', element: <QuizStartPage /> },
             { path: 'quiz/:quizId/play', element: <QuizPlayPage /> },
             { path: 'quiz/:quizId/result', element: <QuizResultPage /> },

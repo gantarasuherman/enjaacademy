@@ -38,9 +38,9 @@
     ],
 
     "certificates": [
-        { "id": "cert-vocab", "title": "Core Vocabulary Mastery", "moduleId": "mod-vocab-core", "cefr": "A2", "issuedAt": null, "requirement": "Selesaikan semua pelajaran dan lulus kuis dengan skor ≥ 80.", "progressPercent": 66 },
-        { "id": "cert-grammar", "title": "Grammar Foundations", "moduleId": "mod-grammar-basic", "cefr": "A2", "issuedAt": "2026-06-18T09:00:00Z", "requirement": "Selesaikan semua pelajaran dan lulus kuis dengan skor ≥ 80.", "progressPercent": 100 },
-        { "id": "cert-listening", "title": "Listening Lab", "moduleId": "mod-listening", "cefr": "B1", "issuedAt": null, "requirement": "Selesaikan semua track dan lulus kuis dengan skor ≥ 75.", "progressPercent": 40 },
-        { "id": "cert-reading", "title": "Reading Room", "moduleId": "mod-reading", "cefr": "B2", "issuedAt": null, "requirement": "Selesaikan 2 bacaan B2 dan lulus kuis dengan skor ≥ 75.", "progressPercent": 25 }
+        { "id": "cert-vocab", "title": "Core Vocabulary Mastery", "moduleId": "mod-vocab-core", "cefr": "Elementary", "issuedAt": null, "requirement": "Selesaikan semua pelajaran dan lulus kuis dengan skor ≥ 80.", "progressPercent": 66 },
+        { "id": "cert-grammar", "title": "Grammar Foundations", "moduleId": "mod-grammar-basic", "cefr": "Elementary", "issuedAt": "2026-06-18T09:00:00Z", "requirement": "Selesaikan semua pelajaran dan lulus kuis dengan skor ≥ 80.", "progressPercent": 100 },
+        { "id": "cert-listening", "title": "Listening Lab", "moduleId": "mod-listening", "cefr": "Intermediate", "issuedAt": null, "requirement": "Selesaikan semua track dan lulus kuis dengan skor ≥ 75.", "progressPercent": 40 },
+        { "id": "cert-reading", "title": "Reading Room", "moduleId": "mod-reading", "cefr": "Upper-Intermediate", "issuedAt": null, "requirement": "Selesaikan 2 bacaan B2 dan lulus kuis dengan skor ≥ 75.", "progressPercent": 25 }
     ]
 }

@@ -25,6 +25,9 @@
             lesson: @js($lessonData),
             items: @js($items->map->only(['id', 'term', 'reading', 'romaji', 'meaning', 'example', 'example_meaning', 'extra'])->values()),
             moduleContentType: @js($lesson->module?->content_type),
+            moduleContentTypes: @js($modules->pluck('content_type', 'id')),
+            moduleLanguages: @js($modules->pluck('language.name', 'id')),
+            moduleLanguageSlugs: @js($modules->pluck('language.slug', 'id')),
             lessonExists: @js($lesson->exists),
             draftKey: @js($lesson->exists ? $lesson->slug : 'new'),
             justSaved: @js((bool) session('success')),
@@ -105,18 +108,34 @@
                     </div>
                 </div>
 
+                {{-- ---------------------------------------------------- Video (materi tipe Video) --}}
+                <div class="card p-5" x-show="moduleContentType === 'video'" x-cloak>
+                    <h2 class="mb-1 font-semibold">
+                        <x-icon name="play" class="inline size-4" /> {{ __('URL Video') }}
+                    </h2>
+                    <p class="help mb-3">{{ __('Link YouTube atau Vimeo. Tambahkan Item Pembelajaran bertipe "Bab Video" di bawah untuk membuat chapter dengan timestamp yang bisa diklik peserta.') }}</p>
+                    {{-- No `name` here — shares `x-model="videoUrl"` with the field in "Opsi Tambahan" below, which is the one that actually submits. --}}
+                    <input x-model="videoUrl" type="url" class="input" placeholder="https://youtube.com/watch?v=…">
+                    @error('video_url') <p class="mt-1 text-xs text-rose-600">{{ $message }}</p> @enderror
+                </div>
+
                 {{-- ---------------------------------------------------- Isi Materi --}}
                 <div class="card p-5">
-                    <div class="mb-4 flex items-center justify-between">
+                    <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
                         <h2 class="font-semibold">{{ __('Isi Materi') }}</h2>
-                        <p class="text-xs text-slate-400">
-                            <span x-text="contentWordCount"></span> {{ __('kata') }} ·
-                            <span x-text="contentParagraphCount"></span> {{ __('paragraf') }}
-                        </p>
+                        <div class="flex items-center gap-3">
+                            <p class="text-xs text-slate-400">
+                                <span x-text="contentWordCount"></span> {{ __('kata') }} ·
+                                <span x-text="contentParagraphCount"></span> {{ __('paragraf') }}
+                            </p>
+                            <button type="button" @click="activeDrawer = 'ai-content'" class="btn-ghost text-xs">
+                                <x-icon name="sparkles" class="size-3.5" /> {{ __('Buat dengan AI') }}
+                            </button>
+                        </div>
                     </div>
 
-                    <textarea id="content" name="content" x-model="content" rows="12" class="input font-mono text-sm"></textarea>
-                    <p class="help">{{ __('Untuk bacaan (Reading), pisahkan tiap paragraf dengan satu baris kosong — dipakai fitur hover-terjemahan.') }}</p>
+                    <textarea id="content" name="content" x-ref="contentEditor" x-model="content" rows="12" class="input font-mono text-sm"></textarea>
+                    <p class="help" x-show="moduleContentType === 'reading'">{{ __('Untuk bacaan (Reading), pisahkan tiap paragraf dengan satu baris kosong — dipakai fitur hover-terjemahan. Editor teks kaya tidak dipakai di sini agar format ini tidak rusak.') }}</p>
                     @error('content') <p class="mt-1 text-xs text-rose-600">{{ $message }}</p> @enderror
                 </div>
 
@@ -135,7 +154,7 @@
                             <button type="button" @click="openAddItem()" class="btn-secondary text-sm">
                                 <x-icon name="plus" class="size-4" /> {{ __('Tambah Item') }}
                             </button>
-                            <button type="button" @click="activeDrawer = 'ai-items'" class="btn-secondary text-sm">
+                            <button type="button" @click="openAiItemsDrawer()" class="btn-secondary text-sm">
                                 <x-icon name="sparkles" class="size-4" /> {{ __('Buat dengan AI') }}
                             </button>
                             <button type="button" @click="openImport()" class="btn-secondary text-sm">
@@ -247,7 +266,7 @@
                                     <x-icon name="sparkles" class="size-3.5" /> {{ __('Generate Terjemahan') }}
                                 </button>
                             </div>
-                            <textarea name="translated_content" x-model="translatedContent" rows="6" class="input font-mono text-sm"></textarea>
+                            <textarea name="translated_content" x-ref="translatedContentEditor" x-model="translatedContent" rows="6" class="input font-mono text-sm"></textarea>
                         </div>
 
                         <div>
@@ -418,6 +437,11 @@
                 <button type="button" @click="activeDrawer = null; aiMessage = null; aiGeneratedItems = []" class="btn-ghost px-2 py-1">✕</button>
             </div>
 
+            <p class="help mb-3">
+                {{ __('Topik, Level, dan Jenis sudah diisi otomatis dari Informasi Dasar (termasuk Bahasa modul) — ubah kalau perlu.') }}
+                <span x-show="content.trim()">{{ __('"Isi Materi" yang sudah ditulis juga dipakai sebagai acuan supaya item yang dibuat sesuai isinya, bukan cuma menebak dari topik.') }}</span>
+            </p>
+
             {{-- Form — hidden once results are in review, "Generate Ulang" brings it back --}}
             <div x-show="aiGeneratedItems.length === 0">
                 <div class="space-y-3">
@@ -438,9 +462,9 @@
                     <div>
                         <p class="label">{{ __('Jenis') }}</p>
                         <div class="flex flex-wrap gap-3 text-sm">
-                            <template x-for="option in itemTypes.filter(t => t.value !== 'custom')" :key="option.value">
+                            <template x-for="option in itemTypes.filter(t => ['kana', 'kanji', 'kosakata', 'grammar', 'kalimat'].includes(t.value))" :key="option.value">
                                 <label class="flex items-center gap-1.5">
-                                    <input type="checkbox" :checked="aiItemsForm.types[option.value]" @change="aiItemsForm.types[option.value] = $event.target.checked">
+                                    <input type="checkbox" :checked="aiItemsForm.types[option.value]" @change="aiItemsForm.types[option.value] = $event.target.checked; aiItemsTypesTouched = true">
                                     <span x-text="option.label"></span>
                                 </label>
                             </template>
@@ -520,6 +544,60 @@
                         <button type="button" @click="aiGeneratedTranslation = null" class="btn-secondary flex-1">{{ __('Generate Ulang') }}</button>
                         <button type="button" @click="useGeneratedTranslation()" class="btn-primary flex-1">
                             <x-icon name="check" class="size-4" /> {{ __('Gunakan Terjemahan Ini') }}
+                        </button>
+                    </div>
+                </div>
+            </template>
+        </div>
+
+        {{-- ============================================================ Drawer: Buat Isi Materi dengan AI --}}
+        <div x-show="activeDrawer === 'ai-content'" x-cloak class="drawer-backdrop" @click="activeDrawer = null; aiMessage = null; aiGeneratedContent = null"></div>
+        <div x-show="activeDrawer === 'ai-content'" x-cloak x-transition:enter="transition ease-out duration-200" x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0" class="drawer-panel">
+            <div class="mb-4 flex items-center justify-between">
+                <h2 class="font-semibold"><x-icon name="sparkles" class="inline size-4" /> {{ __('Buat Isi Materi dengan AI') }}</h2>
+                <button type="button" @click="activeDrawer = null; aiMessage = null; aiGeneratedContent = null" class="btn-ghost px-2 py-1">✕</button>
+            </div>
+
+            <template x-if="aiGeneratedContent === null">
+                <div>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="label">{{ __('Judul Materi') }}</label>
+                            <input :value="title" disabled class="input bg-slate-50 text-slate-500 dark:bg-slate-800">
+                            <p class="help">{{ __('Judul, Level, dan Bahasa modul diambil otomatis dari Informasi Dasar di atas.') }}</p>
+                        </div>
+                        <div x-show="moduleLanguage" x-cloak>
+                            <label class="label">{{ __('Bahasa (dari Modul)') }}</label>
+                            <input :value="moduleLanguage" disabled class="input bg-slate-50 text-slate-500 dark:bg-slate-800">
+                        </div>
+                        <div>
+                            <label class="label">{{ __('Fokus/instruksi tambahan (opsional)') }}</label>
+                            <textarea x-model="aiContentForm.focus" rows="2" class="input text-sm" placeholder="{{ __('Mis. fokus ke penggunaan sehari-hari, sertakan 3 contoh kalimat, dst.') }}"></textarea>
+                        </div>
+                    </div>
+
+                    <div x-show="aiMessage" x-cloak class="mt-4 rounded-lg bg-slate-100 px-3 py-2 text-sm text-slate-600 dark:bg-slate-800 dark:text-slate-300" x-text="aiMessage"></div>
+
+                    <button type="button" @click="generateContent('{{ route('admin.lessons.ai.generate-content') }}')" :disabled="aiLoading || !title.trim()" class="btn-primary mt-4 w-full disabled:opacity-50">
+                        <x-icon name="sparkles" class="size-4" /> <span x-text="aiLoading ? '{{ __('Memproses…') }}' : '{{ __('Generate') }}'"></span>
+                    </button>
+                    <p class="help" x-show="!title.trim()">{{ __('Isi Judul Materi terlebih dahulu.') }}</p>
+                </div>
+            </template>
+
+            <template x-if="aiGeneratedContent !== null">
+                <div>
+                    <label class="label">{{ __('Ringkasan — bisa diedit sebelum dipakai') }}</label>
+                    <textarea x-model="aiGeneratedContent.summary" rows="2" class="input text-sm"></textarea>
+
+                    <label class="label mt-3">{{ __('Isi Materi — bisa diedit sebelum dipakai') }}</label>
+                    <textarea x-model="aiGeneratedContent.content" rows="12" class="input font-mono text-sm"></textarea>
+                    <p class="help" x-show="moduleContentType === 'reading'">{{ __('Paragraf sudah dipisah baris kosong, sesuai format hover-terjemahan Reading.') }}</p>
+
+                    <div class="mt-4 flex gap-2">
+                        <button type="button" @click="aiGeneratedContent = null" class="btn-secondary flex-1">{{ __('Generate Ulang') }}</button>
+                        <button type="button" @click="useGeneratedContent()" class="btn-primary flex-1">
+                            <x-icon name="check" class="size-4" /> {{ __('Gunakan Isi Ini') }}
                         </button>
                     </div>
                 </div>

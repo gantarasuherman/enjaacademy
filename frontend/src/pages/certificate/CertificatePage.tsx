@@ -23,7 +23,7 @@ export default function CertificatePage() {
         <>
             <PageHeader
                 title="Certificate"
-                description="Sertifikat terbit otomatis begitu kamu menyelesaikan seluruh materi sebuah modul dan lulus kuisnya."
+                description="Sertifikat terbit otomatis begitu kamu menyelesaikan seluruh materi sebuah modul."
                 action={
                     <div className="rounded-sm bg-surface-sunken px-4 py-2 text-center">
                         <p className="font-display text-lg font-extrabold">
@@ -118,7 +118,7 @@ export default function CertificatePage() {
                                 {/* Footer */}
                                 <div className="p-5">
                                     <div className="mb-3 flex items-center justify-between gap-2">
-                                        <CefrBadge level={certificate.cefr} />
+                                        {certificate.cefr ? <CefrBadge level={certificate.cefr} /> : <span />}
                                         <span className="font-mono text-xs text-fg-muted">
                                             {certificate.progressPercent}%
                                         </span>
@@ -168,12 +168,11 @@ export default function CertificatePage() {
             <Card className="mt-8">
                 <CardHeader
                     title="Bagaimana sertifikat diterbitkan?"
-                    subtitle="Tiga syarat yang harus dipenuhi untuk setiap modul."
+                    subtitle="Syarat yang harus dipenuhi untuk setiap modul."
                 />
                 <ol className="space-y-3 text-sm">
                     {[
                         'Selesaikan seluruh materi di dalam modul.',
-                        'Lulus kuis penutup dengan skor minimal yang tertera.',
                         'Sertifikat terbit otomatis — tidak perlu mengajukan apa pun.',
                     ].map((step, index) => (
                         <li key={step} className="flex gap-3">

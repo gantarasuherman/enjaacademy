@@ -31,6 +31,7 @@ class QuizRequest extends FormRequest
             'slug' => ['nullable', 'string', 'max:200', Rule::unique('quizzes', 'slug')->ignore($id)],
             'description' => ['nullable', 'string', 'max:2000'],
             'level' => ['nullable', 'string', 'max:20'],
+            'category' => ['required', Rule::in(['quiz', 'test'])],
             'difficulty' => ['required', Rule::in(['easy', 'medium', 'hard'])],
             'time_limit_minutes' => ['nullable', 'integer', 'min:1', 'max:480'],
             'pass_score' => ['required', 'integer', 'min:0', 'max:100'],
@@ -44,7 +45,7 @@ class QuizRequest extends FormRequest
             'questions' => ['array'],
             'questions.*.id' => ['nullable', 'integer'],
             'questions.*.question' => ['required_with:questions', 'string', 'max:2000'],
-            'questions.*.type' => ['required_with:questions', Rule::in(['multiple_choice', 'true_false', 'fill_blank', 'matching'])],
+            'questions.*.type' => ['required_with:questions', Rule::in(['multiple_choice', 'true_false', 'fill_blank', 'matching', 'arrange'])],
             'questions.*.explanation' => ['nullable', 'string', 'max:2000'],
             'questions.*.correct_text' => ['nullable', 'string', 'max:255'],
             'questions.*.score' => ['nullable', 'integer', 'min:1', 'max:100'],
@@ -62,6 +63,19 @@ class QuizRequest extends FormRequest
                 if ($type === 'fill_blank') {
                     if (blank($question['correct_text'] ?? null)) {
                         $validator->errors()->add("questions.{$index}.correct_text", __('A fill-in-the-blank question needs an answer key.'));
+                    }
+
+                    continue;
+                }
+
+                // "arrange" (Susun Kata): each option is one word of the
+                // sentence in its correct order — there's no single "correct"
+                // option to flag, the row order itself is the answer key.
+                if ($type === 'arrange') {
+                    $words = collect($question['options'] ?? [])->filter(fn ($o) => filled($o['label'] ?? null));
+
+                    if ($words->count() < 2) {
+                        $validator->errors()->add("questions.{$index}.options", __('Provide at least two words to arrange.'));
                     }
 
                     continue;

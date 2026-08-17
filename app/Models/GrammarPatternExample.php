@@ -13,7 +13,8 @@ class GrammarPatternExample extends Model
     use HasFactory;
 
     protected $fillable = [
-        'grammar_pattern_id', 'type', 'sentence', 'translation', 'correction', 'note', 'sort_order',
+        'grammar_pattern_id', 'type', 'sentence', 'romaji', 'translation',
+        'correction', 'correction_romaji', 'note', 'sort_order',
     ];
 
     public function pattern(): BelongsTo

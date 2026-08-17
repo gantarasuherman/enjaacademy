@@ -8,11 +8,11 @@ import { Checkbox, Input, Select } from '@/components/ui/Input';
 import { Alert } from '@/components/ui/Feedback';
 
 const LEVELS = [
-    { value: 'A1', label: 'A1 — Baru mulai dari nol' },
-    { value: 'A2', label: 'A2 — Bisa kalimat sederhana' },
-    { value: 'B1', label: 'B1 — Cukup untuk percakapan harian' },
-    { value: 'B2', label: 'B2 — Lancar untuk kerja' },
-    { value: 'C1', label: 'C1 — Mendekati penutur asli' },
+    { value: 'Beginner', label: 'Beginner — Baru mulai dari nol' },
+    { value: 'Elementary', label: 'Elementary — Bisa kalimat sederhana' },
+    { value: 'Intermediate', label: 'Intermediate — Cukup untuk percakapan harian' },
+    { value: 'Upper-Intermediate', label: 'Upper-Intermediate — Lancar untuk kerja' },
+    { value: 'Advanced', label: 'Advanced — Mendekati penutur asli' },
 ];
 
 export default function RegisterPage() {
@@ -20,7 +20,7 @@ export default function RegisterPage() {
     const toast = useUiStore((state) => state.toast);
     const navigate = useNavigate();
 
-    const [form, setForm] = useState({ name: '', email: '', password: '', confirm: '', target: 'B1' });
+    const [form, setForm] = useState({ name: '', email: '', password: '', confirm: '', target: 'Intermediate' });
     const [agreed, setAgreed] = useState(false);
     const [localError, setLocalError] = useState<string | null>(null);
 

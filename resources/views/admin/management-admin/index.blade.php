@@ -163,6 +163,33 @@
               class="space-y-6">
             @csrf
 
+            <div class="card p-5">
+                <h2 class="mb-1 font-semibold">{{ __('Provider AI Aktif') }}</h2>
+                <p class="help mt-0 mb-4">{{ __('Dipakai semua fitur "Buat dengan AI" (kosakata & materi lesson) — cuma satu yang aktif sekaligus.') }}</p>
+
+                <div class="flex flex-col gap-2">
+                    <label class="flex items-center gap-2.5 text-sm">
+                        <input type="radio" name="ai_provider" value="gemini"
+                               @checked(old('ai_provider', $integrations['ai_provider']) === 'gemini')
+                               class="border-slate-300 text-brand-600">
+                        <span>Gemini (Google) — <span class="text-slate-500">{{ __('gratis') }}</span></span>
+                    </label>
+                    <label class="flex items-center gap-2.5 text-sm">
+                        <input type="radio" name="ai_provider" value="grok"
+                               @checked(old('ai_provider', $integrations['ai_provider']) === 'grok')
+                               class="border-slate-300 text-brand-600">
+                        <span>Grok (xAI) — <span class="text-slate-500">{{ __('berbayar per token') }}</span></span>
+                    </label>
+                    <label class="flex items-center gap-2.5 text-sm">
+                        <input type="radio" name="ai_provider" value="groq"
+                               @checked(old('ai_provider', $integrations['ai_provider']) === 'groq')
+                               class="border-slate-300 text-brand-600">
+                        <span>Groq — <span class="text-slate-500">{{ __('gratis, hanya dibatasi rate limit') }}</span></span>
+                    </label>
+                </div>
+                @error('ai_provider') <p class="mt-1 text-xs text-rose-600">{{ $message }}</p> @enderror
+            </div>
+
             <div class="card p-5" x-data="{ showKey: false, clear: false }">
                 <h2 class="mb-1 font-semibold">{{ __('AI Content Generator (Gemini)') }}</h2>
                 <p class="help mt-0 mb-4">
@@ -213,6 +240,181 @@
                                class="input font-mono text-sm" placeholder="gemini-flash-latest">
                         <p class="help">{{ __('Kosongkan untuk memakai default (gemini-flash-latest).') }}</p>
                     </div>
+                </div>
+            </div>
+
+            <div class="card p-5" x-data="{ showKey: false, clear: false }">
+                <h2 class="mb-1 font-semibold">{{ __('AI Content Generator (Grok)') }}</h2>
+                <p class="help mt-0 mb-4">
+                    {{ __('Alternatif Gemini — berbayar per token, tidak ada tingkat gratis. Ambil API key di') }}
+                    <a href="https://console.x.ai" target="_blank" rel="noopener" class="text-brand-600 hover:underline">console.x.ai</a>.
+                </p>
+
+                <div class="space-y-4">
+                    <div>
+                        <label for="grok_api_key" class="label">{{ __('API Key') }}</label>
+
+                        <div class="relative">
+                            <input :type="showKey ? 'text' : 'password'" id="grok_api_key" name="grok_api_key"
+                                   x-bind:disabled="clear" autocomplete="off" class="input pr-10 font-mono"
+                                   placeholder="{{ $integrations['grok_api_key_set'] ? '•••••••••••••••• ('.__('tersimpan').')' : __('Belum diatur') }}">
+                            <button type="button" @click="showKey = !showKey"
+                                    class="absolute inset-y-0 right-0 grid w-10 place-items-center text-slate-400 hover:text-slate-600">
+                                <x-icon name="eye" class="size-4" />
+                            </button>
+                        </div>
+
+                        <p class="help">
+                            {{ __('Kosongkan untuk mempertahankan key yang sudah tersimpan.') }}
+                            @if ($integrations['grok_api_key_set'])
+                                <span class="text-emerald-600 dark:text-emerald-400">{{ __('Key sudah diatur.') }}</span>
+                            @else
+                                <span class="text-amber-600 dark:text-amber-400">{{ __('Belum ada key — kalau Grok dipilih sebagai provider aktif, fitur AI akan menampilkan "belum diaktifkan".') }}</span>
+                            @endif
+                        </p>
+
+                        @if ($integrations['grok_api_key_set'])
+                            <label class="mt-2 flex items-center gap-2 text-sm text-rose-600">
+                                <input type="hidden" name="clear_grok_api_key" value="0">
+                                <input type="checkbox" name="clear_grok_api_key" value="1" x-model="clear"
+                                       class="rounded border-slate-300 text-rose-600">
+                                {{ __('Hapus API key dari Pengaturan (kembali memakai .env jika ada)') }}
+                            </label>
+                        @endif
+
+                        @error('grok_api_key') <p class="mt-1 text-xs text-rose-600">{{ $message }}</p> @enderror
+                    </div>
+
+                    <div class="max-w-xs">
+                        <label for="grok_model" class="label">{{ __('Model') }}</label>
+                        <input id="grok_model" name="grok_model"
+                               value="{{ old('grok_model', $integrations['grok_model']) }}"
+                               class="input font-mono text-sm" placeholder="grok-4.6">
+                        <p class="help">{{ __('Kosongkan untuk memakai default (grok-4.6).') }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card p-5" x-data="{ showKey: false, clear: false }">
+                <h2 class="mb-1 font-semibold">{{ __('AI Content Generator (Groq)') }}</h2>
+                <p class="help mt-0 mb-4">
+                    {{ __('Alternatif gratis lain — tanpa kartu kredit, hanya dibatasi rate limit (bukan kuota harian seperti Gemini). Ambil API key di') }}
+                    <a href="https://console.groq.com/keys" target="_blank" rel="noopener" class="text-brand-600 hover:underline">console.groq.com/keys</a>.
+                </p>
+
+                <div class="space-y-4">
+                    <div>
+                        <label for="groq_api_key" class="label">{{ __('API Key') }}</label>
+
+                        <div class="relative">
+                            <input :type="showKey ? 'text' : 'password'" id="groq_api_key" name="groq_api_key"
+                                   x-bind:disabled="clear" autocomplete="off" class="input pr-10 font-mono"
+                                   placeholder="{{ $integrations['groq_api_key_set'] ? '•••••••••••••••• ('.__('tersimpan').')' : __('Belum diatur') }}">
+                            <button type="button" @click="showKey = !showKey"
+                                    class="absolute inset-y-0 right-0 grid w-10 place-items-center text-slate-400 hover:text-slate-600">
+                                <x-icon name="eye" class="size-4" />
+                            </button>
+                        </div>
+
+                        <p class="help">
+                            {{ __('Kosongkan untuk mempertahankan key yang sudah tersimpan.') }}
+                            @if ($integrations['groq_api_key_set'])
+                                <span class="text-emerald-600 dark:text-emerald-400">{{ __('Key sudah diatur.') }}</span>
+                            @else
+                                <span class="text-amber-600 dark:text-amber-400">{{ __('Belum ada key — kalau Groq dipilih sebagai provider aktif, fitur AI akan menampilkan "belum diaktifkan".') }}</span>
+                            @endif
+                        </p>
+
+                        @if ($integrations['groq_api_key_set'])
+                            <label class="mt-2 flex items-center gap-2 text-sm text-rose-600">
+                                <input type="hidden" name="clear_groq_api_key" value="0">
+                                <input type="checkbox" name="clear_groq_api_key" value="1" x-model="clear"
+                                       class="rounded border-slate-300 text-rose-600">
+                                {{ __('Hapus API key dari Pengaturan (kembali memakai .env jika ada)') }}
+                            </label>
+                        @endif
+
+                        @error('groq_api_key') <p class="mt-1 text-xs text-rose-600">{{ $message }}</p> @enderror
+                    </div>
+
+                    <div class="max-w-xs">
+                        <label for="groq_model" class="label">{{ __('Model') }}</label>
+                        <input id="groq_model" name="groq_model"
+                               value="{{ old('groq_model', $integrations['groq_model']) }}"
+                               class="input font-mono text-sm" placeholder="openai/gpt-oss-120b">
+                        <p class="help">{{ __('Kosongkan untuk memakai default (openai/gpt-oss-120b).') }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card p-5" x-data="{ showApi: false, showPrivate: false, clearApi: false, clearPrivate: false }">
+                <h2 class="mb-1 font-semibold">{{ __('Pembayaran QRIS (Tripay)') }}</h2>
+                <p class="help mt-0 mb-4">
+                    {{ __('Dipakai untuk checkout kursus berbayar. Daftar sandbox gratis (tanpa badan usaha) di') }}
+                    <a href="https://tripay.co.id" target="_blank" rel="noopener" class="text-brand-600 hover:underline">tripay.co.id</a>
+                    {{ __(', lalu ambil Merchant Code/API Key/Private Key dari menu API & Integrasi → Simulator → Merchant → Detail. Kosongkan semua untuk memakai mode simulasi (tanpa QRIS asli).') }}
+                </p>
+
+                <div class="space-y-4">
+                    <div class="max-w-sm">
+                        <label for="tripay_merchant_code" class="label">{{ __('Merchant Code') }}</label>
+                        <input id="tripay_merchant_code" name="tripay_merchant_code"
+                               value="{{ old('tripay_merchant_code', $integrations['tripay_merchant_code']) }}"
+                               class="input font-mono text-sm" placeholder="T0001">
+                    </div>
+
+                    <div>
+                        <label for="tripay_api_key" class="label">{{ __('API Key') }}</label>
+                        <div class="relative">
+                            <input :type="showApi ? 'text' : 'password'" id="tripay_api_key" name="tripay_api_key"
+                                   x-bind:disabled="clearApi" autocomplete="off" class="input pr-10 font-mono"
+                                   placeholder="{{ $integrations['tripay_api_key_set'] ? '•••••••••••••••• ('.__('tersimpan').')' : __('Belum diatur') }}">
+                            <button type="button" @click="showApi = !showApi"
+                                    class="absolute inset-y-0 right-0 grid w-10 place-items-center text-slate-400 hover:text-slate-600">
+                                <x-icon name="eye" class="size-4" />
+                            </button>
+                        </div>
+                        @if ($integrations['tripay_api_key_set'])
+                            <label class="mt-2 flex items-center gap-2 text-sm text-rose-600">
+                                <input type="hidden" name="clear_tripay_api_key" value="0">
+                                <input type="checkbox" name="clear_tripay_api_key" value="1" x-model="clearApi"
+                                       class="rounded border-slate-300 text-rose-600">
+                                {{ __('Hapus API key dari Pengaturan') }}
+                            </label>
+                        @endif
+                        @error('tripay_api_key') <p class="mt-1 text-xs text-rose-600">{{ $message }}</p> @enderror
+                    </div>
+
+                    <div>
+                        <label for="tripay_private_key" class="label">{{ __('Private Key') }}</label>
+                        <div class="relative">
+                            <input :type="showPrivate ? 'text' : 'password'" id="tripay_private_key" name="tripay_private_key"
+                                   x-bind:disabled="clearPrivate" autocomplete="off" class="input pr-10 font-mono"
+                                   placeholder="{{ $integrations['tripay_private_key_set'] ? '•••••••••••••••• ('.__('tersimpan').')' : __('Belum diatur') }}">
+                            <button type="button" @click="showPrivate = !showPrivate"
+                                    class="absolute inset-y-0 right-0 grid w-10 place-items-center text-slate-400 hover:text-slate-600">
+                                <x-icon name="eye" class="size-4" />
+                            </button>
+                        </div>
+                        <p class="help">{{ __('Dipakai untuk tanda tangan transaksi & verifikasi webhook — jaga kerahasiaannya.') }}</p>
+                        @if ($integrations['tripay_private_key_set'])
+                            <label class="mt-2 flex items-center gap-2 text-sm text-rose-600">
+                                <input type="hidden" name="clear_tripay_private_key" value="0">
+                                <input type="checkbox" name="clear_tripay_private_key" value="1" x-model="clearPrivate"
+                                       class="rounded border-slate-300 text-rose-600">
+                                {{ __('Hapus Private key dari Pengaturan') }}
+                            </label>
+                        @endif
+                        @error('tripay_private_key') <p class="mt-1 text-xs text-rose-600">{{ $message }}</p> @enderror
+                    </div>
+
+                    <p class="text-xs">
+                        @if ($integrations['tripay_api_key_set'] && $integrations['tripay_private_key_set'] && $integrations['tripay_merchant_code'])
+                            <span class="text-emerald-600 dark:text-emerald-400">{{ __('Tripay aktif — checkout kursus berbayar akan pakai QRIS asli.') }}</span>
+                        @else
+                            <span class="text-amber-600 dark:text-amber-400">{{ __('Belum lengkap — checkout kursus berbayar masih pakai mode simulasi.') }}</span>
+                        @endif
+                    </p>
                 </div>
             </div>
 

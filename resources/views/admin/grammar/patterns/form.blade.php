@@ -16,12 +16,14 @@
                   'id' => $item->id,
                   'type' => $item->type,
                   'sentence' => $item->sentence,
+                  'romaji' => $item->romaji,
                   'translation' => $item->translation,
                   'correction' => $item->correction,
+                  'correction_romaji' => $item->correction_romaji,
                   'note' => $item->note,
               ])->values()),
               addItem(type) {
-                  this.items.push({ id: null, type, sentence: '', translation: '', correction: '', note: '' });
+                  this.items.push({ id: null, type, sentence: '', romaji: '', translation: '', correction: '', correction_romaji: '', note: '' });
               },
               removeItem(index) {
                   this.items.splice(index, 1);
@@ -50,11 +52,17 @@
                         <input id="slug" name="slug" value="{{ old('slug', $pattern->slug) }}" class="input font-mono text-sm">
                     </div>
 
-                    <div class="sm:col-span-2">
+                    <div>
                         <label for="title" class="label">{{ __('Judul pola') }} <span class="text-rose-500">*</span></label>
                         <input id="title" name="title" value="{{ old('title', $pattern->title) }}" required
                                class="input @error('title') border-rose-400 @enderror" placeholder="～ながら">
                         @error('title') <p class="mt-1 text-xs text-rose-600">{{ $message }}</p> @enderror
+                    </div>
+
+                    <div>
+                        <label for="title_romaji" class="label">{{ __('Romaji judul (untuk Jepang)') }}</label>
+                        <input id="title_romaji" name="title_romaji" value="{{ old('title_romaji', $pattern->title_romaji) }}"
+                               class="input" placeholder="~nagara">
                     </div>
 
                     <div class="sm:col-span-2">
@@ -105,6 +113,10 @@
                                     <label class="label text-xs" x-text="item.type === 'mistake' ? '{{ __('Kalimat salah') }}' : '{{ __('Kalimat Jepang') }}'"></label>
                                     <input type="text" :name="`items[${index}][sentence]`" x-model="item.sentence" class="input text-sm">
                                 </div>
+                                <div class="sm:col-span-2">
+                                    <label class="label text-xs">{{ __('Romaji (untuk Jepang)') }}</label>
+                                    <input type="text" :name="`items[${index}][romaji]`" x-model="item.romaji" class="input text-sm">
+                                </div>
                                 <div>
                                     <label class="label text-xs">{{ __('Terjemahan') }}</label>
                                     <input type="text" :name="`items[${index}][translation]`" x-model="item.translation" class="input text-sm">
@@ -112,6 +124,10 @@
                                 <div x-show="item.type === 'mistake'">
                                     <label class="label text-xs">{{ __('Kalimat benar') }}</label>
                                     <input type="text" :name="`items[${index}][correction]`" x-model="item.correction" class="input text-sm">
+                                </div>
+                                <div class="sm:col-span-2" x-show="item.type === 'mistake'">
+                                    <label class="label text-xs">{{ __('Romaji kalimat benar') }}</label>
+                                    <input type="text" :name="`items[${index}][correction_romaji]`" x-model="item.correction_romaji" class="input text-sm">
                                 </div>
                                 <div class="sm:col-span-2" x-show="item.type === 'mistake'">
                                     <label class="label text-xs">{{ __('Kenapa salah') }}</label>

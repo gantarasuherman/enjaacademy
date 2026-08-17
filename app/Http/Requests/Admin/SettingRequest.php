@@ -35,9 +35,24 @@ class SettingRequest extends FormRequest
             'analytics_id' => ['nullable', 'string', 'max:60'],
 
             // Integrations
+            'ai_provider' => ['nullable', 'in:gemini,grok,groq'],
             'gemini_api_key' => ['nullable', 'string', 'max:200'],
             'gemini_model' => ['nullable', 'string', 'max:100'],
             'clear_gemini_api_key' => ['boolean'],
+
+            'grok_api_key' => ['nullable', 'string', 'max:200'],
+            'grok_model' => ['nullable', 'string', 'max:100'],
+            'clear_grok_api_key' => ['boolean'],
+
+            'groq_api_key' => ['nullable', 'string', 'max:200'],
+            'groq_model' => ['nullable', 'string', 'max:100'],
+            'clear_groq_api_key' => ['boolean'],
+
+            'tripay_merchant_code' => ['nullable', 'string', 'max:100'],
+            'tripay_api_key' => ['nullable', 'string', 'max:200'],
+            'tripay_private_key' => ['nullable', 'string', 'max:200'],
+            'clear_tripay_api_key' => ['boolean'],
+            'clear_tripay_private_key' => ['boolean'],
         ];
     }
 }

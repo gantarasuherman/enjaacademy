@@ -35,9 +35,14 @@ export default function SpeakingPage() {
         setResult(scored);
 
         if (scored.score >= 70) {
-            const xp = scored.score >= 90 ? 15 : 10;
-            awardXp(xp);
-            toast(`+${xp} XP — skor ${scored.score}%`, 'success');
+            // Server decides the real XP (and withholds it on a repeat pass
+            // of an exercise already rewarded) — see SkillPracticeController.
+            void speakingService.complete(exercise.itemId, scored.score).then(({ earnedXp }) => {
+                if (earnedXp > 0) {
+                    awardXp(earnedXp);
+                    toast(`+${earnedXp} XP — skor ${scored.score}%`, 'success');
+                }
+            });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [recognition.listening, recognition.transcript]);

@@ -6,7 +6,7 @@
         "audioUrl": "/audio/ordering-coffee.mp3",
         "durationSeconds": 38,
         "accent": "american",
-        "cefr": "A2",
+        "cefr": "Elementary",
         "transcript": "Barista: Hi there, what can I get for you?\nCustomer: Could I have a large latte, please?\nBarista: Sure. Would you like that hot or iced?\nCustomer: Iced, please. And could you make it with oat milk?\nBarista: Of course. Anything else?\nCustomer: That's all, thanks. How much is it?\nBarista: That comes to five dollars forty.\nCustomer: Here you go.\nBarista: Thank you. It'll be ready at the end of the counter in just a moment.",
         "subtitles": [
             { "start": 0, "end": 3, "text": "Hi there, what can I get for you?", "translation": "Halo, ada yang bisa saya siapkan?" },
@@ -28,7 +28,7 @@
         "audioUrl": "/audio/airport-announcement.mp3",
         "durationSeconds": 31,
         "accent": "british",
-        "cefr": "B1",
+        "cefr": "Intermediate",
         "transcript": "Good afternoon, ladies and gentlemen. This is a boarding announcement for flight BA two forty-seven to Singapore. Boarding will begin at gate twenty-three in approximately fifteen minutes. Passengers travelling with small children or requiring assistance are invited to board first. Please have your boarding pass and passport ready for inspection. We remind passengers that the departure gate has been changed from gate nine to gate twenty-three. Thank you.",
         "subtitles": [
             { "start": 0, "end": 4, "text": "Good afternoon, ladies and gentlemen.", "translation": "Selamat siang, para penumpang." },
@@ -47,7 +47,7 @@
         "audioUrl": "/audio/standup-meeting.mp3",
         "durationSeconds": 45,
         "accent": "american",
-        "cefr": "B2",
+        "cefr": "Upper-Intermediate",
         "transcript": "Alright, let's keep this short. Priya, where are you at?\nI finished the login flow yesterday and pushed it for review. Today I'm picking up the password reset. No blockers.\nGreat. Marcus?\nI'm still debugging the payment webhook. It works locally but fails in staging, so I'm going to pair with Sam after this. That's my blocker.\nOkay, Sam, can you make time this morning?\nYeah, I'll ping you after standup.\nPerfect. Anything else? No? Then let's get to it.",
         "subtitles": [
             { "start": 0, "end": 4, "text": "Alright, let's keep this short. Priya, where are you at?", "translation": "Baik, kita buat singkat. Priya, sampai mana?" },

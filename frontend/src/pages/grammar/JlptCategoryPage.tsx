@@ -82,6 +82,9 @@ export default function JlptCategoryPage() {
                                 >
                                     <div className="min-w-0">
                                         <p className="truncate font-semibold">{pattern.title}</p>
+                                        {pattern.titleRomaji && (
+                                            <p className="truncate text-xs italic text-fg-muted">{pattern.titleRomaji}</p>
+                                        )}
                                         {pattern.formula && (
                                             <p className="mt-0.5 truncate font-mono text-xs text-fg-muted">{pattern.formula}</p>
                                         )}

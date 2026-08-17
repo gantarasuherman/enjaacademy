@@ -47,7 +47,7 @@
                     <div>
                         <label for="content_type" class="label">{{ __('Tipe konten') }} <span class="text-rose-500">*</span></label>
                         <select id="content_type" name="content_type" required class="input">
-                            @foreach (['kana', 'kanji', 'vocabulary', 'grammar', 'conversation', 'listening', 'speaking', 'reading', 'writing', 'exam'] as $type)
+                            @foreach (['kana', 'kanji', 'vocabulary', 'grammar', 'conversation', 'listening', 'speaking', 'reading', 'writing', 'exam', 'video'] as $type)
                                 <option value="{{ $type }}" @selected(old('content_type', $module->content_type) === $type)>{{ $type }}</option>
                             @endforeach
                         </select>
@@ -133,6 +133,28 @@
                                class="rounded border-slate-300 text-brand-600">
                         {{ __('Tampilkan di beranda') }}
                     </label>
+                </div>
+            </div>
+
+            <div class="card p-5" x-data="{ isPaid: {{ old('is_paid', $module->is_paid ?? false) ? 'true' : 'false' }} }">
+                <h2 class="mb-4 font-semibold">{{ __('Harga') }}</h2>
+
+                <div class="space-y-4">
+                    <label class="flex items-center gap-2.5 text-sm">
+                        <input type="hidden" name="is_paid" value="0">
+                        <input type="checkbox" name="is_paid" value="1" x-model="isPaid"
+                               class="rounded border-slate-300 text-brand-600">
+                        {{ __('Kursus berbayar') }}
+                    </label>
+
+                    <div x-show="isPaid" x-cloak>
+                        <label for="price" class="label">{{ __('Harga (Rp)') }}</label>
+                        <input id="price" name="price" type="number" min="0" step="1000"
+                               value="{{ old('price', $module->price ?? 0) }}"
+                               class="input @error('price') border-rose-400 @enderror" placeholder="50000">
+                        @error('price') <p class="mt-1 text-xs text-rose-600">{{ $message }}</p> @enderror
+                        <p class="help">{{ __('Peserta harus menyelesaikan transaksi (simulasi) sebelum kursus ini masuk ke "Kursus Saya".') }}</p>
+                    </div>
                 </div>
             </div>
 

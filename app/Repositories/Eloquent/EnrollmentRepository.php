@@ -56,6 +56,17 @@ class EnrollmentRepository extends BaseRepository implements EnrollmentRepositor
         if ($enrollment) {
             $enrollment->delete();
 
+            // Unenrolling from the active course hands "active" to whatever
+            // enrollment is left (most recent first), or clears it entirely.
+            if ($user->active_module_id === $module->id) {
+                $next = Enrollment::query()
+                    ->where('user_id', $user->id)
+                    ->orderByDesc('enrolled_at')
+                    ->first();
+
+                $user->update(['active_module_id' => $next?->learning_module_id]);
+            }
+
             return false;
         }
 
@@ -64,6 +75,11 @@ class EnrollmentRepository extends BaseRepository implements EnrollmentRepositor
             'learning_module_id' => $module->id,
             'enrolled_at' => now(),
         ]);
+
+        // First-ever enrollment becomes the active course automatically.
+        if ($user->active_module_id === null) {
+            $user->update(['active_module_id' => $module->id]);
+        }
 
         return true;
     }

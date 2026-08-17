@@ -16,6 +16,7 @@ class QuizData extends BaseData
         public readonly ?string $slug,
         public readonly ?string $description,
         public readonly ?string $level,
+        public readonly string $category,
         public readonly string $difficulty,
         public readonly ?int $timeLimitSeconds,
         public readonly int $passScore,
@@ -45,6 +46,7 @@ class QuizData extends BaseData
             slug: $request->filled('slug') ? Str::slug((string) $request->string('slug')) : Str::slug($title),
             description: $request->input('description'),
             level: $request->input('level'),
+            category: (string) $request->input('category', 'quiz'),
             difficulty: (string) $request->input('difficulty', 'easy'),
             timeLimitSeconds: $request->filled('time_limit_minutes')
                 ? (int) $request->input('time_limit_minutes') * 60
@@ -69,6 +71,7 @@ class QuizData extends BaseData
             'slug' => $this->slug,
             'description' => $this->description,
             'level' => $this->level,
+            'category' => $this->category,
             'difficulty' => $this->difficulty,
             'time_limit_seconds' => $this->timeLimitSeconds,
             'pass_score' => $this->passScore,

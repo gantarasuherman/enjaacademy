@@ -63,7 +63,7 @@ function toListeningTrack(lesson: Lesson): ListeningTrack {
         audioUrl: '',
         durationSeconds: lesson.estimated_minutes * 60,
         accent: 'american',
-        cefr: (lesson.level as CEFRLevel | null) ?? 'A2',
+        cefr: (lesson.level as CEFRLevel | null) ?? 'Elementary',
         transcript,
         subtitles,
         quizId: null,
@@ -107,12 +107,13 @@ function toSpeakingExercises(lesson: Lesson): SpeakingExercise[] {
         .filter((item) => item.term)
         .map((item) => ({
             id: `${lesson.slug}-${item.id}`,
+            itemId: String(item.id),
             targetSentence: item.term,
             ipa: '',
             meaning: item.meaning ?? '',
             audioSample: null,
             focusSounds: [],
-            cefr: (lesson.level as CEFRLevel | null) ?? 'A2',
+            cefr: (lesson.level as CEFRLevel | null) ?? 'Elementary',
         }));
 }
 
@@ -139,6 +140,16 @@ export const speakingService = {
         LIVE
             ? liveSpeakingExercises().then((all) => all.filter((e) => ids.includes(e.id)))
             : delay(ids.map((id) => exercises.find((e) => e.id === id)).filter(Boolean) as SpeakingExercise[]),
+    /**
+     * Persists XP server-side (see SkillPracticeController) instead of the
+     * page mutating the local progress store directly — that XP used to be
+     * lost on reload since it never reached the backend. No-op in mock mode
+     * (no `itemId`, nothing to award against).
+     */
+    complete: async (itemId: string | undefined, score: number): Promise<{ earnedXp: number }> =>
+        LIVE && itemId
+            ? unwrap<{ earnedXp: number }>((await http.post(`/skill-practice/speaking/${itemId}/complete`, { score })).data)
+            : { earnedXp: 0 },
 };
 
 /**
@@ -166,7 +177,7 @@ function toReadingText(lesson: Lesson, language: LanguageSlug): ReadingText {
         id: lesson.slug,
         title: lesson.title,
         type: 'story',
-        cefr: (lesson.level as CEFRLevel | null) ?? 'A2',
+        cefr: (lesson.level as CEFRLevel | null) ?? 'Elementary',
         wordCount: countWords(body),
         readingMinutes: lesson.estimated_minutes,
         coverImage: null,
@@ -229,11 +240,11 @@ export const readingService = {
 const WRITING_MODULE_SLUG = 'writing';
 
 const WORD_RANGE_BY_LEVEL: Record<string, [number, number]> = {
-    A1: [15, 40],
-    A2: [40, 80],
-    B1: [60, 120],
-    B2: [100, 180],
-    C1: [120, 220],
+    Beginner: [15, 40],
+    Elementary: [40, 80],
+    Intermediate: [60, 120],
+    'Upper-Intermediate': [100, 180],
+    Advanced: [120, 220],
 };
 
 function stripHtml(html: string): string {
@@ -246,13 +257,13 @@ function stripHtml(html: string): string {
 function toWritingTask(lesson: Lesson): WritingTask {
     const items = lesson.items ?? [];
     const sampleItem = items.find((item) => item.term.toLowerCase().includes('contoh')) ?? items.at(-1) ?? null;
-    const [minWords, maxWords] = WORD_RANGE_BY_LEVEL[lesson.level ?? 'A2'] ?? WORD_RANGE_BY_LEVEL.A2;
+    const [minWords, maxWords] = WORD_RANGE_BY_LEVEL[lesson.level ?? 'Elementary'] ?? WORD_RANGE_BY_LEVEL.Elementary;
 
     return {
         id: lesson.slug,
         prompt: stripHtml(lesson.content ?? lesson.summary ?? ''),
         type: 'paragraph',
-        cefr: (lesson.level as CEFRLevel | null) ?? 'A2',
+        cefr: (lesson.level as CEFRLevel | null) ?? 'Elementary',
         minWords,
         maxWords,
         hints: items
@@ -283,11 +294,21 @@ export const writingService = {
                   () => delay(tasks.find((t) => t.id === id) ?? null),
                   async () => unwrap<WritingTask>((await http.get(`/writing/${id}`)).data),
               ),
-    submit: (taskId: string, body: string) =>
-        // No backend submission endpoint for writing yet — grading is
-        // self-assessed client-side against the sample answer/rubric, so
-        // this stays a local acknowledgement regardless of VITE_DATA_SOURCE.
-        delay({ taskId, wordCount: countWords(body), submittedAt: new Date().toISOString() }),
+    /**
+     * Grading is still self-assessed client-side against the sample
+     * answer/rubric (no backend rubric exists) — but the XP for submitting
+     * now goes through the real backend (SkillPracticeController) instead
+     * of a client-only store mutation, so it survives a reload. `taskId` is
+     * the Lesson's slug (see toWritingTask() above), which Lesson's route
+     * binding already resolves by slug.
+     */
+    submit: async (taskId: string, body: string) => {
+        const earnedXp = LIVE
+            ? unwrap<{ earnedXp: number }>((await http.post(`/skill-practice/writing/${taskId}/submit`, { text: body })).data).earnedXp
+            : 0;
+
+        return { taskId, wordCount: countWords(body), submittedAt: new Date().toISOString(), earnedXp };
+    },
 };
 
 /**
@@ -331,7 +352,7 @@ function toScenario(lesson: Lesson): ConversationScenario {
         title: lesson.title,
         context: lesson.summary ?? '',
         situation: '',
-        cefr: (lesson.level as CEFRLevel | null) ?? 'A1',
+        cefr: (lesson.level as CEFRLevel | null) ?? 'Beginner',
         icon: 'MessagesSquare',
         keyPhrases: [],
         lines,
